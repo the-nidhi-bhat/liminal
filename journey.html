@@ -1428,6 +1428,16 @@
             border-color: #fde047;
         }
 
+        .card:nth-child(12) {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8, #ffffff);
+            border-color: #f9a8d4;
+        }
+
+        .card:nth-child(13) {
+            background: linear-gradient(135deg, #fed7aa, #fdba74, #ffffff);
+            border-color: #fb923c;
+        }
+
         .card-header-small {
             display: flex;
             align-items: center;
@@ -2261,20 +2271,36 @@
                     <div class="small-chip">Wind down</div>
                 </div>
             </div>
-    <!-- Community Meetups Card - Colorful Version -->
-<div class="card community-card" onclick="window.location.href='community.html'">
-  <div class="card-header-small">
-    <div class="icon-pill" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#ec4899;">🤝</div>
-    <div class="card-title">Community Meetups</div>
-    <div class="card-tag" style="background:#fbbf24;color:#78350f;">COMING SOON</div>
-  </div>
-  <p>Join real-life support groups and wellness meetups in your city. Connect face-to-face with others on similar journeys.</p>
-  <div class="chip-row">
-    <div class="small-chip">🏙️ 15+ Cities</div>
-    <div class="small-chip">👥 Safe spaces</div>
-    <div class="small-chip">🎯 Group activities</div>
-  </div>
-</div>
+
+            <!-- Community Meetups Card -->
+            <div class="card" onclick="window.location.href='community.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#ec4899;">🤝</div>
+                    <div class="card-title">Community Meetups</div>
+                    <div class="card-tag" style="background:#fbbf24;color:#78350f;">COMING SOON</div>
+                </div>
+                <p>Join real-life support groups and wellness meetups in your city. Connect face-to-face with others on similar journeys.</p>
+                <div class="chip-row">
+                    <div class="small-chip">🏙️ 15+ Cities</div>
+                    <div class="small-chip">👥 Safe spaces</div>
+                    <div class="small-chip">🎯 Group activities</div>
+                </div>
+            </div>
+
+            <!-- NEW CARD: Comforting Cartoons -->
+            <div class="card" onclick="window.location.href='cartoons.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill" style="background:linear-gradient(135deg,#fef3c7,#fed7aa);color:#f97316;">📺</div>
+                    <div class="card-title">Comforting Cartoons</div>
+                    <div class="card-tag" style="background:#fef3c7;color:#ea580c;">CHILL</div>
+                </div>
+                <p>Watch wholesome cartoon clips and feel-good animations to lift your mood and bring a smile.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Happy clips</div>
+                    <div class="small-chip">Nostalgia</div>
+                    <div class="small-chip">5-10 min</div>
+                </div>
+            </div>
 
             <div class="card" onclick="window.location.href='sos.html'" style="border: 2px solid #ef4444;">
                 <div class="card-header-small">
@@ -2477,7 +2503,6 @@
             const savedBg = localStorage.getItem('selectedBg') || 'default';
             setBackground(savedBg);
 
-            // Photo Upload - FIXED
             const photoInput = document.getElementById("photoInput");
             const photoPreview = document.getElementById("photoPreview");
             
@@ -2536,7 +2561,6 @@
                 }
             });
 
-            // FIXED PROFILE SAVE - THIS WAS THE ISSUE!
             profileForm.addEventListener("submit", function(e) {
                 e.preventDefault();
                 
@@ -2550,54 +2574,39 @@
                     profession: newProfession
                 };
                 
-                // Save to all storage keys
                 saveJSON("userProfile", profile);
                 localStorage.setItem("userName", newName);
                 localStorage.setItem("userEmail", newEmail);
                 localStorage.setItem("userProfession", newProfession);
                 
-                // Save photo if changed
                 const img = photoPreview.querySelector('img');
                 if (img && img.src.startsWith('data:')) {
                     localStorage.setItem("userProfilePhoto", img.src);
                 }
                 
-                // Reload profile display
                 loadProfile();
-                
-                // Close modal
                 profileEditModal.classList.remove("active");
-                
-                // Show success message
                 alert("Profile saved successfully! ✨");
             });
 
             const dashboardToggle = document.getElementById("dashboardToggle");
             dashboardToggle.addEventListener("click", function() {
-                window.location.href = 'dashboard.html';
+                window.location.href = "dashboard.html";
             });
+
+            document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
 
             const profileAvatar = document.getElementById("profileAvatar");
             const profileDropdown = document.getElementById("profileDropdown");
-            
+
             profileAvatar.addEventListener("click", function(e) {
                 e.stopPropagation();
                 profileDropdown.classList.toggle("active");
+                document.getElementById("bgDropdown").classList.remove("active");
                 document.getElementById("statsDropdown").classList.remove("active");
-                document.getElementById("bgDropdown").classList.remove("active");
-            });
-            
-            const statsCircle = document.getElementById("statsCircle");
-            const statsDropdown = document.getElementById("statsDropdown");
-            
-            statsCircle.addEventListener("click", function(e) {
-                e.stopPropagation();
-                statsDropdown.classList.toggle("active");
-                profileDropdown.classList.remove("active");
-                document.getElementById("bgDropdown").classList.remove("active");
             });
 
-            const bgSelectorBtn = document.getElementById("bgSelectorBtn");
+             const bgSelectorBtn = document.getElementById("bgSelectorBtn");
             const bgDropdown = document.getElementById("bgDropdown");
             
             bgSelectorBtn.addEventListener("click", function(e) {
@@ -2653,3 +2662,4 @@
     </script>
 </body>
 </html>
+
