@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Clinical Mental Health Assessment</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing:antialiased; }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          linear-gradient(135deg, rgba(236,72,153,0.16), rgba(59,130,246,0.18)),
+          url("image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 850px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(24px) saturate(180%);
+        border-radius: 32px;
+        padding: 40px;
+        box-shadow: 
+          0 25px 50px rgba(15, 23, 42, 0.18),
+          0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        animation: slideUp 0.6s ease-out;
+        position: relative;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .mascot {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 16px;
+        animation: float 3s ease-in-out infinite;
+        display: block;
+        border-radius: 50%;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        object-fit: cover;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+        font-size: 28px;
+        color: #2d3748;
+        margin: 16px 0 8px 0;
+        font-weight: 700;
+    }
+
+    .subtitle {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .clinical-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .clinical-note {
+        background: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 16px 0;
+        font-size: 13px;
+        color: #1e40af;
+        line-height: 1.6;
+    }
+
+    .progress-wrapper {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        font-size:12px;
+        color:#64748b;
+        margin-bottom:6px;
+      }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: 20px;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        width: 0%;
+        transition: width 0.4s ease;
+        border-radius: 20px;
+    }
+
+    .question-section {
+        display: none;
+        animation: fadeIn 0.4s ease;
+    }
+
+    .question-section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .question-header {
+        margin-bottom: 24px;
+    }
+
+    .question-number {
+        font-size: 13px;
+        color: #667eea;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .question-text {
+        font-size: 19px;
+        color: #1e293b;
+        margin-bottom: 8px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .question-timeframe {
+        font-size: 14px;
+        color: #64748b;
+        font-style: italic;
+        margin-bottom: 20px;
+    }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option {
+        padding: 18px 24px;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        font-size: 15px;
+        color: #334155;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .option-score {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #64748b;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .option:hover {
+        border-color: #667eea;
+        background: #f8fafc;
+        transform: translateX(4px);
+    }
+
+    .option.selected {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea15, #764ba215);
+        color: #667eea;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    .option.selected .option-score {
+        background: #667eea;
+        color: white;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        flex-wrap:wrap;
+    }
+
+    button {
+        padding: 14px 20px;
+        border: none;
+        border-radius: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back {
+        background: #f1f5f9;
+        color: #475569;
+        flex:1;
+        min-width:120px;
+    }
+
+    .btn-back:hover {
+        background: #e2e8f0;
+        transform: translateY(-2px);
+    }
+
+    .btn-next {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        flex:1;
+        min-width:140px;
+    }
+
+    .btn-next:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-next:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow:none;
+    }
+
+    .btn-skip {
+        background:#ffffff;
+        color:#64748b;
+        border:1px dashed #e2e8f0;
+        flex:0 0 auto;
+        padding:12px 16px;
+    }
+
+    .btn-skip:hover {
+        background:#f9fafb;
+    }
+
+    .profession-select {
+        padding: 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 24px;
+        cursor: pointer;
+        background: white;
+        color: #334155;
+    }
+
+    .profession-select:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .results-section {
+        display: none;
+        text-align: center;
+    }
+
+    .results-section.active {
+        display: block;
+        animation: fadeIn 0.6s ease;
+    }
+
+    .score-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 32px 0;
+    }
+
+    .score-card {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        border: 2px solid #7dd3fc;
+        border-radius: 20px;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .score-card.high-risk {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        border-color: #f87171;
+    }
+
+    .score-card.moderate-risk {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border-color: #fbbf24;
+    }
+
+    .score-value {
+        font-size: 48px;
+        font-weight: 700;
+        color: #0369a1;
+        margin-bottom: 8px;
+    }
+
+    .score-card.high-risk .score-value {
+        color: #dc2626;
+    }
+
+    .score-card.moderate-risk .score-value {
+        color: #d97706;
+    }
+
+    .score-label {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .score-severity {
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .warning-box {
+        border-radius: 20px;
+        padding: 24px;
+        margin: 24px 0;
+        text-align: left;
+    }
+
+    .warning-box.critical {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        border: 3px solid #dc2626;
+    }
+
+    .warning-box.high {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border: 3px solid #f59e0b;
+    }
+
+    .warning-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .warning-box.critical .warning-title {
+        color: #991b1b;
+    }
+
+    .warning-box.high .warning-title {
+        color: #92400e;
+    }
+
+    .warning-text {
+        line-height: 1.7;
+        font-size: 15px;
+    }
+
+    .warning-box.critical .warning-text {
+        color: #7f1d1d;
+    }
+
+    .warning-box.high .warning-text {
+        color: #78350f;
+    }
+
+    .warning-text ul {
+        margin: 12px 0;
+        padding-left: 24px;
+    }
+
+    .warning-text li {
+        margin: 8px 0;
+    }
+
+    .emergency-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.92);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .emergency-modal.active {
+        display: flex;
+    }
+
+    .emergency-content {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 650px;
+        width: 100%;
+        text-align: center;
+        border: 4px solid #dc2626;
+        margin: auto;
+    }
+
+    .emergency-icon {
+        font-size: 80px;
+        margin-bottom: 24px;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .emergency-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #dc2626;
+        margin-bottom: 16px;
+    }
+
+    .emergency-text {
+        color: #475569;
+        margin-bottom: 32px;
+        line-height: 1.8;
+        font-size: 17px;
+    }
+
+    .helpline-grid {
+        display: grid;
+        gap: 16px;
+        margin-bottom: 32px;
+        text-align: left;
+    }
+
+    .helpline-card {
+        background: #fef2f2;
+        border: 2px solid #fca5a5;
+        border-radius: 16px;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .helpline-card:hover {
+        border-color: #dc2626;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+
+    .helpline-name {
+        font-weight: 700;
+        color: #dc2626;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .helpline-number {
+        font-size: 32px;
+        font-weight: 700;
+        color: #991b1b;
+        margin-bottom: 8px;
+    }
+
+    .helpline-number a {
+        color: #991b1b;
+        text-decoration: none;
+    }
+
+    .helpline-number a:hover {
+        color: #dc2626;
+    }
+
+    .helpline-details {
+        font-size: 13px;
+        color: #7f1d1d;
+    }
+
+    .emergency-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-emergency {
+        padding: 18px 32px;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 17px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-crisis {
+        background: #dc2626;
+        color: white;
+    }
+
+    .btn-crisis:hover {
+        background: #991b1b;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+    }
+
+    .btn-counselor {
+        background: #7c3aed;
+        color: white;
+    }
+
+    .btn-counselor:hover {
+        background: #6d28d9;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-continue-assessment {
+        background: white;
+        color: #475569;
+        border: 2px solid #cbd5e0;
+    }
+
+    .btn-continue-assessment:hover {
+        background: #f8fafc;
+    }
+
+    .back-link {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        text-decoration: none;
+        color: #475569;
+        font-weight: 600;
+        font-size: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index:10;
+    }
+
+    .back-link:hover {
+        background: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-start-journey {
+        display: inline-block;
+        padding: 18px 40px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-decoration: none;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+    .btn-start-journey:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-sos {
+        background: #dc2626;
+        display: inline-block;
+        padding: 18px 40px;
+        color: white;
+        text-decoration: none;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+    .btn-sos:hover {
+        background: #991b1b;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(220, 38, 38, 0.4);
+    }
+
+    .btn-counselor-link {
+        background: #7c3aed;
+        display: inline-block;
+        padding: 18px 40px;
+        color: white;
+        text-decoration: none;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+    .btn-counselor-link:hover {
+        background: #6d28d9;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 24px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .back-link {
+            position: relative;
+            top: 0;
+            left: 0;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    }
+  </style>
+</head>
+<body onload="checkPlanStatus()">
+
+<a href="journey.html" class="back-link">← Back</a>
+
+<!-- EMERGENCY CRISIS MODAL -->
+<div class="emergency-modal" id="emergencyModal">
+  <div class="emergency-content">
+    <div class="emergency-icon">🆘</div>
+    <div class="emergency-title">You Are Not Alone</div>
+    <div class="emergency-text">
+      <strong>Your safety matters.</strong> Your responses indicate you may be experiencing difficult thoughts.
+      <br><br>
+      We want to make sure you have access to immediate support if you need it:
+    </div>
+
+    <div class="helpline-grid">
+      <div class="helpline-card">
+        <div class="helpline-name">🚨 National Emergency Services</div>
+        <div class="helpline-number"><a href="tel:112">112</a></div>
+        <div class="helpline-details">24/7 • All India • Immediate Response</div>
+      </div>
+
+      <div class="helpline-card">
+        <div class="helpline-name">💚 KIRAN Mental Health Helpline</div>
+        <div class="helpline-number"><a href="tel:18005990019">1800-599-0019</a></div>
+        <div class="helpline-details">24/7 • Government of India • Free • 13 Languages</div>
+      </div>
+
+      <div class="helpline-card">
+        <div class="helpline-name">🤝 Vandrevala Foundation</div>
+        <div class="helpline-number"><a href="tel:9999666555">9999-666-555</a></div>
+        <div class="helpline-details">24/7 • Call/SMS/WhatsApp • Hindi, English, Gujarati</div>
+      </div>
+
+      <div class="helpline-card">
+        <div class="helpline-name">💙 iCall (TISS Mumbai)</div>
+        <div class="helpline-number"><a href="tel:9152987821">91529-87821</a></div>
+        <div class="helpline-details">Mon-Sat 10AM-8PM • English, Hindi, Marathi</div>
+      </div>
+    </div>
+
+    <div class="emergency-text" style="font-size: 15px; margin-bottom: 24px;">
+      <strong>Choose what feels right for you:</strong>
+    </div>
+
+    <div class="emergency-buttons">
+      <a href="sos.html" class="btn-emergency btn-crisis">🆘 I Need Emergency Help (SOS Page)</a>
+      <a href="Counselor.html" class="btn-emergency btn-counselor">💬 Find a Professional Counselor</a>
+      <button class="btn-emergency btn-continue-assessment" onclick="closeEmergencyModal()">Continue to My Healing Plan</button>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="mainContainer">
+  <!-- Content dynamically loaded -->
+</div>
+
+<script>
+// === 20 CLINICAL QUESTIONS (unchanged from your file) ===
+const clinicalQuestions = [
+  {
+    id: 1,
+    text: "Little interest or pleasure in doing things",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 1",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 2,
+    text: "Feeling down, depressed, or hopeless",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 2",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 3,
+    text: "Trouble falling or staying asleep, or sleeping too much",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 3",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 4,
+    text: "Feeling tired or having little energy",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 4",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 5,
+    text: "Poor appetite or overeating",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 5",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 6,
+    text: "Feeling bad about yourself — or that you are a failure or have let yourself or your family down",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "self_worth",
+    clinical: "PHQ-9 Question 6",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 7,
+    text: "Trouble concentrating on things, such as reading the newspaper or watching television",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 7",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 8,
+    text: "Moving or speaking so slowly that other people could have noticed. Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "depression",
+    clinical: "PHQ-9 Question 8",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 9,
+    text: "⚠️ Thoughts that you would be better off dead, or of hurting yourself in some way",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "suicide_risk",
+    clinical: "PHQ-9 Question 9 - SUICIDE RISK SCREEN",
+    critical: true,
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 10,
+    text: "Feeling nervous, anxious, or on edge",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 1",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 11,
+    text: "Not being able to stop or control worrying",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 2",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 12,
+    text: "Worrying too much about different things",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 3",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 13,
+    text: "Trouble relaxing",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 4",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 14,
+    text: "Being so restless that it is hard to sit still",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 5",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 15,
+    text: "Becoming easily annoyed or irritable",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 6",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 16,
+    text: "Feeling afraid, as if something awful might happen",
+    timeframe: "Over the last 2 weeks, how often have you been bothered by:",
+    category: "anxiety",
+    clinical: "GAD-7 Question 7",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "Several days", points: 1 },
+      { text: "More than half the days", points: 2 },
+      { text: "Nearly every day", points: 3 }
+    ]
+  },
+  {
+    id: 17,
+    text: "How difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?",
+    timeframe: "If you have experienced any of the problems above:",
+    category: "functional_impairment",
+    clinical: "Functional Impairment Assessment",
+    options: [
+      { text: "Not difficult at all", points: 0 },
+      { text: "Somewhat difficult", points: 1 },
+      { text: "Very difficult", points: 2 },
+      { text: "Extremely difficult", points: 3 }
+    ]
+  },
+  {
+    id: 18,
+    text: "Experiencing unwanted memories, nightmares, or flashbacks of a traumatic or very stressful experience",
+    timeframe: "In the past month, how much have you been bothered by:",
+    category: "trauma",
+    clinical: "Trauma Screening",
+    options: [
+      { text: "Not at all", points: 0 },
+      { text: "A little bit", points: 1 },
+      { text: "Moderately", points: 2 },
+      { text: "Quite a bit or extremely", points: 3 }
+    ]
+  },
+  {
+    id: 19,
+    text: "Have you experienced the death of someone close to you or a major relationship breakup in the past year?",
+    timeframe: "",
+    category: "grief_loss",
+    clinical: "Grief/Loss Screening",
+    options: [
+      { text: "No", points: 0 },
+      { text: "Yes, but I've processed it well", points: 1 },
+      { text: "Yes, still significantly affecting me", points: 2 },
+      { text: "Yes, it's overwhelming my daily life", points: 3 }
+    ]
+  },
+  {
+    id: 20,
+    text: "Feeling lonely or socially isolated from others",
+    timeframe: "Over the past month, how often have you felt:",
+    category: "loneliness",
+    clinical: "Social Connection Assessment",
+    options: [
+      { text: "Rarely or never", points: 0 },
+      { text: "Sometimes", points: 1 },
+      { text: "Often", points: 2 },
+      { text: "Almost always", points: 3 }
+    ]
+  }
+];
+
+// === Profession-specific routine questions (10 each) ===
+const professionQuestions = {
+  student: [
+    { id: 'stu_1', text: 'How often do you feel overwhelmed by classes, assignments, or exams?', type: 'frequency' },
+    { id: 'stu_2', text: 'How often do you postpone studying because of stress, anxiety, or low energy?', type: 'frequency' },
+    { id: 'stu_3', text: 'How many hours do you usually sleep on school nights, and how rested do you feel in the morning?', type: 'sleep_combo' },
+    { id: 'stu_4', text: 'How often do you use late-night phone or laptop time that cuts into your sleep?', type: 'frequency' },
+    { id: 'stu_5', text: 'How often do you do any physical activity (walk, sports, gym, yoga) during the week?', type: 'frequency' },
+    { id: 'stu_6', text: 'How often do you take short breaks while studying to relax or move?', type: 'frequency' },
+    { id: 'stu_7', text: 'How comfortable are you talking to friends, family, or teachers when you feel stressed?', type: 'comfort' },
+    { id: 'stu_8', text: 'How often do you feel pressure from family or social comparison about grades or career?', type: 'frequency' },
+    { id: 'stu_9', text: 'What is your main goal for the next month (better focus, less anxiety, more energy, better sleep, better balance)?', type: 'goal_single' },
+    { id: 'stu_10', text: 'How much time can you realistically give daily to a mental-health routine (5, 10–15, 20–30, 30+ minutes)?', type: 'time_choice' }
+  ],
+  working_professional: [
+    { id: 'work_1', text: 'How often do you feel stressed by workload, deadlines, or performance targets at work?', type: 'frequency' },
+    { id: 'work_2', text: 'How often do you work through breaks or skip lunch because of work pressure?', type: 'frequency' },
+    { id: 'work_3', text: 'How often do work thoughts keep you awake or disturb your sleep?', type: 'frequency' },
+    { id: 'work_4', text: 'How often do you feel emotionally drained or “burnt out” after work?', type: 'frequency' },
+    { id: 'work_5', text: 'How often can you leave work on time without feeling guilty or pressured?', type: 'frequency' },
+    { id: 'work_6', text: 'How often do you move or stretch during the workday?', type: 'frequency' },
+    { id: 'work_7', text: 'How comfortable are you discussing stress or mental health with your manager or HR?', type: 'comfort' },
+    { id: 'work_8', text: 'How often do you have time after work for relaxing activities or hobbies?', type: 'frequency' },
+    { id: 'work_9', text: 'What would help you most right now (better sleep, stress-management tools at work, boundaries on hours, movement breaks, social support)?', type: 'goal_multi' },
+    { id: 'work_10', text: 'How committed do you feel to following a simple daily/weekly wellbeing routine alongside your job?', type: 'readiness' }
+  ],
+  homemaker: [
+    { id: 'home_1', text: 'How often do household chores and caregiving feel overwhelming or never-ending?', type: 'frequency' },
+    { id: 'home_2', text: 'How often do you get at least 30 minutes in a day just for yourself?', type: 'frequency' },
+    { id: 'home_3', text: 'How often do you feel physically exhausted by your daily responsibilities?', type: 'frequency' },
+    { id: 'home_4', text: 'How often do you feel emotionally unappreciated or taken for granted at home?', type: 'frequency' },
+    { id: 'home_5', text: 'How many days a week do you leave the house for a walk, visit, or activity you enjoy?', type: 'days' },
+    { id: 'home_6', text: 'How often do you eat meals at regular times instead of skipping or eating in a rush?', type: 'frequency' },
+    { id: 'home_7', text: 'How comfortable are you asking family members for help with chores or childcare?', type: 'comfort' },
+    { id: 'home_8', text: 'How often do conflicts at home affect your mood for the whole day?', type: 'frequency' },
+    { id: 'home_9', text: 'Which area would you most like to improve (energy, mood, patience, “me time”, sleep)?', type: 'goal_single' },
+    { id: 'home_10', text: 'How much daily time do you feel you can realistically protect for a routine (5, 10–15, 20–30, 30+ minutes)?', type: 'time_choice' }
+  ],
+  entrepreneur: [
+    { id: 'ent_1', text: 'How often do worries about money, cash flow, or business survival keep you stressed?', type: 'frequency' },
+    { id: 'ent_2', text: 'How often do you work very long hours (late nights or weekends) to keep the business running?', type: 'frequency' },
+    { id: 'ent_3', text: 'How often do you find it hard to switch off from business thoughts when at home or in bed?', type: 'frequency' },
+    { id: 'ent_4', text: 'How often do staff or customer issues leave you drained or frustrated?', type: 'frequency' },
+    { id: 'ent_5', text: 'How often do you take a proper day off where you do not work at all?', type: 'frequency' },
+    { id: 'ent_6', text: 'How often do you plan your day with scheduled breaks or focus blocks?', type: 'frequency' },
+    { id: 'ent_7', text: 'How often do you talk to a mentor, partner, or peer about your stress and decisions?', type: 'frequency' },
+    { id: 'ent_8', text: 'How often do you do exercise or a relaxing activity to balance business stress?', type: 'frequency' },
+    { id: 'ent_9', text: 'Which area feels most out of balance (sleep, work hours, physical health, relationships, time for self)?', type: 'goal_single' },
+    { id: 'ent_10', text: 'How ready are you to follow a short daily routine (e.g., movement + reflection + shutdown ritual) to support your mental health?', type: 'readiness' }
+  ],
+  healthcare: [
+    { id: 'hc_1', text: 'How often do you feel emotionally affected by patients’ suffering or clinical outcomes?', type: 'frequency' },
+    { id: 'hc_2', text: 'How often do shift timings or night duties disturb your sleep and energy?', type: 'frequency' },
+    { id: 'hc_3', text: 'How often do you skip meals or breaks during shifts because of workload?', type: 'frequency' },
+    { id: 'hc_4', text: 'How often do you feel you do not have enough time to recover between shifts?', type: 'frequency' },
+    { id: 'hc_5', text: 'How often do you experience physical signs of stress (tension, headaches, stomach issues) at work?', type: 'frequency' },
+    { id: 'hc_6', text: 'How comfortable are you debriefing with colleagues or supervisors after difficult cases?', type: 'comfort' },
+    { id: 'hc_7', text: 'How often do you use healthy coping strategies after shifts (exercise, talking, relaxation) rather than just collapsing into bed or scrolling?', type: 'frequency' },
+    { id: 'hc_8', text: 'How supported do you feel by your team in managing workload and emotions?', type: 'support' },
+    { id: 'hc_9', text: 'Which area do you most want to improve (sleep, stress, emotional processing, boundaries, physical health)?', type: 'goal_single' },
+    { id: 'hc_10', text: 'How much time can you usually carve out on workdays for a wellbeing routine (even if split into 3–5 minute blocks)?', type: 'time_choice' }
+  ],
+  teacher: [
+    { id: 'teach_1', text: 'How often do classroom behavior or student needs leave you feeling emotionally drained?', type: 'frequency' },
+    { id: 'teach_2', text: 'How often do lesson planning, grading, and admin work spill into your evenings or weekends?', type: 'frequency' },
+    { id: 'teach_3', text: 'How often do you skip breaks at school to catch up on work?', type: 'frequency' },
+    { id: 'teach_4', text: 'How often do you take work-related stress home in your mind after school?', type: 'frequency' },
+    { id: 'teach_5', text: 'How often do you get time in the week for your own hobbies or learning (not school-related)?', type: 'frequency' },
+    { id: 'teach_6', text: 'How supported do you feel by your colleagues or leadership when you are stressed?', type: 'support' },
+    { id: 'teach_7', text: 'How often do you move or stretch during the school day?', type: 'frequency' },
+    { id: 'teach_8', text: 'How often do you practice any relaxation skills (breathing, mindfulness, prayer, reflection)?', type: 'frequency' },
+    { id: 'teach_9', text: 'Which area do you most want to change (workload, boundaries, energy, patience, sleep)?', type: 'goal_single' },
+    { id: 'teach_10', text: 'How much time can you realistically give on school days to a mental-health routine?', type: 'time_choice' }
+  ],
+  retired: [
+    { id: 'ret_1', text: 'How often do you feel lonely or isolated during the week?', type: 'frequency' },
+    { id: 'ret_2', text: 'How often do you have a reason to leave the house (walk, social visit, class, volunteering)?', type: 'frequency' },
+    { id: 'ret_3', text: 'How often do you feel bored or without a clear purpose for the day?', type: 'frequency' },
+    { id: 'ret_4', text: 'How often do you take care of your physical health (walking, gentle exercise, stretching)?', type: 'frequency' },
+    { id: 'ret_5', text: 'How often do you keep a regular sleep and wake time?', type: 'frequency' },
+    { id: 'ret_6', text: 'How often do you meet or call friends or family?', type: 'frequency' },
+    { id: 'ret_7', text: 'How often do you do activities you enjoy (hobbies, reading, spiritual practices, games)?', type: 'frequency' },
+    { id: 'ret_8', text: 'How often do worries about health, money, or family affect your mood?', type: 'frequency' },
+    { id: 'ret_9', text: 'What would you most like to add to your routine (movement, social contact, hobbies, structure, rest)?', type: 'goal_single' },
+    { id: 'ret_10', text: 'How willing are you to follow a simple daily plan to add more structure and connection?', type: 'readiness' }
+  ],
+  freelancer: [
+    { id: 'free_1', text: 'How often do irregular income or client work make you feel stressed or anxious?', type: 'frequency' },
+    { id: 'free_2', text: 'How often do you work at very irregular hours (late nights, weekends) to meet deadlines?', type: 'frequency' },
+    { id: 'free_3', text: 'How often do you have a clear start and end time for your workday?', type: 'frequency' },
+    { id: 'free_4', text: 'How often do you feel isolated working alone?', type: 'frequency' },
+    { id: 'free_5', text: 'How often do you take proper breaks away from screens during your day?', type: 'frequency' },
+    { id: 'free_6', text: 'How often do you plan your week (projects, rest days, self‑care time) in advance?', type: 'frequency' },
+    { id: 'free_7', text: 'How often do you connect with other freelancers or peers for support?', type: 'frequency' },
+    { id: 'free_8', text: 'How often do you exercise or move your body on workdays?', type: 'frequency' },
+    { id: 'free_9', text: 'Which area feels most out of balance for you (sleep, schedule, money stress, social life, health)?', type: 'goal_single' },
+    { id: 'free_10', text: 'How ready are you to follow a simple routine (set hours + breaks + downtime) to support your wellbeing?', type: 'readiness' }
+  ]
+};
+
+let currentQuestion = 0;
+let answers = {};
+let profession = '';
+let questions = clinicalQuestions;
+let categoryScores = {
+  depression: 0,
+  anxiety: 0,
+  suicide_risk: 0,
+  self_worth: 0,
+  functional_impairment: 0,
+  trauma: 0,
+  grief_loss: 0,
+  loneliness: 0
+};
+
+const SAVE_KEY = "calmAssessmentStateV1";
+
+function saveState() {
+  const state = {
+    currentQuestion,
+    answers,
+    profession,
+    isProfessionBlock: questions === getProfessionList(profession)
+  };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function clearState() {
+  localStorage.removeItem(SAVE_KEY);
+}
+
+function getProfessionList(prof) {
+  if (!prof || !professionQuestions[prof]) return [];
+  return professionQuestions[prof];
+}
+
+// healing plan lock (unchanged)
+function checkPlanStatus() {
+  const healingPlan = JSON.parse(localStorage.getItem('healingPlan'));
+  const isReassessment = localStorage.getItem('isReassessment') === 'true';
+
+  if (healingPlan && !isReassessment) {
+    showLockedScreen(healingPlan);
+    return false;
+  }
+
+  initializeAssessment();
+  return true;
+}
+
+function showLockedScreen(plan) {
+  const pathNames = {
+    depression: 'Depression Support',
+    anxiety: 'Anxiety Management',
+    grief_loss: 'Grief & Loss Support',
+    trauma: 'Trauma Recovery',
+    loneliness: 'Connection & Belonging'
+  };
+
+  const durationText = plan.duration === '1week' ? '7 Days' : 
+                       plan.duration === '1month' ? '4 Weeks' : '7 Weeks';
+
+  const startDate = new Date(plan.startDate);
+  const today = new Date();
+  const currentDay = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+  let totalDays = 7;
+  if (plan.duration === '1month') totalDays = 28;
+  else if (plan.duration === '7week') totalDays = 49;
+
+  document.getElementById('mainContainer').innerHTML = `
+    <div style="text-align: center; padding: 60px 40px;">
+      <div style="font-size: 80px; margin-bottom: 24px;">🔒</div>
+      <h1>Assessment Locked</h1>
+      <p style="color: #64748b; margin: 16px 0 32px;">You're currently on an active healing journey. Complete your current plan before taking a new assessment.</p>
+      
+      <div style="background: linear-gradient(135deg, #667eea15, #764ba215); border: 2px solid #667eea; border-radius: 20px; padding: 24px; margin: 24px 0;">
+        <div style="display: grid; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+            <span style="font-weight: 600; color: #475569;">Current Path:</span>
+            <span style="color: #667eea; font-weight: 700;">${pathNames[plan.primaryPath]}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+            <span style="font-weight: 600; color: #475569;">Duration:</span>
+            <span style="color: #667eea; font-weight: 700;">${durationText}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+            <span style="font-weight: 600; color: #475569;">Progress:</span>
+            <span style="color: #667eea; font-weight: 700;">Day ${currentDay} of ${totalDays}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a href="healing-journeys.html" style="display: block; padding: 16px 32px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 16px; font-weight: 700;">
+          Go to My Healing Plan →
+        </a>
+        <a href="journey.html" style="display: block; padding: 16px 32px; background: white; color: #667eea; text-decoration: none; border-radius: 16px; font-weight: 700; border: 2px solid #667eea;">
+          Back to Journey
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function initializeAssessment() {
+  document.getElementById('mainContainer').innerHTML = `
+    <div class="header">
+      <img src="owl.jpg" alt="Calm Owl" class="mascot">
+      <h1>Clinical Mental Health Assessment</h1>
+      <p class="subtitle">Evidence-based screening using validated PHQ-9, GAD-7, and trauma assessment tools</p>
+      <div class="clinical-badge">✓ Clinically Validated</div>
+    </div>
+
+    <div class="clinical-note">
+      <strong>⚕️ Important Medical Disclaimer:</strong> This assessment uses clinically validated instruments (PHQ-9, GAD-7) recognized by mental health professionals worldwide. However, this is a <strong>screening tool</strong>, not a diagnostic instrument. Results will guide you to appropriate resources.
+    </div>
+
+    <div class="progress-wrapper">
+      <span id="progressLabel">Welcome · 0%</span>
+      <span id="questionCounter"></span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="question-section active" id="professionSection">
+      <div class="question-header">
+        <div class="question-number">Personalization</div>
+        <div class="question-text">What's your primary role or occupation?</div>
+        <div class="question-timeframe">This helps us customize your healing plan and daily routine suggestions.</div>
+      </div>
+      <select class="profession-select" id="professionSelect">
+        <option value="">Select your profession...</option>
+        <option value="student">Student</option>
+        <option value="working_professional">Working Professional</option>
+        <option value="homemaker">Homemaker</option>
+        <option value="entrepreneur">Entrepreneur/Business Owner</option>
+        <option value="healthcare">Healthcare Worker</option>
+        <option value="teacher">Teacher/Educator</option>
+        <option value="retired">Retired</option>
+        <option value="freelancer">Freelancer</option>
+        <option value="unemployed">Currently Unemployed</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="buttons">
+        <button class="btn-next" id="startBtn" disabled>Begin Assessment →</button>
+      </div>
+      <p style="font-size:11px;color:#9ca3af;margin-top:6px;">If you have done this before, choosing the same role lets you resume where you left off.</p>
+    </div>
+
+    <div class="question-section" id="questionContainer"></div>
+    <div class="results-section" id="resultsSection"></div>
+  `;
+
+  const saved = loadState();
+  const professionSelect = document.getElementById('professionSelect');
+  const startBtn = document.getElementById('startBtn');
+
+  professionSelect.addEventListener('change', function() {
+    profession = this.value;
+    startBtn.disabled = !profession;
+  });
+
+  startBtn.addEventListener('click', function() {
+    const sameProfile = saved && saved.profession === profession;
+    if (sameProfile && saved.isProfessionBlock) {
+      questions = getProfessionList(profession);
+      currentQuestion = saved.currentQuestion || 0;
+      answers = saved.answers || {};
+    } else if (sameProfile) {
+      questions = clinicalQuestions;
+      currentQuestion = saved.currentQuestion || 0;
+      answers = saved.answers || {};
+    } else {
+      questions = clinicalQuestions;
+      currentQuestion = 0;
+      answers = {};
+      clearState();
+    }
+    document.getElementById('professionSection').classList.remove('active');
+    showQuestion(currentQuestion);
+  });
+
+  updateProgressUI();
+}
+
+function updateProgressUI() {
+  const total = questions.length;
+  const answered = Object.keys(answers).filter(id => {
+    return questions.some(q => String(q.id) === String(id));
+  }).length;
+  const percent = total ? Math.round((answered / total) * 100) : 0;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const counter = document.getElementById('questionCounter');
+
+  if (fill) fill.style.width = percent + '%';
+  if (label) label.textContent = `Progress · ${percent}%`;
+  if (counter) {
+    if (currentQuestion < total) {
+      counter.textContent = `Question ${currentQuestion + 1} of ${total}`;
+    } else {
+      counter.textContent = 'Reviewing results';
+    }
+  }
+}
+
+function showQuestion(index) {
+  if (index >= questions.length) {
+    if (questions === clinicalQuestions) {
+      const profList = getProfessionList(profession);
+      if (profList.length > 0) {
+        questions = profList;
+        currentQuestion = 0;
+        showQuestion(0);
+        return;
+      }
+    }
+    showResults();
+    return;
+  }
+
+  currentQuestion = index;
+  const question = questions[index];
+  const progress = ((index + 1) / questions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  updateProgressUI();
+
+  const isClinical = clinicalQuestions.includes(question);
+  const subtitle = isClinical
+    ? `${question.clinical}`
+    : 'Routine & lifestyle check-in';
+
+  const html = `
+    <div class="question-header">
+      <div class="question-number">Question ${index + 1} of ${questions.length} • ${subtitle}</div>
+      ${question.timeframe ? `<div class="question-timeframe">${question.timeframe}</div>` : ''}
+      <div class="question-text">${question.text}</div>
+    </div>
+    <div class="options" id="optionsContainer">
+      ${
+        isClinical
+          ? question.options.map((opt, i) => `
+              <div class="option" onclick="selectOption(${i}, ${opt.points}, '${question.category}', ${question.critical || false})" id="option${i}">
+                <div class="option-score">${opt.points}</div>
+                <div>${opt.text}</div>
+              </div>
+            `).join('')
+          : buildProfessionOptions(question).map((opt, i) => `
+              <div class="option" onclick="selectProfessionOption(${i}, '${question.id}', '${question.type}', '${opt.value}')" id="option${i}">
+                <div class="option-score">${opt.labelShort}</div>
+                <div>${opt.label}</div>
+              </div>
+            `).join('')
+      }
+    </div>
+    <div class="buttons">
+      ${index > 0 ? '<button class="btn-back" onclick="previousQuestion()">← Back</button>' : '<span style="flex:1;"></span>'}
+      <button class="btn-skip" onclick="skipQuestion()">Skip this question</button>
+      <button class="btn-next" id="nextBtn" disabled onclick="nextQuestion()">Next →</button>
+    </div>
+    <p style="margin-top:10px;font-size:11px;color:#9ca3af;">
+      You can skip any question that feels uncomfortable. Skipped questions do not change your score.
+    </p>
+  `;
+
+  const container = document.getElementById('questionContainer');
+  container.innerHTML = html;
+  container.classList.add('active');
+
+  if (answers[question.id] !== undefined) {
+    if (isClinical) {
+      selectOption(answers[question.id].optionIndex, answers[question.id].points, question.category, question.critical);
+    } else {
+      selectProfessionOption(answers[question.id].optionIndex, question.id, question.type, answers[question.id].value);
+    }
+  }
+
+  saveState();
+}
+
+function buildProfessionOptions(q) {
+  if (q.type === 'frequency') {
+    return [
+      { value: 'never', labelShort: '0', label: 'Never' },
+      { value: 'sometimes', labelShort: '1', label: 'Sometimes' },
+      { value: 'often', labelShort: '2', label: 'Often' },
+      { value: 'almost_always', labelShort: '3', label: 'Almost always' }
+    ];
+  }
+  if (q.type === 'sleep_combo') {
+    return [
+      { value: 'lt5_bad', labelShort: '<5', label: 'Less than 5 hours and feel very tired' },
+      { value: '5to7_ok', labelShort: '5–7', label: '5–7 hours and feel somewhat rested' },
+      { value: '7to9_good', labelShort: '7–9', label: '7–9 hours and feel mostly rested' },
+      { value: 'varies', labelShort: 'mix', label: 'Varies a lot from day to day' }
+    ];
+  }
+  if (q.type === 'comfort') {
+    return [
+      { value: 'not_at_all', labelShort: '0', label: 'Not at all comfortable' },
+      { value: 'a_little', labelShort: '1', label: 'A little comfortable' },
+      { value: 'fairly', labelShort: '2', label: 'Fairly comfortable' },
+      { value: 'very', labelShort: '3', label: 'Very comfortable' }
+    ];
+  }
+  if (q.type === 'support') {
+    return [
+      { value: 'not_supported', labelShort: '0', label: 'Not supported at all' },
+      { value: 'somewhat', labelShort: '1', label: 'Somewhat supported' },
+      { value: 'mostly', labelShort: '2', label: 'Mostly supported' },
+      { value: 'fully', labelShort: '3', label: 'Fully supported' }
+    ];
+  }
+  if (q.type === 'days') {
+    return [
+      { value: '0', labelShort: '0', label: '0 days a week' },
+      { value: '1to2', labelShort: '1–2', label: '1–2 days a week' },
+      { value: '3to4', labelShort: '3–4', label: '3–4 days a week' },
+      { value: '5plus', labelShort: '5+', label: '5 or more days a week' }
+    ];
+  }
+  if (q.type === 'goal_single' || q.type === 'goal_multi') {
+    return [
+      { value: 'sleep', labelShort: 'S', label: 'Better sleep' },
+      { value: 'stress', labelShort: 'St', label: 'Less stress / anxiety' },
+      { value: 'energy', labelShort: 'E', label: 'More energy / movement' },
+      { value: 'balance', labelShort: 'B', label: 'Better balance / boundaries' }
+    ];
+  }
+  if (q.type === 'time_choice') {
+    return [
+      { value: '5', labelShort: '5', label: 'Around 5 minutes' },
+      { value: '10_15', labelShort: '15', label: '10–15 minutes' },
+      { value: '20_30', labelShort: '30', label: '20–30 minutes' },
+      { value: '30_plus', labelShort: '30+', label: '30+ minutes' }
+    ];
+  }
+  if (q.type === 'readiness') {
+    return [
+      { value: 'not_ready', labelShort: '0', label: 'Not ready at all' },
+      { value: 'a_bit', labelShort: '1', label: 'A bit ready' },
+      { value: 'quite', labelShort: '2', label: 'Quite ready' },
+      { value: 'very', labelShort: '3', label: 'Very ready to try' }
+    ];
+  }
+  return [
+    { value: 'never', labelShort: '0', label: 'Never' },
+    { value: 'sometimes', labelShort: '1', label: 'Sometimes' },
+    { value: 'often', labelShort: '2', label: 'Often' },
+    { value: 'almost_always', labelShort: '3', label: 'Almost always' }
+  ];
+}
+
+function selectOption(optionIndex, points, category, isCritical) {
+  document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+  const optEl = document.getElementById('option' + optionIndex);
+  if (optEl) optEl.classList.add('selected');
+  answers[questions[currentQuestion].id] = { optionIndex, points, category };
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.disabled = false;
+
+  if (isCritical && points >= 1) {
+    setTimeout(() => showEmergencyModal(), 500);
+  }
+
+  saveState();
+}
+
+function selectProfessionOption(optionIndex, qid, type, value) {
+  document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+  const optEl = document.getElementById('option' + optionIndex);
+  if (optEl) optEl.classList.add('selected');
+  answers[qid] = { optionIndex, value, type };
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.disabled = false;
+  saveState();
+}
+
+function skipQuestion() {
+  showQuestion(currentQuestion + 1);
+  saveState();
+}
+
+function showEmergencyModal() {
+  document.getElementById('emergencyModal').classList.add('active');
+}
+
+function closeEmergencyModal() {
+  document.getElementById('emergencyModal').classList.remove('active');
+}
+
+function nextQuestion() {
+  showQuestion(currentQuestion + 1);
+}
+
+function previousQuestion() {
+  if (currentQuestion > 0) {
+    showQuestion(currentQuestion - 1);
+  }
+}
+
+// ===== NEW: buildWeeklyPlan for 1‑month plans =====
+function buildWeeklyPlan(plan) {
+  const { profession } = plan;
+
+  const actions = {
+    microBreathing: { id: 'breath_5', text: 'Do a 5‑minute slow breathing or box‑breathing exercise.' },
+    shortWalk: { id: 'walk_10', text: 'Take a 10‑minute walk or light movement break.' },
+    windDown: { id: 'wind_10', text: 'Do a 10‑minute no‑screen wind‑down before bed.' },
+    gratitude: { id: 'grat_3', text: 'Write down 3 things that went okay or you appreciated today.' },
+    socialPing: { id: 'social_msg', text: 'Message or call one person you trust, even briefly.' },
+    stretch: { id: 'stretch_5', text: 'Do 5 minutes of gentle stretching.' },
+    planning: { id: 'plan_10', text: 'Plan tomorrow in 10 minutes (top 3 tasks + one self‑care action).' },
+    checkIn: { id: 'mood_check', text: 'Rate your mood 1–5 and note one thing that might be helping or hurting.' }
+  };
+
+  function makeWeeks(weeksArray) {
+    return weeksArray.map((week, wi) => ({
+      weekNumber: wi + 1,
+      title: week.title,
+      focus: week.focus,
+      days: week.days.map((day, di) => ({
+        dayNumber: di + 1,
+        label: day.label,
+        actions: day.actions
+      }))
+    }));
+  }
+
+  if (profession === 'student') {
+    return makeWeeks([
+      {
+        title: 'Stabilise basics',
+        focus: 'Sleep and small movement while managing study load.',
+        days: [
+          { label: 'Day 1', actions: [actions.checkIn, actions.windDown] },
+          { label: 'Day 2', actions: [actions.shortWalk, actions.microBreathing] },
+          { label: 'Day 3', actions: [actions.windDown, actions.planning] },
+          { label: 'Day 4', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 5', actions: [actions.microBreathing, actions.socialPing] },
+          { label: 'Day 6', actions: [actions.shortWalk] },
+          { label: 'Day 7', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      },
+      {
+        title: 'Focus and breaks',
+        focus: 'Add study breaks and reduce late‑night screen time.',
+        days: [
+          { label: 'Day 8', actions: [actions.planning, actions.shortWalk] },
+          { label: 'Day 9', actions: [actions.microBreathing, actions.windDown] },
+          { label: 'Day 10', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 11', actions: [actions.checkIn, actions.planning] },
+          { label: 'Day 12', actions: [actions.windDown] },
+          { label: 'Day 13', actions: [actions.shortWalk, actions.socialPing] },
+          { label: 'Day 14', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      },
+      {
+        title: 'Energy and confidence',
+        focus: 'Build small wins in study and self‑care.',
+        days: [
+          { label: 'Day 15', actions: [actions.planning, actions.shortWalk] },
+          { label: 'Day 16', actions: [actions.microBreathing, actions.gratitude] },
+          { label: 'Day 17', actions: [actions.shortWalk] },
+          { label: 'Day 18', actions: [actions.windDown, actions.checkIn] },
+          { label: 'Day 19', actions: [actions.socialPing] },
+          { label: 'Day 20', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 21', actions: [actions.checkIn] }
+        ]
+      },
+      {
+        title: 'Maintain gains',
+        focus: 'Keep the habits that helped you most.',
+        days: [
+          { label: 'Day 22', actions: [actions.planning, actions.shortWalk] },
+          { label: 'Day 23', actions: [actions.microBreathing] },
+          { label: 'Day 24', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 25', actions: [actions.windDown] },
+          { label: 'Day 26', actions: [actions.socialPing] },
+          { label: 'Day 27', actions: [actions.shortWalk, actions.checkIn] },
+          { label: 'Day 28', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      }
+    ]);
+  }
+
+  if (profession === 'working_professional') {
+    return makeWeeks([
+      {
+        title: 'Boundaries and breaks',
+        focus: 'Start building lunch and micro‑breaks into your day.',
+        days: [
+          { label: 'Day 1', actions: [actions.checkIn, actions.planning] },
+          { label: 'Day 2', actions: [actions.shortWalk] },
+          { label: 'Day 3', actions: [actions.microBreathing, actions.windDown] },
+          { label: 'Day 4', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 5', actions: [actions.planning] },
+          { label: 'Day 6', actions: [actions.shortWalk] },
+          { label: 'Day 7', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      },
+      {
+        title: 'Stress release',
+        focus: 'Reduce carry‑over stress after work.',
+        days: [
+          { label: 'Day 8', actions: [actions.microBreathing] },
+          { label: 'Day 9', actions: [actions.shortWalk, actions.windDown] },
+          { label: 'Day 10', actions: [actions.socialPing] },
+          { label: 'Day 11', actions: [actions.shortWalk, actions.checkIn] },
+          { label: 'Day 12', actions: [actions.gratitude] },
+          { label: 'Day 13', actions: [actions.shortWalk] },
+          { label: 'Day 14', actions: [actions.checkIn] }
+        ]
+      },
+      {
+        title: 'Energy at work',
+        focus: 'Keep small movement and breathing in the workday.',
+        days: [
+          { label: 'Day 15', actions: [actions.planning, actions.shortWalk] },
+          { label: 'Day 16', actions: [actions.microBreathing] },
+          { label: 'Day 17', actions: [actions.shortWalk] },
+          { label: 'Day 18', actions: [actions.windDown, actions.checkIn] },
+          { label: 'Day 19', actions: [actions.socialPing] },
+          { label: 'Day 20', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 21', actions: [actions.checkIn] }
+        ]
+      },
+      {
+        title: 'Maintain balance',
+        focus: 'Protect your best‑working habits and boundaries.',
+        days: [
+          { label: 'Day 22', actions: [actions.planning, actions.shortWalk] },
+          { label: 'Day 23', actions: [actions.microBreathing] },
+          { label: 'Day 24', actions: [actions.shortWalk, actions.gratitude] },
+          { label: 'Day 25', actions: [actions.windDown] },
+          { label: 'Day 26', actions: [actions.socialPing] },
+          { label: 'Day 27', actions: [actions.shortWalk, actions.checkIn] },
+          { label: 'Day 28', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      }
+    ]);
+  }
+
+  if (profession === 'homemaker') {
+    return makeWeeks([
+      {
+        title: 'Tiny “me time”',
+        focus: 'Carve out a small daily pocket just for you.',
+        days: [
+          { label: 'Day 1', actions: [actions.checkIn, actions.microBreathing] },
+          { label: 'Day 2', actions: [actions.shortWalk] },
+          { label: 'Day 3', actions: [actions.gratitude] },
+          { label: 'Day 4', actions: [actions.shortWalk, actions.windDown] },
+          { label: 'Day 5', actions: [actions.socialPing] },
+          { label: 'Day 6', actions: [actions.shortWalk] },
+          { label: 'Day 7', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      },
+      {
+        title: 'Energy and patience',
+        focus: 'Support your body so emotional load feels lighter.',
+        days: [
+          { label: 'Day 8', actions: [actions.shortWalk, actions.stretch] },
+          { label: 'Day 9', actions: [actions.microBreathing] },
+          { label: 'Day 10', actions: [actions.gratitude] },
+          { label: 'Day 11', actions: [actions.windDown, actions.checkIn] },
+          { label: 'Day 12', actions: [actions.socialPing] },
+          { label: 'Day 13', actions: [actions.shortWalk] },
+          { label: 'Day 14', actions: [actions.checkIn] }
+        ]
+      },
+      {
+        title: 'Support and sharing',
+        focus: 'Increase support and reduce feeling alone with chores.',
+        days: [
+          { label: 'Day 15', actions: [actions.socialPing] },
+          { label: 'Day 16', actions: [actions.microBreathing, actions.gratitude] },
+          { label: 'Day 17', actions: [actions.shortWalk] },
+          { label: 'Day 18', actions: [actions.windDown, actions.checkIn] },
+          { label: 'Day 19', actions: [actions.gratitude] },
+          { label: 'Day 20', actions: [actions.shortWalk, actions.stretch] },
+          { label: 'Day 21', actions: [actions.checkIn] }
+        ]
+      },
+      {
+        title: 'Keep what works',
+        focus: 'Keep the 2–3 habits that helped you most.',
+        days: [
+          { label: 'Day 22', actions: [actions.shortWalk, actions.microBreathing] },
+          { label: 'Day 23', actions: [actions.gratitude] },
+          { label: 'Day 24', actions: [actions.windDown] },
+          { label: 'Day 25', actions: [actions.socialPing] },
+          { label: 'Day 26', actions: [actions.shortWalk] },
+          { label: 'Day 27', actions: [actions.checkIn] },
+          { label: 'Day 28', actions: [actions.checkIn, actions.gratitude] }
+        ]
+      }
+    ]);
+  }
+
+  return [];
+}
+
+// === scoring + results ===
+
+function getPhq9Severity(score){
+  if(score <= 4) return "Minimal";
+  if(score <= 9) return "Mild";
+  if(score <= 14) return "Moderate";
+  if(score <= 19) return "Moderately Severe";
+  return "Severe";
+}
+
+function getGad7Severity(score){
+  if(score <= 4) return "Minimal";
+  if(score <= 9) return "Mild";
+  if(score <= 14) return "Moderate";
+  return "Severe";
+}
+
+function showResults() {
+  document.getElementById('questionContainer').classList.remove('active');
+
+  Object.values(answers).forEach(answer => {
+    if (answer.category && categoryScores.hasOwnProperty(answer.category)) {
+      categoryScores[answer.category] += answer.points;
+    }
+  });
+
+  const phq9Score = categoryScores.depression + categoryScores.self_worth + categoryScores.suicide_risk;
+  const gad7Score = categoryScores.anxiety;
+  const traumaScore = categoryScores.trauma + categoryScores.grief_loss;
+  const totalScore = phq9Score + gad7Score + traumaScore + categoryScores.loneliness + categoryScores.functional_impairment;
+
+  const phq9Severity = getPhq9Severity(phq9Score);
+  const gad7Severity = getGad7Severity(gad7Score);
+
+  let primaryCategory = 'depression';
+  if (phq9Score >= gad7Score && phq9Score >= traumaScore) {
+    primaryCategory = 'depression';
+  } else if (gad7Score > phq9Score && gad7Score >= traumaScore) {
+    primaryCategory = 'anxiety';
+  } else if (traumaScore > phq9Score && traumaScore > gad7Score) {
+    primaryCategory = categoryScores.grief_loss > categoryScores.trauma ? 'grief_loss' : 'trauma';
+  }
+
+  let selectedDuration = '1month';
+  let warningHtml = '';
+
+  if (categoryScores.suicide_risk >= 1 || phq9Score >= 20 || gad7Score >= 15) {
+    selectedDuration = '7week';
+    warningHtml = `
+      <div class="warning-box critical">
+        <div class="warning-title">
+          🆘 We Recommend Professional Support
+        </div>
+        <div class="warning-text">
+          <strong>Clinical Assessment:</strong>
+          <ul>
+            <li><strong>PHQ-9 Score: ${phq9Score}/27</strong> - ${phq9Severity} Depression</li>
+            <li><strong>GAD-7 Score: ${gad7Score}/21</strong> - ${gad7Severity} Anxiety</li>
+            ${categoryScores.suicide_risk >= 1 ? '<li><strong style="color: #991b1b;">⚠️ Suicidal Ideation Reported</strong></li>' : ''}
+          </ul>
+          <br>
+          <strong>Your scores indicate severe symptoms. We want you to have the best support possible.</strong>
+          <br><br>
+          <strong>You Have Options:</strong>
+          <ul>
+            <li><strong>Emergency Help:</strong> If you're in crisis, use our SOS page or call helplines</li>
+            <li><strong>Professional Counseling:</strong> Find qualified therapists through our counselor directory</li>
+            <li><strong>Our Healing Plan:</strong> You can also use our app alongside professional help</li>
+          </ul>
+          <br>
+          Choose what feels right for you. All support options are available below.
+        </div>
+      </div>
+    `;
+  } else if (phq9Score >= 10 || gad7Score >= 10) {
+    selectedDuration = '7week';
+    warningHtml = `
+      <div class="warning-box high">
+        <div class="warning-title">
+          💡 Professional Support Can Help
+        </div>
+        <div class="warning-text">
+          <strong>Clinical Assessment:</strong>
+          <ul>
+            <li><strong>PHQ-9 Score: ${phq9Score}/27</strong> - ${phq9Severity} Depression</li>
+            <li><strong>GAD-7 Score: ${gad7Score}/21</strong> - ${gad7Severity} Anxiety</li>
+          </ul>
+          <br>
+          Your scores indicate moderate symptoms. Research suggests that combining <strong>therapy + self-help tools</strong> often works best.
+        </div>
+      </div>
+    `;
+  } else if (phq9Score >= 5 || gad7Score >= 5) {
+    selectedDuration = '1month';
+  } else {
+    selectedDuration = '1week';
+  }
+
+  const plan = {
+    primaryPath: primaryCategory,
+    duration: selectedDuration,
+    totalScore,
+    phq9Score,
+    gad7Score,
+    traumaScore,
+    lonelinessScore: categoryScores.loneliness,
+    functionalScore: categoryScores.functional_impairment,
+    startDate: new Date().toISOString().split('T')[0],
+    profession,
+    routineAnswers: Object.fromEntries(
+      Object.entries(answers).filter(([id, val]) => !val.category)
+    ),
+    weeklyPlan: selectedDuration === '1month'
+      ? buildWeeklyPlan({ profession, primaryPath: primaryCategory, phq9Score, gad7Score })
+      : []
+  };
+
+  localStorage.setItem('healingPlan', JSON.stringify(plan));
+  clearState();
+
+  const resultsSection = document.getElementById('resultsSection');
+  resultsSection.innerHTML = `
+    <img src="owl.jpg" alt="Calm Owl" class="mascot">
+    <h1>Your Clinical Assessment Results</h1>
+    <p class="subtitle">Based on validated PHQ-9, GAD-7, and trauma screening tools, plus your daily routine answers.</p>
+    <div class="clinical-badge">Professional Psychiatric Screening</div>
+
+    ${warningHtml}
+
+    <div class="score-grid">
+      <div class="score-card ${phq9Score >= 10 ? 'high-risk' : phq9Score >= 5 ? 'moderate-risk' : ''}">
+        <div class="score-value">${phq9Score}<span style="font-size: 24px;">/27</span></div>
+        <div class="score-label">PHQ-9 Depression</div>
+        <div class="score-severity">${phq9Severity}</div>
+      </div>
+      <div class="score-card ${gad7Score >= 10 ? 'high-risk' : gad7Score >= 5 ? 'moderate-risk' : ''}">
+        <div class="score-value">${gad7Score}<span style="font-size: 24px;">/21</span></div>
+        <div class="score-label">GAD-7 Anxiety</div>
+        <div class="score-severity">${gad7Severity}</div>
+      </div>
+      <div class="score-card ${traumaScore >= 4 ? 'moderate-risk' : ''}">
+        <div class="score-value">${traumaScore}<span style="font-size: 24px;">/6</span></div>
+        <div class="score-label">Trauma & Grief Load</div>
+        <div class="score-severity">${traumaScore >= 4 ? 'Elevated' : 'Mild / None'}</div>
+      </div>
+      <div class="score-card ${categoryScores.loneliness >= 2 ? 'moderate-risk' : ''}">
+        <div class="score-value">${categoryScores.loneliness}<span style="font-size: 24px;">/3</span></div>
+        <div class="score-label">Loneliness / Isolation</div>
+        <div class="score-severity">${categoryScores.loneliness >= 2 ? 'High' : 'Lower'}</div>
+      </div>
+    </div>
+
+    <p class="subtitle" style="margin-bottom:18px;">
+      Your clinical scores and profession-based answers have been saved on this device as a healing journey. You can follow it step by step and retake the assessment after you finish.
+    </p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px;">
+      <button id="downloadPdfBtn" style="padding:14px 22px;border-radius:16px;border:none;background:linear-gradient(135deg,#6366f1,#ec4899);color:white;font-weight:600;cursor:pointer;">
+        ⬇ Download results as PDF (coming soon)
+      </button>
+      <a href="healing-journeys.html" class="btn-start-journey">
+        Start My Healing Plan →
+      </a>
+      <a href="sos.html" class="btn-sos">
+        🆘 SOS & Crisis Support
+      </a>
+      <a href="Counselor.html" class="btn-counselor-link">
+        💬 Find a Counselor
+      </a>
+    </div>
+  `;
+  resultsSection.classList.add('active');
+
+  const downloadBtn = document.getElementById('downloadPdfBtn');
+  downloadBtn.addEventListener('click', () => {
+    alert('PDF export coming soon. For now, you can take a screenshot or print this page.');
+  });
+
+  updateProgressUI();
+}
+</script>
+</body>
+</html>

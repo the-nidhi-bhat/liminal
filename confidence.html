@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confidence Booster – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:900px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(251,191,36,0.8), rgba(245,158,11,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:40px;
+      font-weight:500;
+    }
+
+    /* CATEGORY SELECTOR */
+    .category-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+      margin:32px 0;
+    }
+
+    .category-card {
+      padding:20px 16px;
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:2px solid rgba(255,255,255,0.12);
+      border-radius:20px;
+      cursor:pointer;
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .category-card::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:3px;
+      background:linear-gradient(90deg, #fbbf24, #f59e0b);
+      transform:scaleX(0);
+      transition:transform 0.3s;
+    }
+
+    .category-card:hover::before, .category-card.active::before {
+      transform:scaleX(1);
+    }
+
+    .category-card:hover, .category-card.active {
+      border-color:rgba(251,191,36,0.6);
+      background:linear-gradient(145deg, rgba(251,191,36,0.2), rgba(245,158,11,0.15));
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(251,191,36,0.3);
+    }
+
+    .category-icon {
+      font-size:32px;
+      margin-bottom:8px;
+    }
+
+    .category-card h3 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .category-card p {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      line-height:1.4;
+    }
+
+    /* AFFIRMATION SECTION */
+    .affirmation-section {
+      background:linear-gradient(145deg, rgba(251,191,36,0.2), rgba(245,158,11,0.15));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:40px 0;
+      border:1px solid rgba(251,191,36,0.3);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .affirmation-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(251,191,36,0.15), transparent 70%);
+      animation:pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity:0.5; transform:scale(1); }
+      50% { opacity:1; transform:scale(1.05); }
+    }
+
+    .affirmation-container {
+      min-height:280px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .affirmation-text {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      line-height:1.3;
+      text-align:center;
+      animation:fadeIn 0.8s ease-in;
+      max-width:700px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .visualization-prompt {
+      font-size:16px;
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      line-height:1.6;
+      text-align:center;
+      padding:16px 24px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.15);
+      max-width:600px;
+      animation:fadeIn 1s ease-in 0.3s both;
+    }
+
+    .power-pose-indicator {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding:12px 24px;
+      background:rgba(16,185,129,0.15);
+      border-radius:16px;
+      border:1px solid rgba(16,185,129,0.3);
+      animation:fadeIn 1.2s ease-in 0.5s both;
+    }
+
+    .power-pose-indicator span {
+      font-size:14px;
+      font-weight:700;
+      color:#10b981;
+    }
+
+    .progress-bar-container {
+      width:100%;
+      height:6px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      margin-top:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .progress-bar-fill {
+      height:100%;
+      background:linear-gradient(90deg, #10b981, #059669);
+      border-radius:999px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 20px rgba(16,185,129,0.6);
+    }
+
+    .progress-indicator {
+      text-align:center;
+      margin:16px 0;
+      font-size:15px;
+      color:rgba(255,255,255,0.8);
+      font-weight:600;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color:#1e293b;
+      box-shadow:0 12px 32px rgba(251,191,36,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(251,191,36,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    .btn-icon {
+      margin-right:6px;
+    }
+
+    /* STATS */
+    .stats-section {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(251,191,36,0.2);
+    }
+
+    .stat-value {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+      border-radius:20px;
+      border:1px solid rgba(16,185,129,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(16,185,129,0.3);
+    }
+
+    .benefit-icon {
+      font-size:40px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .benefit-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .benefit-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.5;
+    }
+
+    /* POWER POSES */
+    .poses-section {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .poses-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .poses-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:20px;
+    }
+
+    .pose-card {
+      padding:24px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.12);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .pose-card:hover {
+      background:rgba(139,92,246,0.2);
+      border-color:rgba(139,92,246,0.4);
+      transform:translateY(-4px);
+    }
+
+    .pose-icon {
+      font-size:64px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .pose-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:8px;
+    }
+
+    .pose-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.6;
+    }
+
+    /* GUIDE */
+    .guide-section {
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(59,130,246,0.25);
+      text-align:left;
+    }
+
+    .guide-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .steps-grid {
+      display:grid;
+      gap:16px;
+    }
+
+    .step-card {
+      padding:20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      transition:all 0.3s;
+    }
+
+    .step-card:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(8px);
+    }
+
+    .step-number {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:800;
+      color:#ffffff;
+      flex-shrink:0;
+    }
+
+    .step-content h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .step-content p {
+      font-size:14px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.6;
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .affirmation-text { font-size:28px; }
+      .affirmation-container { min-height:240px; padding:24px; }
+      .category-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>💪 Confidence Booster</h1>
+    <p class="subtitle">Build unshakeable self-assurance before any challenge</p>
+
+    <!-- CATEGORY SELECTOR -->
+    <div class="category-grid">
+      <div class="category-card active" onclick="selectCategory('general')" data-category="general">
+        <div class="category-icon">✨</div>
+        <h3>General Power</h3>
+        <p>Core confidence for everyday life</p>
+      </div>
+      
+      <div class="category-card" onclick="selectCategory('exam')" data-category="exam">
+        <div class="category-icon">📚</div>
+        <h3>Exam Success</h3>
+        <p>Ace tests with calm confidence</p>
+      </div>
+      
+      <div class="category-card" onclick="selectCategory('presentation')" data-category="presentation">
+        <div class="category-icon">🎤</div>
+        <h3>Public Speaking</h3>
+        <p>Present with power and poise</p>
+      </div>
+      
+      <div class="category-card" onclick="selectCategory('interview')" data-category="interview">
+        <div class="category-icon">💼</div>
+        <h3>Job Interview</h3>
+        <p>Land the job with confidence</p>
+      </div>
+
+      <div class="category-card" onclick="selectCategory('social')" data-category="social">
+        <div class="category-icon">👥</div>
+        <h3>Social Confidence</h3>
+        <p>Connect with ease and charm</p>
+      </div>
+    </div>
+
+    <!-- AFFIRMATION SECTION -->
+    <div class="affirmation-section">
+      <div class="affirmation-container">
+        <div class="affirmation-text" id="affirmationText">I am capable and prepared</div>
+        <div class="visualization-prompt" id="visualizationPrompt">Close your eyes and see yourself succeeding with ease</div>
+        <div class="power-pose-indicator">
+          <span>🦸</span>
+          <span id="poseInstruction">Stand tall with hands on hips</span>
+        </div>
+      </div>
+      
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-indicator" id="progressIndicator">Affirmation 0 of 12</div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startSession()">
+        <span class="btn-icon">▶</span> Start Session
+      </button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseSession()" style="display:none;">
+        <span class="btn-icon">⏸</span> Pause
+      </button>
+      <button class="btn btn-secondary" onclick="nextAffirmation()">
+        <span class="btn-icon">→</span> Next
+      </button>
+      <button class="btn btn-secondary" onclick="repeatAffirmation()">
+        <span class="btn-icon">↻</span> Repeat
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <span class="stat-value" id="totalAffirmations">0</span>
+        <span class="stat-label">Affirmations</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalSessions">0</span>
+        <span class="stat-label">Sessions</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Mins</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ Science-Backed Benefits</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">🧠</span>
+          <h4>Rewires Your Brain</h4>
+          <p>Positive affirmations create new neural pathways for confidence</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">💪</span>
+          <h4>Boosts Performance</h4>
+          <p>Athletes & executives use affirmations to perform at their peak</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">😌</span>
+          <h4>Reduces Anxiety</h4>
+          <p>Replaces negative self-talk with empowering beliefs</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🎯</span>
+          <h4>Improves Focus</h4>
+          <p>Clears mental clutter and sharpens concentration</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🚀</span>
+          <h4>Increases Motivation</h4>
+          <p>Fuels your drive to take action and achieve goals</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">❤️</span>
+          <h4>Builds Self-Love</h4>
+          <p>Cultivates deep appreciation for who you are</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- POWER POSES -->
+    <div class="poses-section">
+      <h3>🦸 Power Poses to Amplify Confidence</h3>
+      <div class="poses-grid">
+        <div class="pose-card">
+          <span class="pose-icon">🙌</span>
+          <h4>Victory Pose</h4>
+          <p>Arms raised high in a V-shape. Instantly boosts testosterone and reduces cortisol.</p>
+        </div>
+        <div class="pose-card">
+          <span class="pose-icon">🦸</span>
+          <h4>Superhero Stance</h4>
+          <p>Hands on hips, feet apart, chest out. The classic power pose backed by research.</p>
+        </div>
+        <div class="pose-card">
+          <span class="pose-icon">💪</span>
+          <h4>Champion Flex</h4>
+          <p>Fists clenched, elbows bent, arms flexed. Feel your physical and mental strength.</p>
+        </div>
+        <div class="pose-card">
+          <span class="pose-icon">👑</span>
+          <h4>Royal Stand</h4>
+          <p>Spine straight, shoulders back, chin up. Embody the confidence of a king or queen.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="guide-section">
+      <h3>📖 How to Practice Effectively</h3>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Choose Your Category</h4>
+            <p>Select affirmations specific to your upcoming challenge - exam, presentation, interview, or social situation.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Strike a Power Pose</h4>
+            <p>Stand in one of the power poses shown above. Hold it for at least 2 minutes to trigger hormonal changes.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Say It Out Loud</h4>
+            <p>Read each affirmation OUT LOUD with conviction. Your brain responds more strongly to spoken words.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Visualize Success</h4>
+            <p>Close your eyes and see yourself succeeding. Feel the emotions of confidence and achievement.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>Breathe & Embody</h4>
+            <p>Take 3 deep breaths. Feel the truth of each affirmation settling into your body and mind.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h4>Practice Daily</h4>
+            <p>Consistency is key! Do this every morning and before challenges. Watch your confidence soar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const affirmationSets = {
+      general: {
+        affirmations: [
+          { text: "I am capable and prepared for anything", viz: "See yourself handling challenges with ease and grace" },
+          { text: "I trust myself and my decisions completely", viz: "Feel the certainty of knowing you make good choices" },
+          { text: "I face every challenge with courage and strength", viz: "Picture yourself standing tall in the face of difficulty" },
+          { text: "My voice matters and deserves to be heard", viz: "Imagine people listening intently to your words" },
+          { text: "I am worthy of success and happiness", viz: "Feel yourself receiving good things with gratitude" },
+          { text: "I grow stronger with every experience", viz: "See yourself learning and evolving from each moment" },
+          { text: "I believe deeply in my abilities and potential", viz: "Connect with your unlimited inner power" },
+          { text: "I am confident in exactly who I am", viz: "Feel complete acceptance and love for yourself" },
+          { text: "I handle pressure with calm and clarity", viz: "Picture yourself cool and collected under stress" },
+          { text: "I am ready for whatever comes next", viz: "See yourself prepared and excited for your future" },
+          { text: "I radiate confidence and positive energy", viz: "Imagine your confident energy affecting everyone around you" },
+          { text: "I am becoming my best self every single day", viz: "Feel yourself evolving into your highest potential" }
+        ],
+        poses: ["Superhero Stance", "Victory Pose", "Champion Flex", "Royal Stand"]
+      },
+      exam: {
+        affirmations: [
+          { text: "I am fully prepared and ready to excel", viz: "See yourself answering questions confidently and correctly" },
+          { text: "My mind is sharp, clear, and focused", viz: "Feel your brain working perfectly and efficiently" },
+          { text: "I remember everything I studied with ease", viz: "Picture information flowing to you effortlessly" },
+          { text: "I stay calm and confident during exams", viz: "See yourself relaxed and in control during the test" },
+          { text: "I trust my knowledge and preparation", viz: "Feel the security of knowing you've done the work" },
+          { text: "Every question is an opportunity to shine", viz: "Imagine yourself excited to show what you know" },
+          { text: "My anxiety transforms into focused energy", viz: "Feel nervous energy becoming laser-sharp focus" },
+          { text: "I manage my time perfectly during tests", viz: "See yourself pacing through questions smoothly" },
+          { text: "I deserve the excellent grades I will receive", viz: "Picture yourself celebrating amazing results" },
+          { text: "My brain works at its peak during exams", viz: "Feel your mental power at maximum capacity" },
+          { text: "I approach each question with confidence", viz: "See yourself tackling problems with certainty" },
+          { text: "I am intelligent, capable, and ready to succeed", viz: "Feel pride in your abilities and preparation" }
+        ],
+        poses: ["Victory Pose", "Royal Stand", "Superhero Stance", "Champion Flex"]
+      },
+      presentation: {
+        affirmations: [
+          { text: "I speak with clarity, confidence, and power", viz: "See yourself commanding the room with your presence" },
+          { text: "My audience is engaged and interested in my words", viz: "Picture people nodding and leaning forward" },
+          { text: "I am a natural and compelling speaker", viz: "Feel the ease of expressing your ideas" },
+          { text: "My message is valuable and worth sharing", viz: "Know that your words matter and make impact" },
+          { text: "I stay calm and focused while presenting", viz: "See yourself poised and in control on stage" },
+          { text: "My voice is strong, clear, and confident", viz: "Hear yourself speaking with perfect projection" },
+          { text: "I handle questions with ease and expertise", viz: "Picture yourself answering smoothly and knowledgeably" },
+          { text: "I enjoy sharing my knowledge with others", viz: "Feel excitement about teaching and inspiring" },
+          { text: "My body language radiates confidence", viz: "See yourself standing tall with open gestures" },
+          { text: "I connect authentically with my audience", viz: "Feel the warmth of genuine connection" },
+          { text: "I am prepared and my presentation will shine", viz: "Picture your entire presentation flowing perfectly" },
+          { text: "Public speaking is my strength and gift", viz: "Embrace your identity as a confident speaker" }
+        ],
+        poses: ["Royal Stand", "Superhero Stance", "Victory Pose", "Champion Flex"]
+      },
+      interview: {
+        affirmations: [
+          { text: "I am the perfect candidate for this position", viz: "See yourself being exactly what they're looking for" },
+          { text: "My skills and experience speak for themselves", viz: "Feel confident in your qualifications and background" },
+          { text: "I answer interview questions with confidence", viz: "Picture yourself responding thoughtfully and clearly" },
+          { text: "I make a powerful first impression", viz: "See the interviewer's positive reaction to meeting you" },
+          { text: "My personality shines in interviews", viz: "Feel yourself being authentic and likeable" },
+          { text: "I am calm, composed, and professional", viz: "Picture yourself poised and collected throughout" },
+          { text: "They see my value and potential immediately", viz: "Imagine them recognizing your worth right away" },
+          { text: "I am worth the salary I am requesting", viz: "Feel deserving of fair compensation for your skills" },
+          { text: "This job is mine if I want it", viz: "See yourself having the power to choose" },
+          { text: "I communicate my strengths effectively", viz: "Picture yourself articulating your value clearly" },
+          { text: "I am confident without being arrogant", viz: "Feel the balance of humility and self-assurance" },
+          { text: "My passion and enthusiasm are contagious", viz: "See your energy exciting the interviewer" }
+        ],
+        poses: ["Royal Stand", "Superhero Stance", "Victory Pose", "Champion Flex"]
+      },
+      social: {
+        affirmations: [
+          { text: "I am interesting and fun to be around", viz: "See people enjoying your company and laughing" },
+          { text: "Making friends comes naturally to me", viz: "Picture yourself connecting easily with new people" },
+          { text: "I express myself authentically and freely", viz: "Feel comfortable being your true self" },
+          { text: "People are drawn to my positive energy", viz: "Imagine your warmth attracting great people" },
+          { text: "I start conversations with confidence and ease", viz: "See yourself initiating chats smoothly" },
+          { text: "I am a great listener and communicator", viz: "Picture meaningful two-way conversations" },
+          { text: "Social situations energize and excite me", viz: "Feel anticipation and joy for interactions" },
+          { text: "I am worthy of love and friendship", viz: "Know deeply that you deserve connection" },
+          { text: "My quirks and uniqueness make me special", viz: "Embrace what makes you different and interesting" },
+          { text: "I handle social anxiety with grace", viz: "See yourself staying calm in group settings" },
+          { text: "I belong wherever I choose to be", viz: "Feel your right to take up space anywhere" },
+          { text: "I attract genuine and supportive friendships", viz: "Picture yourself surrounded by amazing people" }
+        ],
+        poses: ["Victory Pose", "Royal Stand", "Superhero Stance", "Champion Flex"]
+      }
+    };
+
+    let currentCategory = 'general';
+    let currentIndex = 0;
+    let isRunning = false;
+    let isPaused = false;
+    let interval;
+    let totalAffirmationsRead = parseInt(localStorage.getItem('confidenceTotalAffirmations') || '0');
+    let totalSessions = parseInt(localStorage.getItem('confidenceTotalSessions') || '0');
+    let totalMinutes = parseInt(localStorage.getItem('confidenceTotalMinutes') || '0');
+
+    // Load stats
+    document.getElementById('totalAffirmations').textContent = totalAffirmationsRead;
+    document.getElementById('totalSessions').textContent = totalSessions;
+    document.getElementById('totalMinutes').textContent = totalMinutes;
+
+    // Calculate streak
+    const lastDate = localStorage.getItem('confidenceLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('confidenceStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    function selectCategory(category) {
+      if (isRunning) {
+        alert('Please stop the current session first!');
+        return;
+      }
+      
+      currentCategory = category;
+      currentIndex = 0;
+      document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-category="${category}"]`).classList.add('active');
+      
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      const set = affirmationSets[currentCategory];
+      const current = set.affirmations[currentIndex];
+      const poses = set.poses;
+      
+      // Update affirmation
+      const textEl = document.getElementById('affirmationText');
+      textEl.textContent = current.text;
+      textEl.style.animation = 'fadeIn 0.8s ease-in';
+      
+      // Update visualization
+      const vizEl = document.getElementById('visualizationPrompt');
+      vizEl.textContent = current.viz;
+      vizEl.style.animation = 'fadeIn 1s ease-in 0.3s both';
+      
+      // Update power pose
+      const poseEl = document.getElementById('poseInstruction');
+      poseEl.textContent = poses[currentIndex % poses.length];
+      
+      // Update progress
+      const percent = ((currentIndex + 1) / set.affirmations.length) * 100;
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressIndicator').textContent = 
+        `Affirmation ${currentIndex + 1} of ${set.affirmations.length}`;
+    }
+
+    function startSession() {
+      if (isRunning && !isPaused) return;
+      
+      if (!isRunning) {
+        currentIndex = 0;
+      }
+      
+      isRunning = true;
+      isPaused = false;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      updateDisplay();
+      
+      // Auto-advance every 10 seconds
+      interval = setInterval(() => {
+        nextAffirmation();
+      }, 10000);
+    }
+
+    function pauseSession() {
+      isPaused = true;
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function nextAffirmation() {
+      totalAffirmationsRead++;
+      localStorage.setItem('confidenceTotalAffirmations', totalAffirmationsRead);
+      document.getElementById('totalAffirmations').textContent = totalAffirmationsRead;
+      
+      currentIndex++;
+      const set = affirmationSets[currentCategory];
+      
+      if (currentIndex >= set.affirmations.length) {
+        completeSession();
+        return;
+      }
+      
+      updateDisplay();
+    }
+
+    function repeatAffirmation() {
+      // Re-trigger animations
+      const textEl = document.getElementById('affirmationText');
+      const vizEl = document.getElementById('visualizationPrompt');
+      
+      textEl.style.animation = 'none';
+      vizEl.style.animation = 'none';
+      
+      setTimeout(() => {
+        textEl.style.animation = 'fadeIn 0.8s ease-in';
+        vizEl.style.animation = 'fadeIn 1s ease-in 0.3s both';
+      }, 10);
+    }
+
+    function completeSession() {
+      clearInterval(interval);
+      isRunning = false;
+      isPaused = false;
+      
+      // Save progress
+      totalSessions++;
+      totalMinutes += Math.ceil(affirmationSets[currentCategory].affirmations.length * 10 / 60);
+      localStorage.setItem('confidenceTotalSessions', totalSessions);
+      localStorage.setItem('confidenceTotalMinutes', totalMinutes);
+      
+      // Update streak
+      const lastDate = localStorage.getItem('confidenceLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('confidenceStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('confidenceStreak', streak);
+        localStorage.setItem('confidenceLastDate', today);
+      }
+      
+      // Update display
+      document.getElementById('totalSessions').textContent = totalSessions;
+      document.getElementById('totalMinutes').textContent = totalMinutes;
+      document.getElementById('currentStreak').textContent = streak;
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      
+      document.getElementById('affirmationText').textContent = "You are UNSTOPPABLE! 🔥";
+      document.getElementById('visualizationPrompt').textContent = "You are now radiating pure confidence and power!";
+      document.getElementById('poseInstruction').textContent = "Stand tall - you've got this!";
+      
+      setTimeout(() => {
+        alert(`💪 Confidence Session Complete!\n\n✅ ${affirmationSets[currentCategory].affirmations.length} affirmations practiced\n🔥 ${streak} day streak\n\nYou are now POWERED UP and ready to conquer anything!\n\nGo show the world what you're made of! 🚀`);
+        currentIndex = 0;
+        updateDisplay();
+      }, 500);
+    }
+
+    // Initialize
+    updateDisplay();
+  </script>
+</body>
+</html>

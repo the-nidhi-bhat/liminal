@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – My Healing Journey</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+
+    body {
+        min-height: 100vh;
+        background:
+          linear-gradient(135deg, rgba(236,72,153,0.16), rgba(59,130,246,0.18)),
+          url("image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .header {
+        max-width: 1200px;
+        margin: 0 auto 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+
+    .owl-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-text {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .back-btn {
+        background: rgba(255, 255, 255, 0.9);
+        color: #4a5568;
+        padding: 10px 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background: white;
+        transform: translateY(-2px);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .no-plan-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(24px);
+        border-radius: 24px;
+        padding: 60px 40px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .no-plan-icon {
+        font-size: 80px;
+        margin-bottom: 24px;
+    }
+
+    .no-plan-title {
+        font-size: 28px;
+        color: #2d3748;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .no-plan-text {
+        color: #718096;
+        margin-bottom: 32px;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .cta-btn {
+        display: inline-block;
+        padding: 16px 40px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-decoration: none;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .cta-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .plan-overview {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(24px);
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .plan-header {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .plan-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+    }
+
+    .plan-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 8px;
+    }
+
+    .plan-subtitle {
+        color: #718096;
+        font-size: 16px;
+    }
+
+    .lock-notice {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border: 2px solid #f59e0b;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    .lock-notice-text {
+        color: #92400e;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea15, #764ba215);
+        border: 2px solid #e0e7ff;
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 36px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .progress-section {
+        margin-bottom: 32px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 16px;
+    }
+
+    .progress-bar-container {
+        background: #e2e8f0;
+        height: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981, #34d399);
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 12px;
+    }
+
+    .progress-text {
+        font-size: 14px;
+        color: #64748b;
+        text-align: right;
+    }
+
+    .daily-checklist {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .therapeutic-note {
+        background: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #1e40af;
+        line-height: 1.6;
+    }
+
+    .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        background: #f8fafc;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .checklist-item:hover {
+        border-color: #667eea;
+        background: #f0f4ff;
+    }
+
+    .checklist-item.completed {
+        background: #dcfce7;
+        border-color: #10b981;
+    }
+
+    .checkbox {
+        width: 28px;
+        height: 28px;
+        border: 2px solid #cbd5e0;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        margin-top: 4px;
+    }
+
+    .checklist-item.completed .checkbox {
+        background: #10b981;
+        border-color: #10b981;
+    }
+
+    .checkbox::after {
+        content: '✓';
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        display: none;
+    }
+
+    .checklist-item.completed .checkbox::after {
+        display: block;
+    }
+
+    .task-icon {
+        font-size: 28px;
+        flex-shrink: 0;
+    }
+
+    .task-content {
+        flex: 1;
+    }
+
+    .task-title {
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 6px;
+        font-size: 16px;
+    }
+
+    .task-description {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }
+
+    .task-therapeutic {
+        font-size: 13px;
+        color: #3b82f6;
+        font-style: italic;
+        background: #eff6ff;
+        padding: 8px;
+        border-radius: 6px;
+        margin-top: 8px;
+    }
+
+    .weekly-timeline {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .timeline-item {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 19px;
+        top: 40px;
+        bottom: -20px;
+        width: 2px;
+        background: #e2e8f0;
+    }
+
+    .timeline-item:last-child::before {
+        display: none;
+    }
+
+    .timeline-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .timeline-dot.completed {
+        background: #10b981;
+    }
+
+    .timeline-dot.current {
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2); }
+        50% { box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.1); }
+    }
+
+    .timeline-content {
+        flex: 1;
+        padding-top: 8px;
+    }
+
+    .timeline-week {
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 4px;
+        font-size: 15px;
+    }
+
+    .timeline-focus {
+        color: #4a5568;
+        font-size: 14px;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .action-btn {
+        padding: 16px 24px;
+        border-radius: 16px;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #667eea;
+        border-color: #667eea;
+    }
+
+    .btn-secondary:hover {
+        background: #f0f4ff;
+    }
+
+    .btn-success {
+        background: #10b981;
+        color: white;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-danger {
+        background: white;
+        color: #ef4444;
+        border-color: #ef4444;
+    }
+
+    .btn-danger:hover {
+        background: #fef2f2;
+    }
+
+    .completion-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .completion-modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-icon {
+        font-size: 80px;
+        margin-bottom: 24px;
+    }
+
+    .modal-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 16px;
+    }
+
+    .modal-text {
+        color: #64748b;
+        margin-bottom: 32px;
+        line-height: 1.6;
+        font-size: 16px;
+    }
+
+    .reassessment-score {
+        background: linear-gradient(135deg, #667eea15, #764ba215);
+        border-radius: 16px;
+        padding: 24px;
+        margin: 24px 0;
+    }
+
+    .score-comparison {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .score-item {
+        text-align: center;
+    }
+
+    .score-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .score-value {
+        font-size: 42px;
+        font-weight: 700;
+    }
+
+    .score-value.initial {
+        color: #ef4444;
+    }
+
+    .score-value.current {
+        color: #10b981;
+    }
+
+    .score-arrow {
+        font-size: 32px;
+        color: #10b981;
+    }
+
+    .improvement-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 14px;
+        margin-top: 12px;
+    }
+
+    .improvement-badge.great {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .improvement-badge.good {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .improvement-badge.slight {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    @media (max-width: 768px) {
+        .plan-overview, .no-plan-card {
+            padding: 24px;
+        }
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .score-comparison {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .score-arrow {
+            transform: rotate(90deg);
+        }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <img src="owl.jpg" alt="Owl" class="owl-logo">
+    <div class="logo-text">My Healing Journey</div>
+  </div>
+  <a href="journey.html" class="back-btn">← Back to Journey</a>
+</div>
+
+<div class="container" id="mainContainer">
+  <!-- Content will be dynamically loaded here -->
+</div>
+
+<!-- Completion/Reassessment Modal -->
+<div class="completion-modal" id="completionModal">
+  <div class="modal-content">
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">Time to Check Your Progress!</div>
+    <div class="modal-text">
+      You've reached the end of your healing plan. Let's see how much you've healed through reassessment.
+    </div>
+    <div class="action-buttons">
+      <button class="action-btn btn-primary" onclick="retakeAssessment()">Take Reassessment</button>
+      <button class="action-btn btn-secondary" onclick="closeModal()">Not Yet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div class="completion-modal" id="resultsModal">
+  <div class="modal-content" id="resultsContent">
+    <!-- Results will be inserted here -->
+  </div>
+</div>
+
+<script>
+let healingPlan = null;
+let dailyProgress = {};
+let currentDay = 0;
+
+// Deeply therapeutic daily tasks by category and duration
+const therapeuticTasks = {
+  breakup_romantic: {
+    '1week': [
+      { 
+        icon: '💔', 
+        title: 'Allow Yourself to Grieve', 
+        description: 'Spend 10 minutes feeling your emotions without judgment. Cry if you need to.',
+        therapeutic: 'Suppressing emotions prolongs healing. Acknowledging pain is the first step to processing it.' 
+      },
+      { 
+        icon: '🚫', 
+        title: 'No Contact Commitment', 
+        description: 'Do not check their social media or reach out. Block if necessary.',
+        therapeutic: 'Breaking trauma bonds requires complete disconnection. Every contact restarts the withdrawal process.' 
+      },
+      { 
+        icon: '📝', 
+        title: 'Write an Unsent Letter', 
+        description: 'Write everything you wish you could say. Don\'t send it - this is for you.',
+        therapeutic: 'Externalizing thoughts helps process emotions and gain clarity without reopening wounds.' 
+      },
+      { 
+        icon: '🚶', 
+        title: 'Mindful Walking', 
+        description: '15 minutes outside. Notice nature, not your thoughts.',
+        therapeutic: 'Physical movement releases endorphins and breaks rumination cycles.' 
+      },
+      { 
+        icon: '🫂', 
+        title: 'Reach Out to Someone', 
+        description: 'Text or call a friend. Don\'t isolate.',
+        therapeutic: 'Social support is the strongest predictor of post-breakup recovery.' 
+      }
+    ],
+    '1month': [
+      { 
+        icon: '💔', 
+        title: 'Loving-Kindness Meditation', 
+        description: '15 minutes: "May I be happy. May I be peaceful. May I heal."',
+        therapeutic: 'Self-compassion meditation rewires the brain to reduce self-criticism and attachment anxiety.' 
+      },
+      { 
+        icon: '📝', 
+        title: 'Daily Reflection Journal', 
+        description: 'What did I learn? What do I want next? What boundaries will I set?',
+        therapeutic: 'Cognitive reframing transforms loss into growth and clarifies future relationship values.' 
+      },
+      { 
+        icon: '🚫', 
+        title: 'Strict No-Contact', 
+        description: 'Zero contact. Remove photos. Unfollow on all platforms.',
+        therapeutic: 'Neurochemically, every contact is like giving an addict a small dose - it resets withdrawal.' 
+      },
+      { 
+        icon: '🎨', 
+        title: 'Creative Emotional Release', 
+        description: 'Paint, write poetry, create a vision board of your future.',
+        therapeutic: 'Art therapy accesses emotions the verbal brain cannot, facilitating deeper processing.' 
+      },
+      { 
+        icon: '🏃', 
+        title: 'Intense Physical Activity', 
+        description: '30 minutes of vigorous exercise to release trapped emotions.',
+        therapeutic: 'Exercise reduces cortisol, increases dopamine, and metabolizes stress hormones.' 
+      },
+      { 
+        icon: '👥', 
+        title: 'Social Connection Time', 
+        description: 'Spend time with friends doing activities you enjoy.',
+        therapeutic: 'Oxytocin from social bonding counteracts withdrawal symptoms from lost attachment.' 
+      }
+    ],
+    '7week': [
+      { 
+        icon: '💔', 
+        title: 'Deep Self-Love Meditation', 
+        description: '20 minutes: visualize yourself healed, whole, and thriving alone.',
+        therapeutic: 'Visualization activates the same neural pathways as real experiences, building new identity.' 
+      },
+      { 
+        icon: '📝', 
+        title: 'Relationship Autopsy Journal', 
+        description: 'Analyze patterns: red flags ignored, needs unmet, lessons learned.',
+        therapeutic: 'Schema therapy: identifying patterns prevents repeating them in future relationships.' 
+      },
+      { 
+        icon: '🚫', 
+        title: 'No Contact + Social Detox', 
+        description: 'Remove mutual friends from feed. Curate a healing-focused social media.',
+        therapeutic: 'Environmental control reduces triggers that activate the attachment system.' 
+      },
+      { 
+        icon: '💪', 
+        title: 'Identity Reconstruction', 
+        description: 'List 10 things you loved before them. Do one today.',
+        therapeutic: 'Breakups cause identity loss. Reconnecting with pre-relationship self rebuilds autonomy.' 
+      },
+      { 
+        icon: '🏃', 
+        title: 'Trauma Release Exercise', 
+        description: '45 minutes intense workout + screaming/crying if needed.',
+        therapeutic: 'Somatic experiencing: releasing stored trauma from the body, not just processing mentally.' 
+      },
+      { 
+        icon: '🔥', 
+        title: 'Ritual of Closure', 
+        description: 'Burn letters, delete photos, create ceremony marking the end.',
+        therapeutic: 'Symbolic rituals provide neurological closure when natural closure is absent.' 
+      },
+      { 
+        icon: '🌱', 
+        title: 'Future Self Visualization', 
+        description: 'Write a letter from your healed future self to current you.',
+        therapeutic: 'Prospective thinking activates hope circuits and creates a psychological roadmap.' 
+      }
+    ]
+  },
+
+  grief_loss: {
+    '1week': [
+      { 
+        icon: '🕯️', 
+        title: 'Morning Memorial Moment', 
+        description: 'Light a candle, look at their photo, talk to them for 5 minutes.',
+        therapeutic: 'Continuing bonds: maintaining connection in new form is healthy, not pathological.' 
+      },
+      { 
+        icon: '😢', 
+        title: 'Allow Grief Waves', 
+        description: 'When pain hits, stop and feel it. Rate intensity 1-10.',
+        therapeutic: 'Grief isn\'t linear. Tracking waves shows they shorten over time, providing hope.' 
+      },
+      { 
+        icon: '💧', 
+        title: 'Hydration & Basic Care', 
+        description: 'Drink water every hour. Grief is physically exhausting.',
+        therapeutic: 'Acute grief activates stress response; basic self-care prevents physical collapse.' 
+      },
+      { 
+        icon: '🫂', 
+        title: 'Accept One Offer of Help', 
+        description: 'Let someone bring food, sit with you, or help with tasks.',
+        therapeutic: 'Social support is protective; accepting help combats grief isolation.' 
+      },
+      { 
+        icon: '🛌', 
+        title: 'Rest Without Guilt', 
+        description: 'Sleep when tired. Grief is exhausting. Rest is healing.',
+        therapeutic: 'Sleep consolidates emotional memories and allows processing.' 
+      }
+    ],
+    '1month': [
+      { 
+        icon: '🕯️', 
+        title: 'Daily Connection Ritual', 
+        description: 'Talk to them each morning. Share your day. They live in your heart.',
+        therapeutic: 'Continuing bonds theory: maintaining relationship in new form is adaptive, not denial.' 
+      },
+      { 
+        icon: '😢', 
+        title: 'Emotion Check-In', 
+        description: 'Rate grief 1-10. Name emotion: sad, angry, guilty, numb.',
+        therapeutic: 'Affect labeling reduces amygdala activation and makes emotions manageable.' 
+      },
+      { 
+        icon: '📝', 
+        title: 'Letters to the Lost', 
+        description: 'Write: "Today I miss...", "Today I\'m grateful we had..."',
+        therapeutic: 'Expressive writing reduces intrusive thoughts and facilitates meaning-making.' 
+      },
+      { 
+        icon: '🚶', 
+        title: 'Grief Walks', 
+        description: 'Walk in nature. Let tears flow. Move the pain through your body.',
+        therapeutic: 'Bilateral stimulation (walking) processes traumatic memories like EMDR.' 
+      },
+      { 
+        icon: '📸', 
+        title: 'Memory Work', 
+        description: 'Create photo album, playlist, or memorial garden.',
+        therapeutic: 'Active remembering (vs avoidance) integrates loss into life narrative.' 
+      },
+      { 
+        icon: '🫂', 
+        title: 'Grief Support Connection', 
+        description: 'Attend support group, talk to others who understand.',
+        therapeutic: 'Shared grief validates experience and reduces isolation\'s psychological toll.' 
+      }
+    ],
+    '7week': [
+      { 
+        icon: '🕯️', 
+        title: 'Sacred Morning Ritual', 
+        description: 'Light candle, speak to them, feel their love still present.',
+        therapeutic: 'Spirituality and meaning-making are strongest predictors of post-loss growth.' 
+      },
+      { 
+        icon: '😢', 
+        title: 'Grief Stages Tracking', 
+        description: 'Notice: denial, anger, bargaining, depression, acceptance. All are normal.',
+        therapeutic: 'Normalizing the grief process reduces pathologizing natural emotions.' 
+      },
+      { 
+        icon: '📝', 
+        title: 'Life Story Integration', 
+        description: 'Write their story. Write your story with them. Write your story after.',
+        therapeutic: 'Narrative therapy: integrating loss into coherent life story creates meaning.' 
+      },
+      { 
+        icon: '💪', 
+        title: 'Post-Traumatic Growth Work', 
+        description: 'Journal: How has loss changed you? What strengths emerged?',
+        therapeutic: 'PTG: 70% of bereaved report growth. Acknowledging this honors their impact.' 
+      },
+      { 
+        icon: '🎨', 
+        title: 'Memorial Creation Project', 
+        description: 'Plant tree, create art, start scholarship - make their impact tangible.',
+        therapeutic: 'Legacy work transforms passive grief into active meaning, reducing powerlessness.' 
+      },
+      { 
+        icon: '🌅', 
+        title: 'Living Fully in Their Honor', 
+        description: 'Do something they\'d want for you. They\'d want you to live.',
+        therapeutic: 'Behavioral activation combats grief depression; living honors the relationship.' 
+      },
+      { 
+        icon: '💚', 
+        title: 'Forgiveness & Peace Work', 
+        description: 'Forgive yourself for things unsaid. Make peace with how it ended.',
+        therapeutic: 'Self-forgiveness reduces complicated grief and allows psychological closure.' 
+      }
+    ]
+  },
+
+  // Generic therapeutic tasks for other categories
+  depression: {
+    '1week': [
+      { icon: '🌅', title: 'Morning Light Exposure', description: 'Sit by window for 10 minutes within 30 min of waking.', therapeutic: 'Light regulates circadian rhythm and serotonin production.' },
+      { icon: '🚶', title: 'Short Walk', description: '10 minutes outside, any pace.', therapeutic: 'Movement activates reward circuits and reduces rumination.' },
+      { icon: '📝', title: 'One Good Thing', description: 'Write one thing that didn\'t suck today.', therapeutic: 'Positive attention retraining combats negative bias in depression.' },
+      { icon: '🫂', title: 'Reach Out', description: 'Text one person. Just say hi.', therapeutic: 'Social connection, even minimal, reduces isolation.' },
+      { icon: '🛌', title: 'Sleep Hygiene', description: 'Same bed time tonight. No phone 30 min before.', therapeutic: 'Sleep disruption maintains depression; regulation aids recovery.' }
+    ],
+    '1month': [
+      { icon: '🌅', title: 'Structured Morning', description: '30 min routine: light, shower, dress, breakfast.', therapeutic: 'Behavioral activation: action before motivation.' },
+      { icon: '📝', title: 'Thought Record', description: 'Negative thought → Evidence for/against → Balanced view.', therapeutic: 'CBT: cognitive restructuring challenges depressive thinking.' },
+      { icon: '🏃', title: 'Exercise', description: '30 minutes activity that raises heart rate.', therapeutic: 'Exercise as effective as antidepressants for mild-moderate depression.' },
+      { icon: '🎯', title: 'One Small Goal', description: 'Accomplish one thing. Anything counts.', therapeutic: 'Mastery experiences rebuild sense of agency.' },
+      { icon: '👥', title: 'Social Engagement', description: 'Spend time with someone, even if you don\'t feel like it.', therapeutic: 'Opposite action: do what depression says not to.' },
+      { icon: '🧘', title: 'Mindfulness', description: '15 min meditation or body scan.', therapeutic: 'Mindfulness reduces rumination and emotional reactivity.' }
+    ],
+    '7week': [
+      { icon: '🌅', title: 'Full Morning Protocol', description: 'Light, cold shower, movement, nutrition, social contact.', therapeutic: 'Multi-target approach addresses depression neurochemistry.' },
+      { icon: '📝', title: 'Core Belief Work', description: 'Identify and challenge deep negative beliefs about self.', therapeutic: 'Schema therapy: changing core beliefs prevents relapse.' },
+      { icon: '🧠', title: 'Cognitive Restructuring', description: 'Daily thought records with evidence analysis.', therapeutic: 'CBT gold standard: 75% effective for depression.' },
+      { icon: '🏃', title: 'Intense Exercise', description: '45 min cardio + strength training.', therapeutic: 'Releases BDNF (brain fertilizer) and endorphins.' },
+      { icon: '💼', title: 'Values-Based Action', description: 'One action aligned with your values today.', therapeutic: 'ACT: living by values creates meaning despite pain.' },
+      { icon: '👥', title: 'Deep Connection', description: 'Vulnerable conversation with safe person.', therapeutic: 'Authentic connection counters shame and isolation.' },
+      { icon: '🎯', title: 'Behavioral Activation', description: 'Schedule pleasurable and mastery activities.', therapeutic: 'Depression lies: action creates motivation, not vice versa.' }
+    ]
+  }
+};
+
+// Load saved data
+function loadData() {
+  healingPlan = JSON.parse(localStorage.getItem('healingPlan'));
+  dailyProgress = JSON.parse(localStorage.getItem('dailyProgress')) || {};
+  
+  if (!healingPlan) {
+    showNoPlan();
+  } else {
+    calculateProgress();
+    showPlan();
+  }
+}
+
+function showNoPlan() {
+  document.getElementById('mainContainer').innerHTML = `
+    <div class="no-plan-card">
+      <div class="no-plan-icon">🧭</div>
+      <div class="no-plan-title">Start Your Healing Journey</div>
+      <div class="no-plan-text">
+        Take our evidence-based psychological assessment to receive a personalized healing plan designed by mental health experts.
+        <br><br>
+        <strong>One plan at a time.</strong> Complete your current journey before starting a new one.
+      </div>
+      <a href="assessment.html" class="cta-btn">Take Assessment</a>
+    </div>
+  `;
+}
+
+function calculateProgress() {
+  const startDate = new Date(healingPlan.startDate);
+  const today = new Date();
+  currentDay = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+  
+  let totalDays = 7;
+  if (healingPlan.duration === '1month') totalDays = 28;
+  else if (healingPlan.duration === '7week') totalDays = 49;
+  
+  healingPlan.currentDay = currentDay;
+  healingPlan.totalDays = totalDays;
+  healingPlan.percentComplete = Math.min((currentDay / totalDays) * 100, 100);
+}
+
+function showPlan() {
+  const pathNames = {
+    stress: 'Stress Management',
+    depression: 'Depression Support',
+    breakup_romantic: 'Romantic Breakup Healing',
+    grief_loss: 'Grief & Loss Support',
+    loneliness: 'Connection & Belonging',
+    confidence: 'Confidence Building',
+    anger: 'Anger Management',
+    family_conflict: 'Family Healing',
+    life_transition: 'Life Transition Support',
+    self_worth: 'Self-Worth Recovery',
+    overall_pain: 'Emotional Healing'
+  };
+
+  const pathIcons = {
+    stress: '🧘',
+    depression: '🌤️',
+    breakup_romantic: '💔',
+    grief_loss: '🕯️',
+    loneliness: '🤗',
+    confidence: '⭐',
+    anger: '🔥',
+    family_conflict: '🏠',
+    life_transition: '🌱',
+    self_worth: '💪',
+    overall_pain: '❤️‍🩹'
+  };
+
+  const durationText = healingPlan.duration === '1week' ? '7 Days' : 
+                       healingPlan.duration === '1month' ? '4 Weeks' : '7 Weeks';
+
+  const pathName = pathNames[healingPlan.primaryPath] || 'Healing';
+  const pathIcon = pathIcons[healingPlan.primaryPath] || '🌟';
+
+  const today = new Date().toISOString().split('T')[0];
+  const todayProgress = dailyProgress[today] || {};
+  const completedToday = Object.values(todayProgress).filter(v => v).length;
+  const totalTasks = getDailyTasks().length;
+
+  document.getElementById('mainContainer').innerHTML = `
+    <div class="lock-notice">
+      <div class="lock-notice-text">
+        🔒 You're currently on a healing journey. Complete this plan before starting a new one.
+      </div>
+    </div>
+
+    <div class="plan-overview">
+      <div class="plan-header">
+        <div class="plan-icon">${pathIcon}</div>
+        <div class="plan-title">${pathName} Path</div>
+        <div class="plan-subtitle">${durationText} • Evidence-Based Therapeutic Approach</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">Day ${healingPlan.currentDay}</div>
+          <div class="stat-label">of ${healingPlan.totalDays} Days</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${completedToday}/${totalTasks}</div>
+          <div class="stat-label">Today's Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${healingPlan.totalScore}</div>
+          <div class="stat-label">Initial Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${Math.floor(healingPlan.percentComplete)}%</div>
+          <div class="stat-label">Complete</div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="section-title">Healing Progress</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" style="width: ${healingPlan.percentComplete}%">
+            ${Math.floor(healingPlan.percentComplete)}%
+          </div>
+        </div>
+        <div class="progress-text">${healingPlan.currentDay} of ${healingPlan.totalDays} days completed</div>
+      </div>
+
+      <div class="daily-checklist">
+        <div class="section-title">Today's Therapeutic Activities</div>
+        <div class="therapeutic-note">
+          💡 <strong>Why these activities?</strong> Each task is grounded in psychological research and designed to target specific healing mechanisms. Read the therapeutic notes to understand how each practice helps you heal.
+        </div>
+        <div id="checklistContainer"></div>
+      </div>
+
+      <div class="weekly-timeline">
+        <div class="section-title">Your Healing Timeline</div>
+        <div id="timelineContainer"></div>
+      </div>
+
+      <div class="action-buttons">
+        ${healingPlan.currentDay >= healingPlan.totalDays ? 
+          '<button class="action-btn btn-success" onclick="showCompletionModal()">Complete Journey & Reassess ✓</button>' :
+          '<button class="action-btn btn-primary" onclick="showCompletionModal()">Check My Progress</button>'
+        }
+        <button class="action-btn btn-danger" onclick="confirmReset()">End Current Plan</button>
+      </div>
+    </div>
+  `;
+
+  renderChecklist();
+  renderTimeline();
+}
+
+function getDailyTasks() {
+  const category = healingPlan.primaryPath;
+  const duration = healingPlan.duration;
+  
+  // Use specific therapeutic tasks if available, otherwise use depression tasks as default
+  if (therapeuticTasks[category] && therapeuticTasks[category][duration]) {
+    return therapeuticTasks[category][duration];
+  } else if (therapeuticTasks.depression[duration]) {
+    return therapeuticTasks.depression[duration];
+  }
+  
+  // Fallback generic tasks
+  return [
+    { icon: '🌅', title: 'Morning Check-in', description: 'Start your day mindfully', therapeutic: 'Establishes routine and awareness.' },
+    { icon: '📝', title: 'Journaling', description: 'Write your thoughts', therapeutic: 'Processes emotions and clarifies thinking.' },
+    { icon: '🧘', title: 'Mindfulness', description: 'Breathing or meditation', therapeutic: 'Regulates nervous system.' },
+    { icon: '🚶', title: 'Movement', description: 'Physical activity', therapeutic: 'Releases endorphins and reduces stress.' },
+    { icon: '🎵', title: 'Wind Down', description: 'Evening relaxation', therapeutic: 'Prepares for restorative sleep.' }
+  ];
+}
+
+function renderChecklist() {
+  const container = document.getElementById('checklistContainer');
+  const today = new Date().toISOString().split('T')[0];
+  const todayProgress = dailyProgress[today] || {};
+  const tasks = getDailyTasks();
+
+  container.innerHTML = tasks.map((task, index) => `
+    <div class="checklist-item ${todayProgress[index] ? 'completed' : ''}" onclick="toggleTask(${index})">
+      <div class="checkbox"></div>
+      <div class="task-icon">${task.icon}</div>
+      <div class="task-content">
+        <div class="task-title">${task.title}</div>
+        <div class="task-description">${task.description}</div>
+        <div class="task-therapeutic">💡 ${task.therapeutic}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTask(taskIndex) {
+  const today = new Date().toISOString().split('T')[0];
+  if (!dailyProgress[today]) dailyProgress[today] = {};
+  
+  dailyProgress[today][taskIndex] = !dailyProgress[today][taskIndex];
+  localStorage.setItem('dailyProgress', JSON.stringify(dailyProgress));
+  
+  renderChecklist();
+  showPlan();
+}
+
+function renderTimeline() {
+  const container = document.getElementById('timelineContainer');
+  let timeline = [];
+
+  if (healingPlan.duration === '1week') {
+    timeline = [
+      { week: 'Day 1-2', focus: 'Acknowledge pain & create safety', days: [1, 2] },
+      { week: 'Day 3-4', focus: 'Begin gentle healing practices', days: [3, 4] },
+      { week: 'Day 5-7', focus: 'Build support & look forward', days: [5, 6, 7] }
+    ];
+  } else if (healingPlan.duration === '1month') {
+    timeline = [
+      { week: 'Week 1', focus: 'Stabilization & Foundation', days: [1, 7] },
+      { week: 'Week 2', focus: 'Skill Building & Processing', days: [8, 14] },
+      { week: 'Week 3', focus: 'Integration & Reinforcement', days: [15, 21] },
+      { week: 'Week 4', focus: 'Growth & Future Planning', days: [22, 28] }
+    ];
+  } else {
+    timeline = [
+      { week: 'Week 1-2', focus: 'Crisis Stabilization & Safety', days: [1, 14] },
+      { week: 'Week 3-4', focus: 'Emotional Regulation Mastery', days: [15, 28] },
+      { week: 'Week 5-6', focus: 'Behavioral Change & Connection', days: [29, 42] },
+      { week: 'Week 7', focus: 'Integration & Relapse Prevention', days: [43, 49] }
+    ];
+  }
+
+  container.innerHTML = timeline.map((item, index) => {
+    const isCompleted = healingPlan.currentDay > item.days[item.days.length - 1];
+    const isCurrent = healingPlan.currentDay >= item.days[0] && healingPlan.currentDay <= item.days[item.days.length - 1];
+    
+    return `
+      <div class="timeline-item">
+        <div class="timeline-dot ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}">
+          ${isCompleted ? '✓' : index + 1}
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-week">${item.week}</div>
+          <div class="timeline-focus">${item.focus}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showCompletionModal() {
+  document.getElementById('completionModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('completionModal').classList.remove('active');
+  document.getElementById('resultsModal').classList.remove('active');
+}
+
+function retakeAssessment() {
+  localStorage.setItem('isReassessment', 'true');
+  localStorage.setItem('previousScore', healingPlan.totalScore);
+  window.location.href = 'assessment.html';
+}
+
+function confirmReset() {
+  if (confirm('⚠️ Are you sure you want to end your current healing plan?\n\nYour progress will be saved, and you can start a new assessment.\n\nOnly do this if you feel ready to move to a different healing path.')) {
+    localStorage.removeItem('healingPlan');
+    localStorage.setItem('completedPlan', JSON.stringify({
+      path: healingPlan.primaryPath,
+      completedDate: new Date().toISOString(),
+      daysCompleted: healingPlan.currentDay
+    }));
+    window.location.href = 'assessment.html';
+  }
+}
+
+function checkReassessment() {
+  const isReassessment = localStorage.getItem('isReassessment');
+  if (isReassessment === 'true') {
+    localStorage.removeItem('isReassessment');
+    const previousScore = parseInt(localStorage.getItem('previousScore'));
+    const currentPlan = JSON.parse(localStorage.getItem('healingPlan'));
+    
+    if (currentPlan) {
+      showReassessmentResults(previousScore, currentPlan.totalScore);
+    }
+  }
+}
+
+function showReassessmentResults(previousScore, currentScore) {
+  const improvement = previousScore - currentScore;
+  const improvementPercent = Math.round((improvement / previousScore) * 100);
+  
+  let icon, title, message, action, badgeClass, badgeText;
+  
+  if (improvement >= 20) {
+    icon = '🎉';
+    title = 'Remarkable Healing!';
+    badgeClass = 'great';
+    badgeText = `${improvementPercent}% Improvement`;
+    message = `Your psychological healing is profound. You've moved from a score of ${previousScore} to ${currentScore}. This indicates significant symptom reduction and improved functioning. You're ready to complete this healing journey.`;
+    action = `
+      <button class="action-btn btn-success" onclick="completePlan()">Complete Journey ✓</button>
+      <button class="action-btn btn-secondary" onclick="continueCurrentPlan()">Continue Deeper</button>
+    `;
+  } else if (improvement >= 10) {
+    icon = '💪';
+    title = 'Strong Progress!';
+    badgeClass = 'good';
+    badgeText = `${improvementPercent}% Improvement`;
+    message = `Solid therapeutic progress! Your score improved from ${previousScore} to ${currentScore}. You're healing. You can complete now or continue for deeper work.`;
+    action = `
+      <button class="action-btn btn-primary" onclick="continueCurrentPlan()">Continue Plan</button>
+      <button class="action-btn btn-success" onclick="completePlan()">Complete Journey</button>
+    `;
+  } else if (improvement >= 5) {
+    icon = '🌱';
+    title = 'Steady Progress';
+    badgeClass = 'good';
+    badgeText = `${improvementPercent}% Improvement`;
+    message = `You're making progress (${previousScore} → ${currentScore}). Healing isn't linear. Let's continue to solidify these gains.`;
+    action = `
+      <button class="action-btn btn-primary" onclick="extendPlan()">Extend Plan</button>
+      <button class="action-btn btn-secondary" onclick="continueCurrentPlan()">Continue Current</button>
+    `;
+  } else if (improvement > 0) {
+    icon = '💙';
+    title = 'Small Steps Forward';
+    badgeClass = 'slight';
+    badgeText = `${improvement} Point Improvement`;
+    message = `Slight improvement (${previousScore} → ${currentScore}). This is normal - healing has plateaus. Let's extend your plan or add professional support.`;
+    action = `
+      <button class="action-btn btn-primary" onclick="extendPlan()">Extend Plan</button>
+      <button class="action-btn btn-secondary" onclick="seekProfessionalHelp()">Find Therapist</button>
+    `;
+  } else {
+    icon = '🤝';
+    title = 'Time for Professional Support';
+    badgeClass = 'slight';
+    badgeText = 'No Improvement Yet';
+    message = `Your score hasn't improved (${previousScore} → ${currentScore}). This app provides support, but you may need professional therapy. There's no shame in seeking help - it's a sign of strength.`;
+    action = `
+      <button class="action-btn btn-primary" onclick="seekProfessionalHelp()">Find Therapist</button>
+      <button class="action-btn btn-secondary" onclick="extendPlan()">Extend Self-Help</button>
+    `;
+  }
+
+  document.getElementById('resultsContent').innerHTML = `
+    <div class="modal-icon">${icon}</div>
+    <div class="modal-title">${title}</div>
+    <div class="improvement-badge ${badgeClass}">${badgeText}</div>
+    <div class="modal-text">${message}</div>
+    
+    <div class="reassessment-score">
+      <div class="score-comparison">
+        <div class="score-item">
+          <div class="score-label">Initial</div>
+          <div class="score-value initial">${previousScore}</div>
+        </div>
+        <div class="score-arrow">→</div>
+        <div class="score-item">
+          <div class="score-label">Current</div>
+          <div class="score-value current">${currentScore}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      ${action}
+    </div>
+  `;
+
+  closeModal();
+  document.getElementById('resultsModal').classList.add('active');
+}
+
+function completePlan() {
+  alert('🎉 Congratulations on completing your healing journey!\n\nYour growth is real. Your strength is real. You can now start a new healing path if needed.');
+  localStorage.setItem('completedPlan', JSON.stringify({
+    path: healingPlan.primaryPath,
+    completedDate: new Date().toISOString(),
+    initialScore: healingPlan.totalScore,
+    finalScore: JSON.parse(localStorage.getItem('healingPlan')).totalScore
+  }));
+  localStorage.removeItem('healingPlan');
+  localStorage.removeItem('dailyProgress');
+  window.location.href = 'journey.html';
+}
+
+function continueCurrentPlan() {
+  closeModal();
+  alert('💪 Keep going! Continue your daily healing practices. You\'re building lasting change.');
+}
+
+function extendPlan() {
+  const currentPlan = JSON.parse(localStorage.getItem('healingPlan'));
+  if (currentPlan.duration === '1week') {
+    currentPlan.duration = '1month';
+    currentPlan.totalDays = 28;
+  } else if (currentPlan.duration === '1month') {
+    currentPlan.duration = '7week';
+    currentPlan.totalDays = 49;
+  } else {
+    // Already at 7 weeks, add another month
+    currentPlan.totalDays += 28;
+  }
+  localStorage.setItem('healingPlan', JSON.stringify(currentPlan));
+  closeModal();
+  alert('✨ Your healing plan has been extended. Remember: deep healing takes time. Be patient with yourself.');
+  location.reload();
+}
+
+function seekProfessionalHelp() {
+  if (confirm('We\'ll direct you to our counselor directory with professional therapists.\n\nContinue?')) {
+    window.location.href = 'Counselor.html';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  checkReassessment();
+});
+</script>
+
+</body>
+</html>

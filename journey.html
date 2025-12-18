@@ -1,0 +1,2655 @@
+<!-- journey.html - ENHANCED GLASS MORPHISM 🎨 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Journey - Your Progress</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(236,72,153,0.16), rgba(59,130,246,0.18)), url(image.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 24px;
+            color: #0f172a;
+            transition: background 0.5s ease;
+        }
+
+        body.bg-ocean {
+            background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(59,130,246,0.18)), url(ocean.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        body.bg-forest {
+            background: linear-gradient(135deg, rgba(34,197,94,0.16), rgba(22,163,74,0.18)), url(forest.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, rgba(15,23,42,0.75), rgba(30,41,59,0.75)), url(night.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #f1f5f9;
+        }
+
+        body.dark-mode.bg-ocean {
+            background: linear-gradient(135deg, rgba(3,7,18,0.75), rgba(15,23,42,0.75)), url(ocean.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        body.dark-mode.bg-forest {
+            background: linear-gradient(135deg, rgba(20,83,45,0.75), rgba(21,128,61,0.75)), url(forest.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        body.dark-mode .shell {
+            background: linear-gradient(135deg, rgba(15,23,42,0.65), rgba(30,41,59,0.65));
+            border-color: rgba(139,92,246,0.4);
+            box-shadow: 0 26px 60px rgba(0,0,0,0.9);
+        }
+
+        body.dark-mode .title-main,
+        body.dark-mode .hero h1,
+        body.dark-mode .section-label,
+        body.dark-mode .card-title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .subtitle,
+        body.dark-mode .hero p,
+        body.dark-mode .card p {
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .back-chip,
+        body.dark-mode .export-chip,
+        body.dark-mode .settings-chip,
+        body.dark-mode .bg-selector-chip {
+            background: rgba(30,41,59,0.98);
+            color: #f8fafc;
+            border-color: rgba(139,92,246,0.6);
+        }
+
+        body.dark-mode .back-chip:hover,
+        body.dark-mode .export-chip:hover,
+        body.dark-mode .settings-chip:hover,
+        body.dark-mode .bg-selector-chip:hover {
+            background: rgba(51,65,85,0.98);
+            border-color: rgba(139,92,246,0.8);
+        }
+
+        body.dark-mode .bg-dropdown,
+        body.dark-mode .profile-dropdown,
+        body.dark-mode .stats-dropdown {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98));
+            border-color: rgba(139,92,246,0.6);
+            color: #f8fafc;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+        }
+
+        body.dark-mode .bg-option {
+            background: rgba(30,41,59,0.95);
+            border-color: rgba(139,92,246,0.5);
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .bg-option:hover {
+            background: rgba(51,65,85,0.98);
+            border-color: rgba(139,92,246,0.8);
+        }
+
+        body.dark-mode .bg-option.active {
+            background: rgba(139,92,246,0.5);
+            border-color: #c4b5fd;
+            color: #f3e8ff;
+        }
+
+        body.dark-mode .profile-name,
+        body.dark-mode .detail-value,
+        body.dark-mode .stats-dropdown-title,
+        body.dark-mode .bg-dropdown-title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .profile-email,
+        body.dark-mode .detail-label,
+        body.dark-mode .stats-week-label {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .profile-btn.logout {
+            background: rgba(51,65,85,0.95);
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .profile-btn.logout:hover {
+            background: rgba(220,38,38,0.5);
+            color: #fecaca;
+        }
+
+        body.dark-mode .stat-card {
+            background: linear-gradient(135deg, rgba(30,41,59,0.95), rgba(51,65,85,0.9));
+            border-color: rgba(139,92,246,0.5);
+        }
+
+        body.dark-mode .stat-card:hover {
+            background: linear-gradient(135deg, rgba(51,65,85,0.98), rgba(71,85,105,0.95));
+            border-color: rgba(139,92,246,0.8);
+        }
+
+        body.dark-mode .progress-ring-container {
+            background: linear-gradient(135deg, rgba(20, 83, 45, 0.7), rgba(21, 128, 61, 0.6));
+            border-color: rgba(34, 197, 94, 0.8);
+        }
+
+        body.dark-mode .progress-label {
+            color: #bbf7d0;
+        }
+
+        body.dark-mode .progress-sub {
+            color: #d1fae5;
+        }
+
+        body.dark-mode .progress-ring-text {
+            color: #bbf7d0;
+        }
+
+        body.dark-mode .progress-step {
+            background: rgba(30,41,59,0.95);
+            border-color: rgba(139,92,246,0.5);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .progress-step.completed {
+            background: #22c55e;
+            color: white;
+            border-color: #22c55e;
+        }
+
+        body.dark-mode .card-calendar {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98));
+            border-color: rgba(139,92,246,0.6);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+        }
+
+        body.dark-mode .card-title-wrap h2 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .pill,
+        body.dark-mode .card-tag,
+        body.dark-mode .small-chip {
+            background: rgba(51,65,85,0.9);
+            color: #f1f5f9;
+            border-color: rgba(139,92,246,0.5);
+        }
+
+        body.dark-mode .card-calendar p {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode #moodSelect,
+        body.dark-mode #moodNote {
+            background: rgba(15,23,42,0.95);
+            border-color: rgba(139,92,246,0.6);
+            color: #f8fafc;
+        }
+
+        body.dark-mode .calendar {
+            background: linear-gradient(135deg, #ffffff, #f8fafc) !important;
+            border: 2px solid #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        body.dark-mode .calendar .calendar-header {
+            color: #0f172a !important;
+            border-bottom: 2px solid #e2e8f0 !important;
+        }
+
+        body.dark-mode .calendar .day-name {
+            color: #64748b !important;
+            font-weight: 800;
+        }
+
+        body.dark-mode .calendar .day-num {
+            background: #ffffff !important;
+            border-color: #f1f5f9 !important;
+            color: #334155 !important;
+        }
+
+        body.dark-mode .calendar .day-num:hover {
+            background: #f8fafc !important;
+            transform: scale(1.05);
+        }
+
+        body.dark-mode .calendar .day-num.today {
+            border: 2px solid #6366f1 !important;
+            background: #eef2ff !important;
+            box-shadow: 0 0 16px rgba(99,102,241,0.4);
+        }
+
+        body.dark-mode .calendar .day-num.good {
+            background: #dcfce7 !important;
+            color: #15803d !important;
+            font-weight: 700;
+        }
+
+        body.dark-mode .calendar .day-num.ok {
+            background: #fef3c7 !important;
+            color: #b45309 !important;
+            font-weight: 700;
+        }
+
+        body.dark-mode .calendar .day-num.bad {
+            background: #fee2e2 !important;
+            color: #b91c1c !important;
+            font-weight: 700;
+        }
+
+        body:not(.dark-mode) .calendar {
+            background: linear-gradient(135deg, #1e293b, #334155) !important;
+            border: 2px solid #475569 !important;
+            color: #f1f5f9 !important;
+        }
+
+        body:not(.dark-mode) .calendar .calendar-header {
+            color: #f8fafc !important;
+            border-bottom: 2px solid #475569 !important;
+        }
+
+        body:not(.dark-mode) .calendar .day-name {
+            color: #cbd5e1 !important;
+            font-weight: 800;
+        }
+
+        body:not(.dark-mode) .calendar .day-num {
+            background: rgba(51,65,85,0.8) !important;
+            border-color: rgba(71,85,105,0.6) !important;
+            color: #e2e8f0 !important;
+        }
+
+        body:not(.dark-mode) .calendar .day-num:hover {
+            background: rgba(71,85,105,0.9) !important;
+            transform: scale(1.05);
+        }
+
+        body:not(.dark-mode) .calendar .day-num.today {
+            border: 2px solid #a78bfa !important;
+            background: rgba(139,92,246,0.3) !important;
+            box-shadow: 0 0 16px rgba(139,92,246,0.6);
+        }
+
+        body:not(.dark-mode) .calendar .day-num.good {
+            background: linear-gradient(135deg, #166534, #15803d) !important;
+            color: #dcfce7 !important;
+            font-weight: 700;
+        }
+
+        body:not(.dark-mode) .calendar .day-num.ok {
+            background: linear-gradient(135deg, #92400e, #b45309) !important;
+            color: #fef3c7 !important;
+            font-weight: 700;
+        }
+
+        body:not(.dark-mode) .calendar .day-num.bad {
+            background: linear-gradient(135deg, #991b1b, #b91c1c) !important;
+            color: #fee2e2 !important;
+            font-weight: 700;
+        }
+
+        body.dark-mode .weekly-report-box {
+            background: linear-gradient(135deg, rgba(30,58,138,0.6), rgba(59,130,246,0.5));
+            border: 1px solid rgba(59,130,246,0.7);
+            color: #dbeafe;
+        }
+
+        body.dark-mode #moodHistory {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .daily-tip {
+            background: rgba(30,41,59,0.95);
+            border-color: rgba(251,191,36,0.7);
+            color: #fef3c7;
+        }
+
+        body.dark-mode .footer {
+            color: #e2e8f0;
+            border-color: rgba(139,92,246,0.5);
+        }
+
+        body.dark-mode .card {
+            background: linear-gradient(135deg, rgba(30,41,59,0.98), rgba(51,65,85,0.95));
+            border-color: rgba(139,92,246,0.5);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+        }
+
+        body.dark-mode .card:hover {
+            border-color: rgba(139,92,246,0.8);
+            box-shadow: 0 18px 45px rgba(139,92,246,0.5);
+        }
+
+        body.dark-mode .card.featured {
+            background: linear-gradient(135deg, rgba(251,191,36,0.4), rgba(245,158,11,0.35));
+            border-color: rgba(251,191,36,0.7);
+        }
+
+        body.dark-mode .card.featured .card-title {
+            color: #fde68a;
+        }
+
+        body.dark-mode .card.featured p {
+            color: #fef3c7;
+        }
+
+        body.dark-mode .quick-action-fab {
+            background: rgba(30,41,59,0.98);
+            color: #f1f5f9;
+            border-color: rgba(139,92,246,0.6);
+        }
+
+        body.dark-mode .quick-action-fab:hover {
+            background: rgba(51,65,85,0.98);
+            border-color: rgba(139,92,246,0.8);
+        }
+
+        body.dark-mode .quick-action-fab span {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .modal-content {
+            background: linear-gradient(135deg, rgba(30,41,59,0.98), rgba(51,65,85,0.95));
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .modal-title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .form-label {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .form-input {
+            background: rgba(15,23,42,0.95);
+            border-color: rgba(139,92,246,0.6);
+            color: #f8fafc;
+        }
+
+        body.dark-mode .profile-photo-upload {
+            background: rgba(15,23,42,0.95);
+            border-color: rgba(139,92,246,0.6);
+        }
+
+        body.dark-mode .upload-text {
+            color: #e2e8f0;
+        }
+
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.70);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 26px 60px rgba(15,23,42,0.18), 0 0 0 1px rgba(255,255,255,0.4) inset;
+            padding: 32px 30px 26px;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #facc15, #f97316);
+            box-shadow: 0 0 0 6px rgba(251,191,36,0.25);
+        }
+
+        .title-main {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .back-chip {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            font-size: 13px;
+            color: #4b5563;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(148,163,184,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .back-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(148,163,184,0.4);
+        }
+
+        .export-chip {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 2px solid #10b981;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            font-size: 13px;
+            color: #047857;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .export-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(16,185,129,0.4);
+            border-color: #059669;
+        }
+
+        .settings-chip {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 2px solid #667eea;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            font-size: 13px;
+            color: #4f46e5;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .settings-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(102,126,234,0.4);
+            border-color: #4f46e5;
+        }
+
+        .bg-selector-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bg-selector-chip {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 2px solid #ec4899;
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            font-size: 13px;
+            color: #be185d;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(236,72,153,0.3);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .bg-selector-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(236,72,153,0.4);
+            border-color: #be185d;
+        }
+
+        .bg-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 280px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+            display: none;
+            z-index: 1000;
+            animation: dropdownSlide 0.3s ease;
+        }
+
+        .bg-dropdown.active {
+            display: block;
+        }
+
+        .bg-dropdown-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bg-option {
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .bg-option:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateX(4px);
+        }
+
+        .bg-option.active {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-color: #8b5cf6;
+            color: #6d28d9;
+        }
+
+        .bg-option-emoji {
+            font-size: 18px;
+        }
+
+        .user-profile-toggle {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102,126,234,0.4);
+            border-color: #667eea;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 320px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+            display: none;
+            z-index: 1000;
+            animation: dropdownSlide 0.3s ease;
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-dropdown.active {
+            display: block;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 16px;
+        }
+
+        .profile-avatar-large {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .profile-email {
+            font-size: 12px;
+            color: #64748b;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .profile-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .profile-actions {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .profile-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: block;
+        }
+
+        .profile-btn.edit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .profile-btn.edit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        .profile-btn.achievements {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .profile-btn.achievements:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+        }
+
+        .profile-btn.logout {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .profile-btn.logout:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            color: #334155;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .profile-photo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-photo-upload:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+        .profile-photo-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .profile-photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-text {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .dashboard-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 50px;
+            padding: 4px;
+            height: 36px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            width: 110px;
+            overflow: hidden;
+        }
+
+        .dashboard-toggle:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            left: 4px;
+            width: 50px;
+            height: 28px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            z-index: 2;
+            font-weight: 700;
+        }
+
+        .toggle-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        .toggle-label.left {
+            left: 60px;
+        }
+
+        .toggle-label.right {
+            right: 8px;
+            opacity: 0.3;
+        }
+
+        .stats-circle-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .stats-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stats-circle:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 16px rgba(16,185,129,0.4);
+            border-color: #10b981;
+        }
+
+        .stats-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: white;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(239,68,68,0.4);
+        }
+
+        .stats-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 400px;
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+            display: none;
+            z-index: 1000;
+            animation: dropdownSlide 0.3s ease;
+        }
+
+        .stats-dropdown.active {
+            display: block;
+        }
+
+        .stats-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 20px;
+        }
+
+        .stats-dropdown-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stats-week-label {
+            font-size: 11px;
+            color: #64748b;
+            background: linear-gradient(135deg, #eef2ff, #fce7f3);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: #cbd5e1;
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stat-emoji {
+            font-size: 20px;
+        }
+
+        .stat-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .stats-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .hero {
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .hero-left h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-left p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .hero-tip {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .progress-ring-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            padding: 16px 20px;
+            border-radius: 20px;
+            border: 2px solid #86efac;
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.15);
+        }
+
+        .progress-ring-wrapper {
+            position: relative;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: 800;
+            color: #15803d;
+        }
+
+        .progress-info {
+            flex: 1;
+        }
+
+        .progress-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #15803d;
+            margin-bottom: 4px;
+        }
+
+        .progress-sub {
+            font-size: 12px;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .progress-step {
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: white;
+            color: #64748b;
+            border: 1px solid #e5e7eb;
+        }
+
+        .progress-step.completed {
+            background: #22c55e;
+            color: white;
+            border-color: #22c55e;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 12px;
+            margin-top: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 18px 18px 16px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 26px rgba(148,163,184,0.22);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform .18s, box-shadow .18s, border-color .18s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(148,163,184,0.28);
+            border-color: #a5b4fc;
+        }
+
+        .card.featured {
+            background: linear-gradient(135deg, #fef3c7, #fde68a, #fbbf24);
+            border: 2px solid #f59e0b;
+            box-shadow: 0 12px 32px rgba(245, 158, 11, 0.3);
+        }
+
+        .card.featured:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(245, 158, 11, 0.4);
+            border-color: #d97706;
+        }
+
+        .card.featured .card-title {
+            color: #78350f;
+        }
+
+        .card.featured p {
+            color: #92400e;
+        }
+
+        .card.featured .icon-pill {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            color: #f59e0b;
+        }
+
+        .card.featured .card-tag {
+            background: #78350f;
+            color: #fef3c7;
+        }
+
+        .card.featured .small-chip {
+            background: rgba(255, 255, 255, 0.7);
+            color: #92400e;
+            border-color: #fbbf24;
+        }
+
+        .card:nth-child(2) {
+            background: linear-gradient(135deg, #fae8ff, #e0f2fe, #ffffff);
+            border-color: #c4b5fd;
+        }
+
+        .card:nth-child(3) {
+            background: linear-gradient(135deg, #e0f2fe, #fef3c7, #ffffff);
+            border-color: #a5f3fc;
+        }
+
+        .card:nth-child(4) {
+            background: linear-gradient(135deg, #fce7f3, #fae8ff, #ffffff);
+            border-color: #f9a8d4;
+        }
+
+        .card:nth-child(5) {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe, #ffffff);
+            border-color: #7dd3fc;
+        }
+
+        .card:nth-child(6) {
+            background: linear-gradient(135deg, #fef3c7, #fef9c3, #ffffff);
+            border-color: #fde047;
+        }
+
+        .card:nth-child(7) {
+            background: linear-gradient(135deg, #fae8ff, #f3e8ff, #ffffff);
+            border-color: #e9d5ff;
+        }
+
+        .card:nth-child(8) {
+            background: linear-gradient(135deg, #dcfce7, #d1fae5, #ffffff);
+            border-color: #86efac;
+        }
+
+        .card:nth-child(9) {
+            background: linear-gradient(135deg, #ddd6fe, #e0e7ff, #ffffff);
+            border-color: #c4b5fd;
+        }
+
+        .card:nth-child(10) {
+            background: linear-gradient(135deg, #fbcfe8, #fce7f3, #ffffff);
+            border-color: #f9a8d4;
+        }
+
+        .card:nth-child(11) {
+            background: linear-gradient(135deg, #fef3c7, #fde68a, #ffffff);
+            border-color: #fde047;
+        }
+
+        .card-header-small {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-pill {
+            width: 34px;
+            height: 34px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .card-tag {
+            margin-left: auto;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            background: #f3f4ff;
+            color: #4f46e5;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .small-chip {
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-size: 11px;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+        .calendar-section {
+            margin-bottom: 28px;
+        }
+
+        .card-calendar {
+            width: 100%;
+            max-width: 800px;
+            margin: 12px auto 0;
+            background: white;
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+            color: #4f46e5;
+        }
+
+        .card-title-wrap h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-calendar p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        #moodSelect, #moodNote {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            color: #334155;
+            background: #f8fafc;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #moodNote {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        #moodSelect:focus, #moodNote:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .calendar {
+            margin-top: 20px;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .day-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            padding-bottom: 8px;
+        }
+
+        .day-num {
+            padding: 10px 0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .day-num:hover {
+            transform: scale(1.05);
+        }
+
+        .weekly-report-box {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 16px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            font-size: 13px;
+            color: #0369a1;
+            line-height: 1.6;
+        }
+
+        .weekly-report-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .streak-tip-row {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .streak-label {
+            font-weight: 700;
+            color: #b91c1c;
+        }
+
+        .daily-tip {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #fefce8;
+            border: 1px solid #facc15;
+            color: #854d0e;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #moodHistory {
+            list-style: none;
+            font-size: 13px;
+            color: #64748b;
+            max-height: 100px;
+            overflow-y: auto;
+            margin-top: 8px;
+            padding-left: 0;
+        }
+
+        .fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9995;
+        }
+
+        .quick-action-fab {
+            width: 56px;
+            height: 56px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #1e293b;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+            position: relative;
+        }
+
+        .quick-action-fab span {
+            font-size: 9px;
+            font-weight: 700;
+            margin-top: 2px;
+            color: #64748b;
+        }
+
+        .quick-action-fab:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+            border-color: #cbd5e1;
+        }
+
+        .breathe-fab {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #60a5fa;
+        }
+
+        .breathe-fab span {
+            font-size: 9px;
+            font-weight: 700;
+            margin-top: 2px;
+            color: #dbeafe;
+        }
+
+        .breathe-fab:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 10px 28px rgba(59,130,246,0.5);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+
+        .emergency-fab {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(239,68,68,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .emergency-fab:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 12px 32px rgba(239,68,68,0.6);
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(148,163,184,0.35);
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .footer a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media(max-width:640px) {
+            body {
+                padding: 16px;
+            }
+            .shell {
+                padding: 24px 20px 20px;
+                border-radius: 24px;
+            }
+            .card-calendar {
+                padding: 20px;
+            }
+            .profile-dropdown,
+            .bg-dropdown {
+                width: 280px;
+                right: -10px;
+            }
+            .stats-dropdown {
+                width: 320px;
+                right: -10px;
+            }
+            .fab-container {
+                bottom: 16px;
+                right: 16px;
+            }
+            .quick-action-fab,
+            .breathe-fab {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+            .emergency-fab {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+            .modal-content {
+                padding: 24px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="modal-overlay" id="profileEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Edit Profile</h2>
+                <button class="modal-close" id="closeModal">✕</button>
+            </div>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label class="form-label">Profile Photo</label>
+                    <label for="photoInput" class="profile-photo-upload">
+                        <div class="profile-photo-preview" id="photoPreview">
+                            <span id="photoPreviewInitials">N</span>
+                        </div>
+                        <div class="upload-text">
+                            <strong>Click to upload photo</strong><br>
+                            <small>JPG, PNG up to 2MB</small>
+                        </div>
+                    </label>
+                    <input type="file" id="photoInput" accept="image/jpeg,image/png,image/jpg,image/gif">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="editName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="editEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Profession</label>
+                    <input type="text" class="form-input" id="editProfession" placeholder="e.g., Student, Developer">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-save">💾 Save Changes</button>
+                    <button type="button" class="btn-cancel" id="cancelEdit">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="fab-container">
+        <div class="quick-action-fab" onclick="window.location.href='journal.html'" title="Quick Journal">
+            📝
+            <span>Journal</span>
+        </div>
+        <div class="breathe-fab" onclick="window.location.href='meditation.html'" title="Breathe">
+            🫁
+            <span>Breathe</span>
+        </div>
+        <div class="emergency-fab" onclick="window.location.href='sos.html'" title="Emergency Support - Click for help">
+            🚨
+        </div>
+    </div>
+
+    <div class="shell">
+        <div class="top-row">
+            <div class="logo-row">
+                <div class="dot"></div>
+                <div>
+                    <div class="title-main">Calm Journey</div>
+                    <div class="subtitle">Your mental health companion</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                <div class="user-profile-toggle">
+                    <div class="profile-avatar" id="profileAvatar">
+                        <span id="profileInitials">N</span>
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-header">
+                            <div class="profile-avatar-large" id="profileAvatarLarge">
+                                <span id="profileInitialsLarge">N</span>
+                            </div>
+                            <div class="profile-info">
+                                <div class="profile-name" id="profileName">Nidzzz</div>
+                                <div class="profile-email" id="profileEmail">user@email.com</div>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="profile-detail-row">
+                                <span class="detail-label">Profession</span>
+                                <span class="detail-value" id="profileProfession">Student</span>
+                            </div>
+                            <div class="profile-detail-row">
+                                <span class="detail-label">Member Since</span>
+                                <span class="detail-value" id="profileJoined">Dec 2025</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="profile-btn edit" id="editProfileBtn">✏️ Edit Profile</button>
+                            <a href="achievements.html" class="profile-btn achievements">🏆 View Achievements</a>
+                            <button class="profile-btn logout">🚪 Logout</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-toggle" id="dashboardToggle" title="View your progress dashboard">
+                    <span class="toggle-label left">Progress</span>
+                    <div class="toggle-slider">📊</div>
+                    <span class="toggle-label right">Off</span>
+                </div>
+
+                <div class="stats-circle-wrapper">
+                    <div class="stats-circle" id="statsCircle">
+                        📊
+                        <span class="stats-badge" id="statsBadge">15</span>
+                    </div>
+                    <div class="stats-dropdown" id="statsDropdown">
+                        <div class="stats-dropdown-header">
+                            <span class="stats-dropdown-title">Weekly Activity</span>
+                            <span class="stats-week-label">LAST 7 DAYS</span>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-card-header">
+                                    <span class="stat-emoji">📝</span>
+                                    <span class="stat-name">JOURNAL</span>
+                                </div>
+                                <div class="stat-value" id="statJournal">0</div>
+                                <div class="stat-label">entries</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-header">
+                                    <span class="stat-emoji">😊</span>
+                                    <span class="stat-name">MOOD</span>
+                                </div>
+                                <div class="stat-value" id="statMood">7</div>
+                                <div class="stat-label">check-ins</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-header">
+                                    <span class="stat-emoji">🎵</span>
+                                    <span class="stat-name">MUSIC</span>
+                                </div>
+                                <div class="stat-value" id="statMusic">0h</div>
+                                <div class="stat-label">listened</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-header">
+                                    <span class="stat-emoji">💬</span>
+                                    <span class="stat-name">CHAT</span>
+                                </div>
+                                <div class="stat-value" id="statChat">0</div>
+                                <div class="stat-label">messages</div>
+                            </div>
+                        </div>
+                        <div class="stats-footer">
+                            💪 Keep going! Every step counts
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-selector-wrapper">
+                    <button class="bg-selector-chip" id="bgSelectorBtn">
+                        🎨 Theme
+                    </button>
+                    <div class="bg-dropdown" id="bgDropdown">
+                        <div class="bg-dropdown-title">Choose Background</div>
+                        <div class="bg-options">
+                            <div class="bg-option active" data-bg="default">
+                                <span class="bg-option-emoji">🌸</span>
+                                <span>Default</span>
+                            </div>
+                            <div class="bg-option" data-bg="ocean">
+                                <span class="bg-option-emoji">🌊</span>
+                                <span>Ocean Waves</span>
+                            </div>
+                            <div class="bg-option" data-bg="forest">
+                                <span class="bg-option-emoji">🌲</span>
+                                <span>Forest Peace</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="settings-chip" onclick="window.location.href='settings.html'">
+                    ⚙️ Settings
+                </button>
+
+                <button class="export-chip" onclick="alert('Export your data as PDF coming soon!')">
+                    💾 Export
+                </button>
+
+                <button class="back-chip" id="darkModeBtn">
+                    🌙 Dark
+                </button>
+
+                <a href="index.html" class="back-chip">← Home</a>
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="hero-top">
+                <div class="hero-left">
+                    <h1>Good morning, <span id="heroName">Nidzzz</span>!</h1>
+                    <p>Let's take one small step for your mind today.</p>
+                    <div class="hero-tip">Tip: Even a 2-minute check-in counts as progress.</div>
+                </div>
+                
+                <div class="progress-ring-container">
+                    <div class="progress-ring-wrapper">
+                        <svg class="progress-ring" width="60" height="60">
+                            <circle
+                                stroke="#e5e7eb"
+                                stroke-width="6"
+                                fill="transparent"
+                                r="24"
+                                cx="30"
+                                cy="30"
+                            />
+                            <circle
+                                id="progressRingCircle"
+                                stroke="#22c55e"
+                                stroke-width="6"
+                                fill="transparent"
+                                r="24"
+                                cx="30"
+                                cy="30"
+                                stroke-linecap="round"
+                                stroke-dasharray="151"
+                                stroke-dashoffset="50"
+                            />
+                        </svg>
+                        <div class="progress-ring-text">2/3</div>
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress-label">2 / 3 daily steps</div>
+                        <div class="progress-sub">
+                            <span class="progress-step completed">Mood</span>
+                            <span class="progress-step completed">Journal</span>
+                            <span class="progress-step">Breathe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-section">
+            <div class="card-calendar">
+                <div class="card-header">
+                    <div class="card-title-wrap">
+                        <div class="card-icon">📅</div>
+                        <h2>Mood Calendar</h2>
+                    </div>
+                    <span class="pill">DAILY CHECK-IN</span>
+                </div>
+                <p>Mark how each day felt to slowly understand your emotional patterns over the month.</p>
+
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:13px;font-weight:600;color:#475569;margin-right:8px;">How was your day?</label>
+                    <select id="moodSelect">
+                        <option value="">Select mood...</option>
+                        <option value="very_good">😊 Great</option>
+                        <option value="good">🙂 Good</option>
+                        <option value="okay">😌 Okay</option>
+                        <option value="low">😕 Low</option>
+                        <option value="very_low">😔 Very low</option>
+                    </select>
+                    <input type="text" id="moodNote" placeholder="Why? (optional, e.g., stressed about exams)">
+                </div>
+
+                <div class="calendar" id="calendar">
+                    <div class="calendar-header">
+                        <span id="calMonth">Month</span>
+                        <span id="calYear">Year</span>
+                    </div>
+                    <div class="calendar-grid" id="calGrid"></div>
+                </div>
+
+                <div class="weekly-report-box">
+                    <div class="weekly-report-title">Weekly Mood Report (Last 7 Days)</div>
+                    <div id="weeklyReportContent">Track a few days to see your personal report here.</div>
+                    <div class="streak-tip-row">
+                        <span class="streak-label" id="streakLabel">🔥 0-day streak</span>
+                        <div class="daily-tip" id="dailyTip">
+                            💡 Small tip of the day
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <h3 style="font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;">Recent Mood History</h3>
+                    <ul id="moodHistory"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Start with one small step</div>
+
+        <div class="grid">
+            <div class="card featured" onclick="window.location.href='healing.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">☀️</div>
+                    <div class="card-title">Healing Journey</div>
+                    <div class="card-tag">PERSONALIZED</div>
+                </div>
+                <p>Take our assessment to get a personalized healing plan for breakup, grief, stress, or life challenges.</p>
+                <div class="chip-row">
+                    <div class="small-chip">7-day plans</div>
+                    <div class="small-chip">1-month support</div>
+                    <div class="small-chip">7-week recovery</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='music.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🎧</div>
+                    <div class="card-title">Music Hub</div>
+                    <div class="card-tag">AUDIO</div>
+                </div>
+                <p>Soft playlists and ambient sounds to help you focus, relax, or fall asleep gently.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Lo-fi focus</div>
+                    <div class="small-chip">Rain & nature</div>
+                    <div class="small-chip">Sleep sounds</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='planner.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">📚</div>
+                    <div class="card-title">Day & Study Planner</div>
+                    <div class="card-tag">FOCUS</div>
+                </div>
+                <p>Plan your classes, revision, breaks, and self-care blocks in one clean timeline.</p>
+                <div class="chip-row">
+                    <div class="small-chip">24-hour view</div>
+                    <div class="small-chip">Study mode</div>
+                    <div class="small-chip">Week & month</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='support.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🤝</div>
+                    <div class="card-title">Counselors & Support</div>
+                    <div class="card-tag">PEOPLE</div>
+                </div>
+                <p>See trusted contacts, emergency numbers, and quick ways to reach real people.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Emergency 108</div>
+                    <div class="small-chip">iCall & AASRA</div>
+                    <div class="small-chip">1:1 help</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='meditation.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🧘</div>
+                    <div class="card-title">Guided Meditations</div>
+                    <div class="card-tag">5-15 MIN</div>
+                </div>
+                <p>Short breathing and body-scan sessions for exam panic or late-night overthinking.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Exam calm</div>
+                    <div class="small-chip">Sleep wind-down</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='games.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🎮</div>
+                    <div class="card-title">Relief Games</div>
+                    <div class="card-tag">PLAY</div>
+                </div>
+                <p>Very light games like "Throw worries away" to release tension without pressure.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Worry bin</div>
+                    <div class="small-chip">Tap & breathe</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='journal.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">📝</div>
+                    <div class="card-title">Reflect & Journal</div>
+                    <div class="card-tag">PRIVATE</div>
+                </div>
+                <p>Write freely, doodle, or save little notes so your thoughts don't stay stuck in your head.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Free writing</div>
+                    <div class="small-chip">Drawing canvas</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='gratitude.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill" style="background:linear-gradient(135deg,#faf5ff,#f3e8ff);color:#a855f7;">🙏</div>
+                    <div class="card-title">Gratitude Jar</div>
+                    <div class="card-tag" style="background:#faf5ff;color:#9333ea;">DAILY</div>
+                </div>
+                <p>Write what you're grateful for each day and watch your jar fill with positive moments.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Daily practice</div>
+                    <div class="small-chip">Positive focus</div>
+                    <div class="small-chip">Mood boost</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='diet.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🥗</div>
+                    <div class="card-title">Simple Diet Tips</div>
+                    <div class="card-tag">ENERGY</div>
+                </div>
+                <p>Very simple food ideas to keep your energy stable for classes, coding, and sleep.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Focus fuel</div>
+                    <div class="small-chip">Light dinners</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='chatbot.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">🤖</div>
+                    <div class="card-title">Calm Chatbot</div>
+                    <div class="card-tag">24/7</div>
+                </div>
+                <p>Type what you're feeling and get gentle suggestions, questions, and grounding ideas.</p>
+                <div class="chip-row">
+                    <div class="small-chip">No judgment</div>
+                    <div class="small-chip">Any time</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="window.location.href='routines.html'">
+                <div class="card-header-small">
+                    <div class="icon-pill">📋</div>
+                    <div class="card-title">Routine Templates</div>
+                    <div class="card-tag">DAILY PLANS</div>
+                </div>
+                <p>Structured daily routines for calming down, building energy, finding support, or winding down.</p>
+                <div class="chip-row">
+                    <div class="small-chip">Calm system</div>
+                    <div class="small-chip">Start energy</div>
+                    <div class="small-chip">Wind down</div>
+                </div>
+            </div>
+    <!-- Community Meetups Card - Colorful Version -->
+<div class="card community-card" onclick="window.location.href='community.html'">
+  <div class="card-header-small">
+    <div class="icon-pill" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#ec4899;">🤝</div>
+    <div class="card-title">Community Meetups</div>
+    <div class="card-tag" style="background:#fbbf24;color:#78350f;">COMING SOON</div>
+  </div>
+  <p>Join real-life support groups and wellness meetups in your city. Connect face-to-face with others on similar journeys.</p>
+  <div class="chip-row">
+    <div class="small-chip">🏙️ 15+ Cities</div>
+    <div class="small-chip">👥 Safe spaces</div>
+    <div class="small-chip">🎯 Group activities</div>
+  </div>
+</div>
+
+            <div class="card" onclick="window.location.href='sos.html'" style="border: 2px solid #ef4444;">
+                <div class="card-header-small">
+                    <div class="icon-pill" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#ef4444;">🚨</div>
+                    <div class="card-title" style="color:#dc2626;">SOS & Crisis Support</div>
+                    <div class="card-tag" style="background:#dc2626;color:white;">URGENT</div>
+                </div>
+                <p style="color:#991b1b;">Open the full safety page with helpline numbers, emergency contacts, and quick safety steps.</p>
+                <div class="chip-row">
+                    <div class="small-chip" style="background:#fee2e2;color:#991b1b;">Emergency 108</div>
+                    <div class="small-chip" style="background:#fee2e2;color:#991b1b;">iCall & AASRA</div>
+                    <div class="small-chip" style="background:#fee2e2;color:#991b1b;">Safety plan</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>Tip: You do not need to use everything. Even one tool is progress.</span>
+            <span><a href="#">Take healing assessment</a> to get your personalized recovery plan.</span>
+        </div>
+    </div>
+
+    <script>
+        function loadJSON(key) {
+            try { return JSON.parse(localStorage.getItem(key) || '{}'); }
+            catch { return {}; }
+        }
+
+        function saveJSON(key, obj) {
+            localStorage.setItem(key, JSON.stringify(obj));
+        }
+
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) return "Good morning";
+            if (hour < 17) return "Good afternoon";
+            if (hour < 21) return "Good evening";
+            return "Good night";
+        }
+
+        function loadProfilePhoto() {
+            const photoData = localStorage.getItem("userProfilePhoto");
+            if (photoData) {
+                const avatar = document.getElementById("profileAvatar");
+                const avatarLarge = document.getElementById("profileAvatarLarge");
+                
+                avatar.innerHTML = `<img src="${photoData}" alt="Profile">`;
+                avatarLarge.innerHTML = `<img src="${photoData}" alt="Profile">`;
+            }
+        }
+
+        function loadProfile() {
+            let profile = loadJSON("userProfile");
+            
+            if (!profile.name || profile.name === "Nidzzz") {
+                const userName = localStorage.getItem("userName");
+                const userEmail = localStorage.getItem("userEmail");
+                const userProfession = localStorage.getItem("userProfession") || localStorage.getItem("profession");
+                
+                if (userName) {
+                    profile.name = userName;
+                    profile.email = userEmail || "user@email.com";
+                    profile.profession = userProfession || "Student";
+                    saveJSON("userProfile", profile);
+                }
+            }
+            
+            const name = profile.name || "Friend";
+            const email = profile.email || "user@email.com";
+            const profession = profile.profession || "Student";
+            
+            document.getElementById("profileName").textContent = name;
+            document.getElementById("profileEmail").textContent = email;
+            document.getElementById("profileProfession").textContent = profession;
+            
+            const firstName = name.split(' ')[0];
+            const greeting = getGreeting();
+            document.querySelector(".hero-left h1").innerHTML = `${greeting}, <span id="heroName">${firstName}</span>!`;
+            
+            const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById("profileInitials").textContent = initials;
+            document.getElementById("profileInitialsLarge").textContent = initials;
+            document.getElementById("photoPreviewInitials").textContent = initials;
+            
+            loadProfilePhoto();
+        }
+
+        function updateWeeklyUsage() {
+            const now = new Date();
+            const weekStart = new Date(now.getTime() - 7*24*60*60*1000);
+
+            const allJournal = JSON.parse(localStorage.getItem("calmHubJournal") || "[]");
+            const journalThisWeek = allJournal.filter(entry => {
+                const ts = entry.timestamp || entry.date || entry.createdAt;
+                if (!ts) return false;
+                const d = new Date(ts);
+                return !Number.isNaN(d.getTime()) && d >= weekStart;
+            }).length;
+
+            const moods = loadJSON("calmHubMoods") || {};
+            const moodThisWeek = Object.keys(moods).filter(key => {
+                const date = new Date(key.replace(/-/g, '/'));
+                return date >= weekStart;
+            }).length;
+
+            const musicHours = Number(localStorage.getItem("calmHubMusicHoursWeek") || "0");
+            const chatCount = Number(localStorage.getItem("calmHubChatCountWeek") || "0");
+
+            document.getElementById("statJournal").textContent = journalThisWeek;
+            document.getElementById("statMood").textContent = moodThisWeek;
+            document.getElementById("statMusic").textContent = musicHours + "h";
+            document.getElementById("statChat").textContent = chatCount;
+            
+            const totalActivity = journalThisWeek + moodThisWeek + chatCount;
+            document.getElementById("statsBadge").textContent = totalActivity;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", isDark);
+            document.getElementById("darkModeBtn").textContent = isDark ? "☀️ Light" : "🌙 Dark";
+        }
+
+        function setBackground(bgType) {
+            document.body.classList.remove('bg-ocean', 'bg-forest');
+            
+            if (bgType === 'ocean') {
+                document.body.classList.add('bg-ocean');
+            } else if (bgType === 'forest') {
+                document.body.classList.add('bg-forest');
+            }
+            
+            localStorage.setItem('selectedBg', bgType);
+            
+            document.querySelectorAll('.bg-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            const activeOpt = document.querySelector(`.bg-option[data-bg="${bgType}"]`);
+            if (activeOpt) activeOpt.classList.add('active');
+        }
+
+        function renderCalendar() {
+            const now = new Date();
+            const month = now.toLocaleString('default', { month: 'long' });
+            const year = now.getFullYear();
+            
+            document.getElementById("calMonth").textContent = month;
+            document.getElementById("calYear").textContent = year;
+            
+            const firstDay = new Date(year, now.getMonth(), 1).getDay();
+            const daysInMonth = new Date(year, now.getMonth() + 1, 0).getDate();
+            
+            const grid = document.getElementById("calGrid");
+            grid.innerHTML = '';
+            
+            const dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+            dayNames.forEach(name => {
+                const el = document.createElement("div");
+                el.className = "day-name";
+                el.textContent = name;
+                grid.appendChild(el);
+            });
+            
+            for (let i = 0; i < firstDay; i++) {
+                const el = document.createElement("div");
+                grid.appendChild(el);
+            }
+            
+            const moods = loadJSON("calmHubMoods");
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const el = document.createElement("div");
+                el.className = "day-num";
+                el.textContent = day;
+                
+                if (day === now.getDate()) el.classList.add("today");
+                
+                const dateKey = `${year}-${String(now.getMonth() + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                const moodEntry = moods[dateKey];
+                const moodVal = typeof moodEntry === "string" ? moodEntry : (moodEntry ? moodEntry.mood : null);
+                if (moodVal === "very_good" || moodVal === "good") el.classList.add("good");
+                else if (moodVal === "okay") el.classList.add("ok");
+                else if (moodVal === "low" || moodVal === "very_low") el.classList.add("bad");
+                
+                grid.appendChild(el);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadProfile();
+            updateWeeklyUsage();
+            renderCalendar();
+            
+            if (localStorage.getItem("darkMode") === "true") {
+                document.body.classList.add("dark-mode");
+                document.getElementById("darkModeBtn").textContent = "☀️ Light";
+            }
+
+            const savedBg = localStorage.getItem('selectedBg') || 'default';
+            setBackground(savedBg);
+
+            // Photo Upload - FIXED
+            const photoInput = document.getElementById("photoInput");
+            const photoPreview = document.getElementById("photoPreview");
+            
+            photoInput.addEventListener("change", function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size < 2000000) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            photoPreview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert("Please upload an image under 2MB");
+                        photoInput.value = '';
+                    }
+                }
+            });
+
+            const editProfileBtn = document.getElementById("editProfileBtn");
+            const profileEditModal = document.getElementById("profileEditModal");
+            const closeModal = document.getElementById("closeModal");
+            const cancelEdit = document.getElementById("cancelEdit");
+            const profileForm = document.getElementById("profileForm");
+
+            editProfileBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                const profile = loadJSON("userProfile") || {};
+                document.getElementById("editName").value = profile.name || "Friend";
+                document.getElementById("editEmail").value = profile.email || "user@email.com";
+                document.getElementById("editProfession").value = profile.profession || "Student";
+                
+                const photoData = localStorage.getItem("userProfilePhoto");
+                if (photoData) {
+                    photoPreview.innerHTML = `<img src="${photoData}" alt="Preview">`;
+                } else {
+                    const initials = (profile.name || "N").split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    photoPreview.innerHTML = `<span id="photoPreviewInitials">${initials}</span>`;
+                }
+                
+                profileEditModal.classList.add("active");
+                document.getElementById("profileDropdown").classList.remove("active");
+            });
+
+            closeModal.addEventListener("click", function() {
+                profileEditModal.classList.remove("active");
+            });
+
+            cancelEdit.addEventListener("click", function() {
+                profileEditModal.classList.remove("active");
+            });
+
+            profileEditModal.addEventListener("click", function(e) {
+                if (e.target === profileEditModal) {
+                    profileEditModal.classList.remove("active");
+                }
+            });
+
+            // FIXED PROFILE SAVE - THIS WAS THE ISSUE!
+            profileForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                
+                const newName = document.getElementById("editName").value.trim() || "Friend";
+                const newEmail = document.getElementById("editEmail").value.trim() || "user@email.com";
+                const newProfession = document.getElementById("editProfession").value.trim() || "Student";
+                
+                const profile = {
+                    name: newName,
+                    email: newEmail,
+                    profession: newProfession
+                };
+                
+                // Save to all storage keys
+                saveJSON("userProfile", profile);
+                localStorage.setItem("userName", newName);
+                localStorage.setItem("userEmail", newEmail);
+                localStorage.setItem("userProfession", newProfession);
+                
+                // Save photo if changed
+                const img = photoPreview.querySelector('img');
+                if (img && img.src.startsWith('data:')) {
+                    localStorage.setItem("userProfilePhoto", img.src);
+                }
+                
+                // Reload profile display
+                loadProfile();
+                
+                // Close modal
+                profileEditModal.classList.remove("active");
+                
+                // Show success message
+                alert("Profile saved successfully! ✨");
+            });
+
+            const dashboardToggle = document.getElementById("dashboardToggle");
+            dashboardToggle.addEventListener("click", function() {
+                window.location.href = 'dashboard.html';
+            });
+
+            const profileAvatar = document.getElementById("profileAvatar");
+            const profileDropdown = document.getElementById("profileDropdown");
+            
+            profileAvatar.addEventListener("click", function(e) {
+                e.stopPropagation();
+                profileDropdown.classList.toggle("active");
+                document.getElementById("statsDropdown").classList.remove("active");
+                document.getElementById("bgDropdown").classList.remove("active");
+            });
+            
+            const statsCircle = document.getElementById("statsCircle");
+            const statsDropdown = document.getElementById("statsDropdown");
+            
+            statsCircle.addEventListener("click", function(e) {
+                e.stopPropagation();
+                statsDropdown.classList.toggle("active");
+                profileDropdown.classList.remove("active");
+                document.getElementById("bgDropdown").classList.remove("active");
+            });
+
+            const bgSelectorBtn = document.getElementById("bgSelectorBtn");
+            const bgDropdown = document.getElementById("bgDropdown");
+            
+            bgSelectorBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                bgDropdown.classList.toggle("active");
+                profileDropdown.classList.remove("active");
+                statsDropdown.classList.remove("active");
+            });
+
+            document.querySelectorAll('.bg-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const bgType = this.getAttribute('data-bg');
+                    setBackground(bgType);
+                });
+            });
+            
+            document.addEventListener("click", function(e) {
+                if (!profileDropdown.contains(e.target) && !profileAvatar.contains(e.target)) {
+                    profileDropdown.classList.remove("active");
+                }
+                if (!statsDropdown.contains(e.target) && !statsCircle.contains(e.target)) {
+                    statsDropdown.classList.remove("active");
+                }
+                if (!bgDropdown.contains(e.target) && !bgSelectorBtn.contains(e.target)) {
+                    bgDropdown.classList.remove("active");
+                }
+            });
+
+            document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
+            
+            document.getElementById("moodSelect").addEventListener("change", function() {
+                if (!this.value) return;
+                
+                const today = new Date().toISOString().split('T')[0];
+                const moods = loadJSON("calmHubMoods");
+                const moodNoteVal = (document.getElementById("moodNote").value || "").trim();
+                
+                moods[today] = {
+                    mood: this.value,
+                    note: moodNoteVal || null
+                };
+                saveJSON("calmHubMoods", moods);
+                
+                localStorage.setItem("lastMoodCheckin", today);
+                
+                updateWeeklyUsage();
+                alert("Mood saved for today! ✨");
+                renderCalendar();
+                this.value = "";
+                document.getElementById("moodNote").value = "";
+            });
+        });
+    </script>
+</body>
+</html>

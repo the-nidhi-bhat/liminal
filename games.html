@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calm Hub – Game Library</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                  url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: 30px 20px;
+      color: #0f172a;
+    }
+
+    /* DARK MODE – uses night.png */
+    body.dark {
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.98)),
+                  url("night.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #e5e7eb;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    body.dark .shell {
+      background: rgba(15,23,42,0.9);
+      border-color: rgba(148,163,184,0.7);
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(15,23,42,0.9) inset;
+    }
+
+    @keyframes floatUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-block h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .title-block p {
+      font-size: 16px;
+      color: #64748b;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    body.dark .title-block h1,
+    body.dark .title-block p {
+      color: #e5e7eb;
+    }
+
+    .back-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-link a {
+      font-size: 14px;
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-link a span {
+      color: #6366f1;
+      font-weight: 700;
+    }
+
+    .back-link a:hover { color: #334155; }
+
+    body.dark .back-link a { color: #cbd5f5; }
+
+    #themeToggle {
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+      font-size: 12px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    body.dark #themeToggle {
+      background: rgba(15,23,42,0.9);
+      border-color: rgba(55,65,81,1);
+      color: #e5e7eb;
+    }
+
+    .stats-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    body.dark .stats-chip {
+      background: rgba(15,23,42,0.9);
+      border-color: rgba(55,65,81,1);
+      color: #e5e7eb;
+    }
+
+    .filter-row {
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    body.dark .filter-row,
+    body.dark .filter-row span {
+      color: #cbd5e1;
+      border-color: rgba(51,65,85,0.9);
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+      font-weight: 500;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    body.dark .chip {
+      background: rgba(15,23,42,0.9);
+      border-color: rgba(55,65,81,1);
+      color: #e5e7eb;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      border-color: #e0e7ff;
+    }
+
+    .game-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(236, 72, 153, 0.03));
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .game-card:hover::after { opacity: 1; }
+
+    body.dark .game-card {
+      background: rgba(15,23,42,0.95);
+      border-color: rgba(51,65,85,0.9);
+      box-shadow: 0 18px 35px rgba(0,0,0,0.7);
+      color: #e5e7eb;
+    }
+
+    body.dark .game-card::after {
+      background: linear-gradient(135deg, rgba(59,130,246,0.14), rgba(236,72,153,0.08));
+    }
+
+    .game-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .game-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .game-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+      color: #4f46e5;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .game-card:hover .game-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .game-name {
+      font-size: 16px;
+      color: #1e293b;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    body.dark .game-name { color: #e5e7eb; }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #f0f9ff;
+      color: #0369a1;
+      white-space: nowrap;
+    }
+
+    body.dark .pill {
+      background: rgba(30,64,175,0.3);
+      color: #bfdbfe;
+    }
+
+    .game-desc {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    body.dark .game-desc { color: #cbd5e1; }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid #f8fafc;
+    }
+
+    body.dark .meta-row {
+      border-color: rgba(30,41,59,1);
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #dcfce7;
+    }
+
+    body.dark .badge {
+      background: rgba(21,128,61,0.15);
+      border-color: rgba(22,163,74,0.7);
+      color: #bbf7d0;
+    }
+
+    .time {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .time::before {
+      content: "⏱";
+      font-size: 10px;
+    }
+
+    body.dark .time { color: #cbd5f5; }
+
+    @media (max-width: 640px) {
+      .shell { padding: 24px 20px; }
+      .top-row { flex-direction: column; align-items: flex-start; }
+      .games-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- Header -->
+    <div class="top-row">
+      <div class="title-block">
+        <h1>Game Library</h1>
+        <p>Choose a gentle mini‑game to relax or lightly challenge your mind.</p>
+      </div>
+      <div class="back-row">
+        <div class="back-link">
+          <a href="journey.html">← <span>Back to Journey</span></a>
+        </div>
+        <button id="themeToggle">🌙 Dark mode</button>
+      </div>
+    </div>
+
+    <!-- Global stats -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px;flex-wrap:wrap;">
+      <div class="stats-chip">
+        🎮 Played this week:
+        <span id="gamesThisWeek" style="font-weight:700;">0</span> games
+      </div>
+      <div class="stats-chip">
+        Total games played:
+        <span id="gamesTotal" style="font-weight:700;">0</span>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-row">
+      <div class="filter-tags">
+        <span class="chip">Quick (2–5 min)</span>
+        <span class="chip">Low pressure</span>
+        <span class="chip">Focus · Calm · Logic</span>
+      </div>
+      <span>Tap a card to start playing. (14+ Games Total) 🎮</span>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="games-grid">
+      <div class="game-card" onclick="window.location.href='bubble-pop.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🫧</div>
+            <div class="game-name">Bubble Pop</div>
+          </div>
+          <span class="pill">Tap to pop</span>
+        </div>
+        <p class="game-desc">A small board of soft bubbles. Pop them one by one and enjoy the tiny, satisfying "pop" sound.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Visual</span>
+            <span class="badge">Sound On</span>
+          </div>
+          <span class="time">2–3 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='color-fill.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🎨</div>
+            <div class="game-name">Color Tiles</div>
+          </div>
+          <span class="pill">No rules</span>
+        </div>
+        <p class="game-desc">Tap tiles to paint a mini grid. Make simple patterns that match your mood—no right or wrong.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Creative</span>
+            <span class="badge">Touch</span>
+          </div>
+          <span class="time">3–5 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='throw-worry.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🗑️</div>
+            <div class="game-name">Worry Toss</div>
+          </div>
+          <span class="pill">Let it go</span>
+        </div>
+        <p class="game-desc">Type one small worry, watch it crumple into a paper ball, and toss it into a bin.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Journaling</span>
+            <span class="badge">Keyboard</span>
+          </div>
+          <span class="time">2–4 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='breathing-circle.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🟣</div>
+            <div class="game-name">Breath Circle</div>
+          </div>
+          <span class="pill">Guided</span>
+        </div>
+        <p class="game-desc">Soft circle grows/shrinks guiding perfect 4-4-4 breathing. Instant calm for exams.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Breathing</span>
+            <span class="badge">Gentle</span>
+          </div>
+          <span class="time">3 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='maze-runner.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🌀</div>
+            <div class="game-name">Maze Runner</div>
+          </div>
+          <span class="pill">Navigate</span>
+        </div>
+        <p class="game-desc">Guide a glowing ball through a maze to a golden exit. Smooth movement, perfect focus training.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Focus</span>
+            <span class="badge">Precision</span>
+            <span class="badge">Levels</span>
+          </div>
+          <span class="time">3–7 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='focus-dots.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🔵</div>
+            <div class="game-name">Focus Dots</div>
+          </div>
+          <span class="pill">Visual</span>
+        </div>
+        <p class="game-desc">Watch slow dots move and gently tap the one that glows a bit brighter. Pure mindful attention.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Mindful</span>
+            <span class="badge">Low input</span>
+          </div>
+          <span class="time">2–3 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='brain-teaser.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🧠</div>
+            <div class="game-name">Number Grid</div>
+          </div>
+          <span class="pill">Logic</span>
+        </div>
+        <p class="game-desc">Tap the numbers from 1 upward as they shuffle around a small grid. Wakes up your focus.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Attention</span>
+            <span class="badge">Memory</span>
+          </div>
+          <span class="time">3–5 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='calm-count.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🔢</div>
+            <div class="game-name">Calm Count</div>
+          </div>
+          <span class="pill">Numbers</span>
+        </div>
+        <p class="game-desc">See a short sequence of numbers, then repeat it from memory at your own pace.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Memory</span>
+          </div>
+          <span class="time">2–4 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='pattern-memory.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🟦</div>
+            <div class="game-name">Pattern Match</div>
+          </div>
+          <span class="pill">Sequence</span>
+        </div>
+        <p class="game-desc">Watch tiles flash, then tap them back in the same order. No timer, just pure focus.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Concentration</span>
+          </div>
+          <span class="time">3–5 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='word-path.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🔤</div>
+            <div class="game-name">Word Path</div>
+          </div>
+          <span class="pill">Puzzle</span>
+        </div>
+        <p class="game-desc">Connect letters on a small grid to find simple hidden words suggested by a hint.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Language</span>
+            <span class="badge">Light</span>
+          </div>
+          <span class="time">3–5 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='memory-match.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🧩</div>
+            <div class="game-name">Memory Match</div>
+          </div>
+          <span class="pill">Pairs</span>
+        </div>
+        <p class="game-desc">Flip gentle icon cards and find matching pairs. No timer, just quiet focus.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Memory</span>
+            <span class="badge">Calm</span>
+          </div>
+          <span class="time">3–6 min</span>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='color-therapy.html'">
+        <div class="game-header">
+          <div class="game-title-wrap">
+            <div class="game-icon">🌈</div>
+            <div class="game-name">Color Therapy</div>
+          </div>
+          <span class="pill">No rules</span>
+        </div>
+        <p class="game-desc">Tap tiles to fill soothing gradients and build a tiny color scene that matches your mood.</p>
+        <div class="meta-row">
+          <div class="badge-row">
+            <span class="badge">Creative</span>
+            <span class="badge">Visual</span>
+          </div>
+          <span class="time">3–5 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const THEME_KEY = "calmGameTheme";
+    const bodyEl = document.body;
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme === "dark") {
+      bodyEl.classList.add("dark");
+    }
+
+    function updateThemeButton() {
+      const btn = document.getElementById("themeToggle");
+      if (!btn) return;
+      const isDark = bodyEl.classList.contains("dark");
+      btn.textContent = isDark ? "☀ Light mode" : "🌙 Dark mode";
+    }
+
+    const STATS_KEY = "calmGameStats";
+    function loadStats() {
+      try {
+        return JSON.parse(localStorage.getItem(STATS_KEY)) || {
+          totalPlays: 0,
+          plays: []
+        };
+      } catch {
+        return { totalPlays: 0, plays: [] };
+      }
+    }
+    function computeWeeklyCount(stats) {
+      const now = new Date();
+      const weekMs = 7 * 24 * 60 * 60 * 1000;
+      let count = 0;
+      stats.plays.forEach(p => {
+        const d = new Date(p.date);
+        if (now - d <= weekMs) count++;
+      });
+      return count;
+    }
+    function updateStatsUI() {
+      const stats = loadStats();
+      const weekly = computeWeeklyCount(stats);
+      const totalSpan = document.getElementById("gamesTotal");
+      const weekSpan = document.getElementById("gamesThisWeek");
+      if (totalSpan) totalSpan.textContent = stats.totalPlays;
+      if (weekSpan) weekSpan.textContent = weekly;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const themeBtn = document.getElementById("themeToggle");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+          bodyEl.classList.toggle("dark");
+          const isDark = bodyEl.classList.contains("dark");
+          localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+          updateThemeButton();
+        });
+      }
+      updateThemeButton();
+      updateStatsUI();
+
+      // small UI sounds for cards
+      let audioCtx;
+      function getAudioCtx() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+      function playHover() {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(400, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(500, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.02, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.12);
+      }
+      function playCardClick() {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(600, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.12);
+      }
+      const cards = document.querySelectorAll(".game-card");
+      cards.forEach(card => {
+        card.addEventListener("mouseenter", () => playHover());
+        card.addEventListener("click", () => playCardClick());
+      });
+    });
+  </script>
+</body>
+</html>

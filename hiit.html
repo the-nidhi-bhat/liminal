@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIIT Workout – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:1000px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(239,68,68,0.8), rgba(251,191,36,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fca5a5 0%, #fbbf24 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* INTENSITY SELECTOR */
+    .intensity-selector {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin:24px 0;
+      flex-wrap:wrap;
+    }
+
+    .intensity-btn {
+      padding:12px 28px;
+      border-radius:20px;
+      border:2px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.8);
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .intensity-btn:hover {
+      border-color:rgba(239,68,68,0.5);
+      background:rgba(239,68,68,0.15);
+    }
+
+    .intensity-btn.active {
+      border-color:#ef4444;
+      background:linear-gradient(135deg, rgba(239,68,68,0.3), rgba(251,191,36,0.2));
+      color:#fbbf24;
+      box-shadow:0 8px 24px rgba(239,68,68,0.3);
+    }
+
+    /* WORKOUT SECTION */
+    .workout-section {
+      background:linear-gradient(145deg, rgba(239,68,68,0.15), rgba(251,191,36,0.1));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:32px 0;
+      border:1px solid rgba(239,68,68,0.3);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .workout-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(239,68,68,0.2), transparent 70%);
+      animation:pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity:0.5; }
+      50% { opacity:1; }
+    }
+
+    .exercise-display {
+      position:relative;
+      z-index:1;
+    }
+
+    .status-badge {
+      display:inline-block;
+      padding:10px 24px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .status-work {
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(239,68,68,0.5);
+      animation:pulse-badge 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.05); }
+    }
+
+    .status-rest {
+      background:linear-gradient(135deg, #10b981, #059669);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(16,185,129,0.5);
+    }
+
+    .status-prep {
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      color:#1e293b;
+      box-shadow:0 8px 24px rgba(251,191,36,0.5);
+    }
+
+    .exercise-icon {
+      font-size:120px;
+      margin-bottom:20px;
+      animation:bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform:translateY(0) scale(1); }
+      50% { transform:translateY(-20px) scale(1.1); }
+    }
+
+    .exercise-icon.rest {
+      animation:none;
+      filter:grayscale(0.5);
+    }
+
+    .exercise-name {
+      font-size:48px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:16px;
+      line-height:1.2;
+    }
+
+    .exercise-instruction {
+      font-size:18px;
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      line-height:1.6;
+      margin-bottom:32px;
+      padding:16px 24px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      max-width:600px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .timer-display {
+      font-size:140px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:32px 0;
+      font-variant-numeric:tabular-nums;
+      text-shadow:0 0 60px rgba(239,68,68,0.5);
+      line-height:1;
+    }
+
+    .timer-display.critical {
+      animation:shake 0.5s ease-in-out infinite;
+      color:#ef4444;
+      -webkit-text-fill-color:#ef4444;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform:translateX(0); }
+      25% { transform:translateX(-5px); }
+      75% { transform:translateX(5px); }
+    }
+
+    .next-exercise {
+      background:rgba(16,185,129,0.15);
+      border:1px solid rgba(16,185,129,0.3);
+      border-radius:16px;
+      padding:16px 24px;
+      margin-top:24px;
+      display:inline-block;
+    }
+
+    .next-exercise-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .next-exercise-name {
+      font-size:18px;
+      font-weight:700;
+      color:#10b981;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:center;
+    }
+
+    /* ROUND PROGRESS */
+    .round-section {
+      margin:32px 0;
+    }
+
+    .round-header {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .round-header span {
+      font-size:16px;
+      font-weight:700;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .round-num {
+      font-size:36px;
+      color:#ef4444;
+      font-weight:800;
+    }
+
+    .round-dots {
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .round-dot {
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      border:2px solid rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      font-weight:700;
+      color:rgba(255,255,255,0.5);
+      transition:all 0.3s;
+    }
+
+    .round-dot.completed {
+      background:linear-gradient(135deg, #10b981, #059669);
+      border-color:#10b981;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(16,185,129,0.4);
+    }
+
+    .round-dot.active {
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      border-color:#ef4444;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(239,68,68,0.4);
+      animation:pulse-dot 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.15); }
+    }
+
+    .progress-bar {
+      width:100%;
+      height:10px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:24px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #ef4444, #fbbf24);
+      border-radius:999px;
+      transition:width 0.3s;
+      box-shadow:0 0 20px rgba(239,68,68,0.6);
+    }
+
+    /* CALORIE COUNTER */
+    .calorie-counter {
+      background:linear-gradient(145deg, rgba(251,191,36,0.2), rgba(245,158,11,0.15));
+      border:1px solid rgba(251,191,36,0.3);
+      border-radius:20px;
+      padding:20px 28px;
+      display:inline-block;
+      margin-top:20px;
+    }
+
+    .calorie-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:4px;
+    }
+
+    .calorie-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color:#ffffff;
+      box-shadow:0 12px 32px rgba(239,68,68,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(239,68,68,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    /* STATS */
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(239,68,68,0.2);
+    }
+
+    .stat-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+      border-radius:20px;
+      border:1px solid rgba(16,185,129,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(16,185,129,0.3);
+      border-color:rgba(16,185,129,0.4);
+    }
+
+    .benefit-icon {
+      font-size:40px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .benefit-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .benefit-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.5;
+    }
+
+    /* EXERCISE LIST */
+    .exercises-preview {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .exercises-preview h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .exercises-list {
+      display:grid;
+      gap:12px;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    .exercise-preview-item {
+      padding:16px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      transition:all 0.3s;
+    }
+
+    .exercise-preview-item:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(4px);
+    }
+
+    .exercise-preview-icon {
+      font-size:32px;
+      flex-shrink:0;
+    }
+
+    .exercise-preview-content {
+      flex:1;
+      text-align:left;
+    }
+
+    .exercise-preview-name {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .exercise-preview-detail {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .timer-display { font-size:100px; }
+      .exercise-name { font-size:36px; }
+      .exercise-icon { font-size:80px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .intensity-selector { flex-direction:column; }
+      .intensity-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>🔥 HIIT Workout</h1>
+    <p class="subtitle">High-Intensity Interval Training • Maximum calorie burn • Get shredded!</p>
+
+    <!-- INTENSITY SELECTOR -->
+    <div class="intensity-selector">
+      <button class="intensity-btn" onclick="selectIntensity('beginner')" data-intensity="beginner">
+        🟢 Beginner (30s work / 20s rest)
+      </button>
+      <button class="intensity-btn active" onclick="selectIntensity('intermediate')" data-intensity="intermediate">
+        🟡 Intermediate (40s work / 15s rest)
+      </button>
+      <button class="intensity-btn" onclick="selectIntensity('advanced')" data-intensity="advanced">
+        🔴 Advanced (50s work / 10s rest)
+      </button>
+    </div>
+
+    <!-- WORKOUT SECTION -->
+    <div class="workout-section">
+      <div class="exercise-display">
+        <div class="status-badge status-prep" id="statusBadge">Get Ready!</div>
+        <div class="exercise-icon" id="exerciseIcon">🔥</div>
+        <div class="exercise-name" id="exerciseName">HIIT Challenge</div>
+        <div class="exercise-instruction" id="exerciseInstruction">
+          Prepare for an intense full-body workout. You'll do 8 exercises for multiple rounds. Let's get it! 💪
+        </div>
+        
+        <div class="timer-display" id="timer">5</div>
+        
+        <div class="next-exercise" id="nextExercise" style="display:none;">
+          <div class="next-exercise-label">Next Up:</div>
+          <div class="next-exercise-name" id="nextExerciseName">
+            <span id="nextExerciseIcon">🏃</span>
+            <span id="nextExerciseText">High Knees</span>
+          </div>
+        </div>
+
+        <div class="calorie-counter">
+          <div class="calorie-value" id="calorieCount">0</div>
+          <div class="calorie-label">Calories Burned 🔥</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUND PROGRESS -->
+    <div class="round-section">
+      <div class="round-header">
+        <span>Round</span>
+        <span class="round-num" id="roundNum">0</span>
+        <span>of <span id="totalRounds">3</span></span>
+      </div>
+      
+      <div class="round-dots" id="roundDots">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startWorkout()">▶ Start Workout</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseWorkout()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="stopWorkout()">⏹ Stop</button>
+      <button class="btn btn-secondary" onclick="skipPhase()">⏭ Skip</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="totalWorkouts">0</span>
+        <span class="stat-label">Workouts Done</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Minutes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="caloriesBurned">0</span>
+        <span class="stat-label">Total Calories</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- EXERCISES PREVIEW -->
+    <div class="exercises-preview">
+      <h3>💪 Today's Exercises</h3>
+      <div class="exercises-list" id="exercisesList">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ HIIT Benefits</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">🔥</span>
+          <h4>Burns 2x Calories</h4>
+          <p>HIIT burns more calories in less time than steady cardio</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⚡</span>
+          <h4>Afterburn Effect</h4>
+          <p>Keep burning calories for 24+ hours after your workout</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">💪</span>
+          <h4>Builds Lean Muscle</h4>
+          <p>Preserves muscle while burning fat for a toned physique</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">❤️</span>
+          <h4>Heart Health</h4>
+          <p>Improves cardiovascular fitness and heart strength</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⏱️</span>
+          <h4>Time Efficient</h4>
+          <p>Get amazing results in just 15-20 minutes</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🧠</span>
+          <h4>Mental Boost</h4>
+          <p>Releases endorphins and reduces stress instantly</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const exerciseSets = {
+      beginner: {
+        exercises: [
+          { name: 'Jumping Jacks', icon: '🤸', instruction: 'Jump with arms and legs spread wide! Great cardio warmup.', work: 30, rest: 20 },
+          { name: 'High Knees', icon: '🏃', instruction: 'Run in place, bring knees up to chest height! Keep the pace!', work: 30, rest: 20 },
+          { name: 'Squats', icon: '🦵', instruction: 'Feet shoulder-width, lower hips back and down. Feel the burn!', work: 30, rest: 20 },
+          { name: 'Push-Ups', icon: '🦾', instruction: 'Hands under shoulders, lower chest, push up! Knees down OK.', work: 30, rest: 20 },
+          { name: 'Mountain Climbers', icon: '⛰️', instruction: 'Plank position, drive knees to chest alternating! Core power!', work: 30, rest: 20 },
+          { name: 'Lunges', icon: '🚶', instruction: 'Step forward, lower back knee. Alternate legs. Leg strength!', work: 30, rest: 20 },
+          { name: 'Plank Hold', icon: '🏋️', instruction: 'Forearms down, body straight. Hold strong! Core activation!', work: 30, rest: 20 },
+          { name: 'Butt Kicks', icon: '🦵', instruction: 'Run in place, kick heels to glutes! Keep moving!', work: 30, rest: 20 }
+        ],
+        rounds: 2,
+        totalTime: 7,
+        caloriesPerRound: 60
+      },
+      intermediate: {
+        exercises: [
+          { name: 'Jumping Jacks', icon: '🤸', instruction: 'Explosive jumps with full arm extension! Maximum energy!', work: 40, rest: 15 },
+          { name: 'High Knees', icon: '🏃', instruction: 'Drive knees to chest FAST! Pump those arms! Go hard!', work: 40, rest: 15 },
+          { name: 'Burpees', icon: '💥', instruction: 'Squat, plank, push-up, jump up! Full body blast!', work: 40, rest: 15 },
+          { name: 'Mountain Climbers', icon: '⛰️', instruction: 'Rapid knee drives in plank! Speed and power! Beast mode!', work: 40, rest: 15 },
+          { name: 'Jump Squats', icon: '🦘', instruction: 'Squat low, EXPLODE up into a jump! Land soft, repeat!', work: 40, rest: 15 },
+          { name: 'Plank Jacks', icon: '🏋️', instruction: 'Plank position, jump feet out and in! Keep core tight!', work: 40, rest: 15 },
+          { name: 'Bicycle Crunches', icon: '🚴', instruction: 'Alternating elbow to opposite knee! Abs on fire!', work: 40, rest: 15 },
+          { name: 'Star Jumps', icon: '⭐', instruction: 'Jump up spreading arms and legs into star shape! Explosive!', work: 40, rest: 15 }
+        ],
+        rounds: 3,
+        totalTime: 14,
+        caloriesPerRound: 80
+      },
+      advanced: {
+        exercises: [
+          { name: 'Burpee Jump', icon: '💥', instruction: 'Full burpee with MAXIMUM jump height! Absolute beast mode!', work: 50, rest: 10 },
+          { name: 'High Knees Sprint', icon: '🏃', instruction: 'Sprint in place at MAX speed! Knees UP! All out effort!', work: 50, rest: 10 },
+          { name: 'Jump Squats', icon: '🦘', instruction: 'Deep squat, explosive jump! Land controlled, repeat! Power!', work: 50, rest: 10 },
+          { name: 'Burpee Tuck Jump', icon: '🤸', instruction: 'Burpee then tuck jump bringing knees to chest! INSANE!', work: 50, rest: 10 },
+          { name: 'Mountain Climber Sprint', icon: '⛰️', instruction: 'Fastest mountain climbers possible! Sprint those knees!', work: 50, rest: 10 },
+          { name: 'Plank Jack Burpees', icon: '🏋️', instruction: 'Plank jacks into burpee! Ultimate combo! You got this!', work: 50, rest: 10 },
+          { name: 'Split Jump Lunges', icon: '🚀', instruction: 'Jump and switch lunge position mid-air! Explosive power!', work: 50, rest: 10 },
+          { name: 'Speed Skaters', icon: '⛸️', instruction: 'Lateral jumps side to side at MAX speed! Explosive agility!', work: 50, rest: 10 }
+        ],
+        rounds: 4,
+        totalTime: 20,
+        caloriesPerRound: 100
+      }
+    };
+
+    let currentIntensity = 'intermediate';
+    let currentExercise = 0;
+    let currentRound = 0;
+    let isResting = false;
+    let isPrep = true;
+    let timeLeft = 5;
+    let isRunning = false;
+    let interval;
+    let sessionCalories = 0;
+    let totalWorkouts = parseInt(localStorage.getItem('hiitWorkouts') || '0');
+    let totalMins = parseInt(localStorage.getItem('hiitMinutes') || '0');
+    let totalCalories = parseInt(localStorage.getItem('hiitCalories') || '0');
+
+    document.getElementById('totalWorkouts').textContent = totalWorkouts;
+    document.getElementById('totalMinutes').textContent = totalMins;
+    document.getElementById('caloriesBurned').textContent = totalCalories;
+
+    const lastDate = localStorage.getItem('hiitLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('hiitStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    // Initialize
+    updateExercisesList();
+    updateRoundDots();
+
+    function selectIntensity(intensity) {
+      if (isRunning) {
+        alert('Stop the current workout first!');
+        return;
+      }
+      
+      currentIntensity = intensity;
+      document.querySelectorAll('.intensity-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-intensity="${intensity}"]`).classList.add('active');
+      
+      updateExercisesList();
+      updateRoundDots();
+      document.getElementById('totalRounds').textContent = exerciseSets[currentIntensity].rounds;
+    }
+
+    function updateExercisesList() {
+      const set = exerciseSets[currentIntensity];
+      const html = set.exercises.map((ex, i) => `
+        <div class="exercise-preview-item">
+          <div class="exercise-preview-icon">${ex.icon}</div>
+          <div class="exercise-preview-content">
+            <div class="exercise-preview-name">${i + 1}. ${ex.name}</div>
+            <div class="exercise-preview-detail">${ex.work}s work • ${ex.rest}s rest</div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('exercisesList').innerHTML = html;
+    }
+
+    function updateRoundDots() {
+      const set = exerciseSets[currentIntensity];
+      const html = Array(set.rounds).fill(0).map((_, i) => {
+        const completed = i < currentRound;
+        const active = i === currentRound && currentRound > 0;
+        return `<div class="round-dot ${completed ? 'completed' : ''} ${active ? 'active' : ''}">${i + 1}</div>`;
+      }).join('');
+      document.getElementById('roundDots').innerHTML = html;
+    }
+
+    function startWorkout() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      if (isPrep && currentRound === 0) {
+        currentRound = 1;
+        document.getElementById('roundNum').textContent = currentRound;
+        updateRoundDots();
+        runPreparation();
+      } else {
+        runPhase();
+      }
+    }
+
+    function pauseWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function stopWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      currentRound = 0;
+      currentExercise = 0;
+      isResting = false;
+      isPrep = true;
+      timeLeft = 5;
+      sessionCalories = 0;
+      
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('exerciseIcon').textContent = '🔥';
+      document.getElementById('exerciseName').textContent = 'HIIT Challenge';
+      document.getElementById('exerciseInstruction').textContent = 'Prepare for an intense full-body workout. You\'ll do 8 exercises for multiple rounds. Let\'s get it! 💪';
+      document.getElementById('statusBadge').className = 'status-badge status-prep';
+      document.getElementById('statusBadge').textContent = 'Get Ready!';
+      document.getElementById('timer').className = 'timer-display';
+      document.getElementById('timer').textContent = '5';
+      document.getElementById('roundNum').textContent = '0';
+      document.getElementById('calorieCount').textContent = '0';
+      document.getElementById('progress').style.width = '0%';
+      document.getElementById('nextExercise').style.display = 'none';
+      updateRoundDots();
+    }
+
+    function skipPhase() {
+      if (!isRunning) return;
+      clearInterval(interval);
+      timeLeft = 0;
+    }
+
+    function runPreparation() {
+      isPrep = true;
+      timeLeft = 5;
+      
+      document.getElementById('statusBadge').className = 'status-badge status-prep';
+      document.getElementById('statusBadge').textContent = 'Get Ready!';
+      document.getElementById('exerciseIcon').textContent = '⚡';
+      document.getElementById('exerciseName').textContent = 'Starting in...';
+      document.getElementById('exerciseInstruction').textContent = 'Get into position! The workout is about to begin!';
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 3) {
+          document.getElementById('timer').classList.add('critical');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          document.getElementById('timer').classList.remove('critical');
+          isPrep = false;
+          currentExercise = 0;
+          isResting = false;
+          runPhase();
+        }
+      }, 1000);
+    }
+
+    function runPhase() {
+      if (!isRunning) return;
+
+      const set = exerciseSets[currentIntensity];
+      const exercise = set.exercises[currentExercise];
+      
+      if (!isResting) {
+        // WORK PHASE
+        timeLeft = exercise.work;
+        document.getElementById('statusBadge').className = 'status-badge status-work';
+        document.getElementById('statusBadge').textContent = '💪 WORK HARD!';
+        document.getElementById('exerciseIcon').textContent = exercise.icon;
+        document.getElementById('exerciseIcon').classList.remove('rest');
+        document.getElementById('exerciseName').textContent = exercise.name;
+        document.getElementById('exerciseInstruction').textContent = exercise.instruction;
+        
+        // Show next exercise
+        const nextIdx = (currentExercise + 1) % set.exercises.length;
+        const nextEx = set.exercises[nextIdx];
+        document.getElementById('nextExercise').style.display = 'inline-block';
+        document.getElementById('nextExerciseIcon').textContent = nextEx.icon;
+        document.getElementById('nextExerciseText').textContent = nextEx.name;
+      } else {
+        // REST PHASE
+        timeLeft = exercise.rest;
+        document.getElementById('statusBadge').className = 'status-badge status-rest';
+        document.getElementById('statusBadge').textContent = '💧 Rest & Recover';
+        document.getElementById('exerciseIcon').classList.add('rest');
+        document.getElementById('exerciseName').textContent = 'Breathe & Recover';
+        document.getElementById('exerciseInstruction').textContent = 'Catch your breath! Next exercise coming up...';
+      }
+
+      const totalTime = isResting ? exercise.rest : exercise.work;
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 3 && timeLeft > 0) {
+          document.getElementById('timer').classList.add('critical');
+        } else {
+          document.getElementById('timer').classList.remove('critical');
+        }
+        
+        // Update progress
+        const totalExercises = set.exercises.length * set.rounds;
+        const completedExercises = (currentRound - 1) * set.exercises.length + currentExercise;
+        const phaseProgress = ((totalTime - timeLeft) / totalTime) * (1 / totalExercises);
+        const overallProgress = (completedExercises / totalExercises) + phaseProgress;
+        document.getElementById('progress').style.width = (overallProgress * 100) + '%';
+        
+        // Update calories (1 cal per 3 seconds of work)
+        if (!isResting && timeLeft % 3 === 0) {
+          sessionCalories++;
+          document.getElementById('calorieCount').textContent = sessionCalories;
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          
+          if (!isResting) {
+            // Work done, go to rest
+            isResting = true;
+            runPhase();
+          } else {
+            // Rest done, next exercise
+            isResting = false;
+            currentExercise++;
+            
+            if (currentExercise >= set.exercises.length) {
+              // Round complete
+              currentExercise = 0;
+              currentRound++;
+              document.getElementById('roundNum').textContent = currentRound;
+              updateRoundDots();
+              
+              if (currentRound > set.rounds) {
+                completeWorkout();
+                return;
+              }
+            }
+            
+            runPhase();
+          }
+        }
+      }, 1000);
+    }
+
+    function completeWorkout() {
+      isRunning = false;
+      clearInterval(interval);
+      
+      const set = exerciseSets[currentIntensity];
+      
+      totalWorkouts++;
+      totalMins += set.totalTime;
+      totalCalories += sessionCalories;
+      
+      localStorage.setItem('hiitWorkouts', totalWorkouts);
+      localStorage.setItem('hiitMinutes', totalMins);
+      localStorage.setItem('hiitCalories', totalCalories);
+      
+      const lastDate = localStorage.getItem('hiitLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('hiitStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('hiitStreak', streak);
+        localStorage.setItem('hiitLastDate', today);
+      }
+      
+      document.getElementById('totalWorkouts').textContent = totalWorkouts;
+      document.getElementById('totalMinutes').textContent = totalMins;
+      document.getElementById('caloriesBurned').textContent = totalCalories;
+      document.getElementById('currentStreak').textContent = streak;
+      
+      document.getElementById('statusBadge').className = 'status-badge status-work';
+      document.getElementById('statusBadge').textContent = '🏆 CHAMPION!';
+      document.getElementById('exerciseIcon').textContent = '🏆';
+      document.getElementById('exerciseName').textContent = 'WORKOUT COMPLETE!';
+      document.getElementById('exerciseInstruction').textContent = 'You absolutely CRUSHED it! You\'re a machine! 💪🔥';
+      document.getElementById('timer').textContent = '✨';
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('nextExercise').style.display = 'none';
+      
+      setTimeout(() => {
+        alert(`🔥 HIIT WORKOUT COMPLETE!\n\n✅ ${set.totalTime} minutes completed\n💪 ${set.rounds} rounds crushed\n🔥 ~${sessionCalories} calories burned\n🏆 ${streak} day streak\n\nYou're an absolute BEAST! 💪\nKeep this momentum going!`);
+        stopWorkout();
+      }, 500);
+    }
+  </script>
+</body>
+</html>

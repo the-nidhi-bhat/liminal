@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sleep Wind‑Down Body Scan – Calm Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin:0; padding:0; box-sizing:border-box;
+      font-family:"Poppins",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    body {
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:24px 12px;
+      background:#0a0118;
+      overflow:hidden;
+      position:relative;
+      color:#e5e7eb;
+    }
+
+    .bg-layer {
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:-5;
+      background:
+        radial-gradient(circle at 25% 15%, rgba(139,92,246,0.2) 0%, transparent 55%),
+        radial-gradient(circle at 75% 85%, rgba(192,132,252,0.15) 0%, transparent 50%),
+        #0a0118;
+    }
+
+    .star {
+      position:absolute;
+      background:#e5e7eb;
+      border-radius:50%;
+      box-shadow:0 0 3px rgba(255,255,255,0.6);
+      opacity:0.9;
+      transform:scale(0.9);
+      animation:starTwinkle 3s ease-in-out infinite alternate;
+    }
+
+    .star-orbit {
+      position:absolute;
+      width:4px;
+      height:4px;
+      border-radius:999px;
+      background:rgba(248,250,252,0.95);
+      box-shadow:0 0 4px rgba(248,250,252,0.8);
+      opacity:0.9;
+      animation:starTwinkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes starTwinkle {
+      0% {
+        opacity:0.3;
+        transform:scale(0.7);
+      }
+      50% {
+        opacity:1;
+        transform:scale(1.1);
+      }
+      100% {
+        opacity:0.4;
+        transform:scale(0.8);
+      }
+    }
+
+    .bg-gradient {
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(ellipse at 10% 20%, rgba(139,92,246,0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(236,72,153,0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.2) 0%, transparent 60%);
+      animation:nebulaFloat 28s ease-in-out infinite alternate;
+      z-index:-4;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    @keyframes nebulaFloat {
+      0% {
+        transform:translate3d(0, 0, 0) scale(1);
+        opacity:0.7;
+      }
+      100% {
+        transform:translate3d(15px, -20px, 0) scale(1.05);
+        opacity:0.85;
+      }
+    }
+
+    .bg-orb {
+      position:fixed;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:0.35;
+      mix-blend-mode:screen;
+      z-index:-3;
+      animation:orbDrift 35s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+
+    .bg-orb.orb-1 {
+      width:480px; height:480px;
+      background:radial-gradient(circle, rgba(139,92,246,0.5), rgba(168,85,247,0.3), transparent);
+      top:8%; left:-10%;
+      animation-duration:42s;
+    }
+
+    .bg-orb.orb-2 {
+      width:520px; height:520px;
+      background:radial-gradient(circle, rgba(236,72,153,0.4), rgba(219,39,119,0.2), transparent);
+      bottom:-12%; right:-8%;
+      animation-duration:48s;
+    }
+
+    .bg-orb.orb-3 {
+      width:340px; height:340px;
+      background:radial-gradient(circle, rgba(192,132,252,0.5), rgba(168,85,247,0.3), transparent);
+      top:55%; right:10%;
+      animation-duration:40s;
+    }
+
+    @keyframes orbDrift {
+      0% {
+        transform:translate3d(0,0,0) scale(1);
+        opacity:0.3;
+      }
+      50% {
+        opacity:0.45;
+      }
+      100% {
+        transform:translate3d(25px,-25px,0) scale(1.12);
+        opacity:0.35;
+      }
+    }
+
+    .shooting-star {
+      position:fixed;
+      width:3px;
+      height:100px;
+      background:linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(192,132,252,0.6), transparent);
+      border-radius:999px;
+      box-shadow:0 0 8px rgba(255,255,255,0.8), 0 0 15px rgba(192,132,252,0.5);
+      pointer-events:none;
+      opacity:0;
+      transform:rotate(130deg);
+      z-index:-1;
+      animation:shooting 1.4s ease-out forwards;
+    }
+
+    @keyframes shooting {
+      0% {
+        opacity:0;
+        transform:translate3d(0,0,0) rotate(130deg);
+      }
+      8% {
+        opacity:1;
+      }
+      100% {
+        opacity:0;
+        transform:translate3d(-45vw, 45vh, 0) rotate(130deg);
+      }
+    }
+
+    .shell {
+      width:100%;
+      max-width:920px;
+      border-radius:36px;
+      padding:36px 32px 32px;
+      background:linear-gradient(145deg,rgba(15,23,42,0.98),rgba(15,23,42,0.95));
+      border:1px solid rgba(167,139,250,0.35);
+      box-shadow:
+        0 40px 80px rgba(10,1,24,0.95),
+        0 0 0 1px rgba(139,92,246,0.15),
+        inset 0 1px 0 rgba(248,250,252,0.08);
+      backdrop-filter:blur(40px);
+      -webkit-backdrop-filter:blur(40px);
+      position:relative;
+      overflow:hidden;
+    }
+    .shell::before {
+      content:"";
+      position:absolute;
+      inset:-180px -60px auto auto;
+      background:
+        radial-gradient(circle at top,rgba(139,92,246,0.5),transparent 70%),
+        radial-gradient(circle at bottom left,rgba(192,132,252,0.25),transparent 75%);
+      opacity:0.85;
+      pointer-events:none;
+      filter:blur(50px);
+    }
+    .shell::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:36px;
+      padding:1px;
+      background:linear-gradient(145deg, rgba(167,139,250,0.3), rgba(236,72,153,0.2));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+      opacity:0.6;
+    }
+
+    .inner {
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:row;
+      gap:28px;
+    }
+    .left-col, .right-col { flex:1; min-width:0; }
+
+    .top-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .title-block h1 {
+      font-size:26px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:600;
+      letter-spacing:-0.02em;
+      background:linear-gradient(135deg, #e5e7eb 0%, #cbd5e1 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .title-block h1 span.icon { 
+      font-size:28px;
+      filter:drop-shadow(0 0 8px rgba(248,250,252,0.5));
+    }
+    .title-block p {
+      font-size:13px;
+      color:#cbd5f5;
+      margin-top:6px;
+      max-width:420px;
+      font-weight:300;
+      line-height:1.5;
+    }
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(167,139,250,0.4);
+      background:rgba(15,23,42,0.9);
+      color:#e5e7eb;
+      font-size:12px;
+      font-weight:500;
+      text-decoration:none;
+      box-shadow:0 4px 12px rgba(10,1,24,0.6), inset 0 1px 0 rgba(248,250,252,0.06);
+      transition:all 0.2s ease;
+    }
+    .back-link a:hover { 
+      background:rgba(20,28,52,0.95);
+      border-color:rgba(167,139,250,0.6);
+      transform:translateY(-1px);
+      box-shadow:0 8px 20px rgba(139,92,246,0.4), inset 0 1px 0 rgba(248,250,252,0.1);
+    }
+
+    .shell-sub {
+      font-size:13px;
+      color:#94a3b8;
+      margin-bottom:16px;
+      font-weight:300;
+      line-height:1.6;
+    }
+
+    .age-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:20px;
+      font-size:13px;
+      color:#cbd5f5;
+      align-items:center;
+    }
+    .age-row span { 
+      font-weight:500;
+      color:#e5e7eb;
+    }
+    .age-pill {
+      border-radius:999px;
+      padding:8px 16px;
+      border:1px solid rgba(167,139,250,0.3);
+      background:rgba(15,23,42,0.8);
+      color:#cbd5e1;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:500;
+      transition:all 0.2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .age-pill::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(167,139,250,0.1), rgba(236,72,153,0.1));
+      opacity:0;
+      transition:opacity 0.2s ease;
+    }
+    .age-pill:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(139,92,246,0.3);
+      border-color:rgba(167,139,250,0.5);
+    }
+    .age-pill:hover::before {
+      opacity:1;
+    }
+    .age-pill.active {
+      background:linear-gradient(135deg, rgba(167,139,250,0.25), rgba(236,72,153,0.2));
+      color:#f8fafc;
+      border:1px solid rgba(167,139,250,0.6);
+      box-shadow:0 0 0 1px rgba(167,139,250,0.3), 0 8px 24px rgba(139,92,246,0.4);
+      font-weight:600;
+    }
+
+    .btn {
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      padding:12px 24px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:linear-gradient(135deg,#a78bfa 0%,#ec4899 100%);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(139,92,246,0.5), 0 4px 12px rgba(236,72,153,0.3);
+      transition:all 0.2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity:0;
+      transition:opacity 0.2s ease;
+    }
+    .btn[disabled] {
+      opacity:0.4;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+    .btn:hover:not([disabled]) {
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(139,92,246,0.6), 0 8px 20px rgba(236,72,153,0.4);
+    }
+    .btn:hover:not([disabled])::before {
+      opacity:1;
+    }
+    .btn:active:not([disabled]) {
+      transform:translateY(0px);
+    }
+
+    .sleep-mood {
+      height:100%;
+      border-radius:28px;
+      padding:24px;
+      background:linear-gradient(145deg,rgba(15,23,42,0.98),rgba(10,1,24,0.95));
+      border:1px solid rgba(167,139,250,0.25);
+      box-shadow:
+        0 20px 50px rgba(10,1,24,0.8),
+        inset 0 1px 0 rgba(248,250,252,0.05);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      position:relative;
+      overflow:hidden;
+    }
+    .sleep-mood::before {
+      content:"";
+      position:absolute;
+      top:-50%;
+      right:-30%;
+      width:200px;
+      height:200px;
+      background:radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
+      border-radius:50%;
+      filter:blur(40px);
+      pointer-events:none;
+    }
+    .moon-orbit {
+      width:100%;
+      aspect-ratio:4/3;
+      border-radius:24px;
+      background:
+        radial-gradient(circle at 20% 15%,rgba(248,250,252,0.12),transparent 60%),
+        radial-gradient(circle at 80% 85%,rgba(192,132,252,0.08),transparent 75%),
+        radial-gradient(circle at 50% 50%,rgba(99,102,241,0.05),transparent 80%);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(167,139,250,0.1);
+    }
+    .moon {
+      position:absolute;
+      top:18%; left:18%;
+      width:52px; height:52px;
+      border-radius:50%;
+      background:linear-gradient(145deg, #f9fafb, #e5e7eb);
+      box-shadow:
+        0 0 24px rgba(248,250,252,0.9),
+        0 0 48px rgba(248,250,252,0.5),
+        inset -2px -2px 8px rgba(203,213,225,0.3);
+      animation:moonDrift 22s ease-in-out infinite alternate;
+    }
+    @keyframes moonDrift {
+      0% { transform:translate3d(0,0,0); }
+      100% { transform:translate3d(12px,6px,0); }
+    }
+
+    .mood-text {
+      margin-top:16px;
+      font-size:13px;
+      color:#cbd5f5;
+      line-height:1.7;
+      font-weight:300;
+      position:relative;
+      z-index:1;
+    }
+    .mood-tip {
+      font-size:12px;
+      color:#94a3b8;
+      margin-top:12px;
+      font-weight:300;
+      line-height:1.6;
+      padding:12px;
+      background:rgba(15,23,42,0.6);
+      border-radius:12px;
+      border:1px solid rgba(167,139,250,0.15);
+      position:relative;
+      z-index:1;
+    }
+
+    .music-toggle {
+      position:fixed;
+      bottom:24px;
+      right:24px;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:none;
+      background:linear-gradient(135deg,#a78bfa,#ec4899);
+      color:#fff;
+      font-size:22px;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(139,92,246,0.5), 0 4px 12px rgba(236,72,153,0.3);
+      transition:all 0.2s ease;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .music-toggle:hover {
+      transform:scale(1.08) translateY(-2px);
+      box-shadow:0 12px 32px rgba(139,92,246,0.6), 0 6px 16px rgba(236,72,153,0.4);
+    }
+    .music-toggle:active {
+      transform:scale(1.02);
+    }
+    .music-toggle.muted {
+      opacity:0.5;
+      background:linear-gradient(135deg,#4b5563,#374151);
+      box-shadow:0 4px 12px rgba(31,41,55,0.5);
+    }
+
+    .modal {
+      position:fixed;
+      inset:0;
+      background:rgba(10,1,24,0.85);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+    }
+    .modal.show { display:flex; }
+
+    .modal-content {
+      background:linear-gradient(145deg, rgba(15,23,42,0.98), rgba(10,1,24,0.96));
+      color:#e5e7eb;
+      border-radius:24px;
+      padding:28px;
+      max-width:520px;
+      width:94%;
+      box-shadow:
+        0 40px 80px rgba(10,1,24,0.95),
+        0 0 0 1px rgba(167,139,250,0.2);
+      position:relative;
+      border:1px solid rgba(167,139,250,0.35);
+      animation:modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter:blur(20px);
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform:translateY(24px) scale(0.95); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+    .modal-close {
+      position:absolute;
+      top:12px;
+      right:14px;
+      border:none;
+      background:rgba(15,23,42,0.6);
+      color:#94a3b8;
+      font-size:20px;
+      cursor:pointer;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all 0.2s ease;
+      border:1px solid rgba(148,163,184,0.2);
+    }
+    .modal-close:hover {
+      background:rgba(239,68,68,0.2);
+      color:#fca5a5;
+      border-color:rgba(239,68,68,0.3);
+      transform:rotate(90deg);
+    }
+    .modal-content input[type="text"] {
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(167,139,250,0.25);
+      background:rgba(15,23,42,0.8);
+      color:#e5e7eb;
+      font-size:13px;
+      margin-top:6px;
+      transition:all 0.2s ease;
+    }
+    .modal-content input[type="text"]:focus {
+      outline:none;
+      border-color:rgba(167,139,250,0.5);
+      box-shadow:0 0 0 3px rgba(167,139,250,0.1);
+      background:rgba(15,23,42,0.95);
+    }
+    .modal-content input[type="range"] {
+      width:100%;
+      accent-color:#a78bfa;
+      height:6px;
+      cursor:pointer;
+    }
+    .modal-content input[type="number"] {
+      background:rgba(15,23,42,0.8);
+      color:#e5e7eb;
+      border:1px solid rgba(167,139,250,0.25);
+      border-radius:8px;
+      padding:6px 8px;
+      transition:all 0.2s ease;
+    }
+    .modal-content input[type="number"]:focus {
+      outline:none;
+      border-color:rgba(167,139,250,0.5);
+      box-shadow:0 0 0 3px rgba(167,139,250,0.1);
+    }
+    .modal-btn {
+      margin-top:12px;
+      margin-right:8px;
+      padding:10px 20px;
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      background:linear-gradient(135deg,#a78bfa,#ec4899);
+      color:#fff;
+      box-shadow:0 8px 24px rgba(139,92,246,0.5);
+      transition:all 0.2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .modal-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 12px 32px rgba(139,92,246,0.6);
+    }
+    .modal-btn:active {
+      transform:translateY(0);
+    }
+    .modal-btn.secondary {
+      background:rgba(148,163,184,0.15);
+      color:#cbd5e1;
+      box-shadow:none;
+      border:1px solid rgba(148,163,184,0.3);
+    }
+    .modal-btn.secondary:hover {
+      background:rgba(148,163,184,0.25);
+      border-color:rgba(148,163,184,0.4);
+    }
+    .modal-output {
+      margin-top:16px;
+      font-size:13px;
+      color:#cbd5f5;
+      line-height:1.7;
+      min-height:60px;
+      padding:14px;
+      background:rgba(167,139,250,0.05);
+      border-radius:12px;
+      border:1px solid rgba(167,139,250,0.15);
+    }
+
+    #breathCircle {
+      width:80px;
+      height:80px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#f3e8ff,#c084fc 50%,#a855f7);
+      box-shadow:
+        0 0 30px rgba(167,139,250,0.8),
+        0 0 60px rgba(192,132,252,0.4),
+        inset 0 2px 8px rgba(255,255,255,0.3);
+      transform:scale(0.85);
+      transition:transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out;
+      opacity:0.9;
+      position:relative;
+    }
+    #breathCircle::after {
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:50%;
+      background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.4), transparent 60%);
+      pointer-events:none;
+    }
+    #breathCircle.inhale {
+      transform:scale(1.15);
+      box-shadow:
+        0 0 40px rgba(167,139,250,1),
+        0 0 80px rgba(192,132,252,0.6),
+        inset 0 2px 12px rgba(255,255,255,0.4);
+    }
+    #breathCircle.exhale {
+      transform:scale(0.7);
+      opacity:0.75;
+      box-shadow:
+        0 0 20px rgba(167,139,250,0.6),
+        0 0 40px rgba(192,132,252,0.3),
+        inset 0 2px 6px rgba(255,255,255,0.2);
+    }
+    #breathCircle.rest {
+      transform:scale(0.85);
+    }
+
+    @media (max-width:768px){
+      .inner { flex-direction:column; }
+      .shell { 
+        padding:28px 20px 24px; 
+        max-width:720px;
+        border-radius:28px;
+      }
+      .title-block h1 {
+        font-size:22px;
+      }
+      .top-row {
+        margin-bottom:12px;
+      }
+      .sleep-mood {
+        min-height:400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-layer" id="bgLayer"></div>
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <script>
+    const bgLayer = document.getElementById("bgLayer");
+    const STAR_COUNT = 120;
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const s = document.createElement("div");
+      s.className = "star";
+      const size = Math.random() * 2.5 + 0.6;
+      s.style.width = size + "px";
+      s.style.height = size + "px";
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.top = Math.random() * 100 + "vh";
+      s.style.animationDuration = (2.5 + Math.random() * 3.5) + "s";
+      s.style.animationDelay = (-Math.random() * 6) + "s";
+      
+      if (Math.random() > 0.8) {
+        s.style.background = "rgba(192,132,252,0.85)";
+      }
+      
+      bgLayer.appendChild(s);
+    }
+
+    function spawnShootingStar() {
+      const star = document.createElement("div");
+      star.className = "shooting-star";
+      star.style.right = (Math.random() * 20 - 5) + "vw";
+      star.style.top = (Math.random() * 40) + "vh";
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 1600);
+    }
+
+    function scheduleNextShootingStar() {
+      const delay = 4000 + Math.random() * 8000;
+      setTimeout(() => {
+        spawnShootingStar();
+        scheduleNextShootingStar();
+      }, delay);
+    }
+    setTimeout(scheduleNextShootingStar, 3000);
+  </script>
+
+  <div class="shell">
+    <div class="inner">
+      <div class="left-col">
+        <div class="top-row">
+          <div class="title-block">
+            <h1><span class="icon">🌙</span><span>Sleep Wind‑Down Body Scan</span></h1>
+            <p></p>
+          </div>
+          <div class="back-link">
+            <a href="meditation.html">
+              <span>←</span>
+              <span>Back to Guided Meditations</span>
+            </a>
+          </div>
+        </div>
+
+        <p class="shell-sub">
+          Step 1: choose your age. Step 2: open a personalised sleep exercise card to wind down from exams or work.
+        </p>
+
+        <div class="age-row" id="ageRow">
+          <span>Who is this for?</span>
+          <button class="age-pill" data-age="teen">Teen 13–18</button>
+          <button class="age-pill" data-age="college">18–25</button>
+          <button class="age-pill" data-age="youngAdult">26–40</button>
+          <button class="age-pill" data-age="midLife">41–60</button>
+          <button class="age-pill" data-age="retired">60+</button>
+        </div>
+
+        <button class="btn" id="openExerciseBtn" disabled>
+          ▶ Open my sleep exercise
+        </button>
+
+        <div id="progressBox" style="margin-top:14px;font-size:11px;color:#cbd5f5;">
+          <p id="progressSummary"></p>
+          <p id="progressStreak" style="margin-top:2px;"></p>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="sleep-mood">
+          <div>
+            <div class="moon-orbit">
+              <div class="moon"></div>
+              <div class="star-orbit" style="top:20%;left:70%;"></div>
+              <div class="star-orbit" style="top:35%;left:50%;width:3px;height:3px;"></div>
+              <div class="star-orbit" style="top:60%;left:30%;width:5px;height:5px;"></div>
+              <div class="star-orbit" style="top:75%;left:75%;"></div>
+              <div class="star-orbit" style="top:50%;left:15%;width:3px;height:3px;"></div>
+            </div>
+            <p class="mood-text">
+              Short, age‑based practices can make mindfulness exercises feel more relevant to your current life stage and stress.
+            </p>
+          </div>
+          <p class="mood-tip">
+            Spend a minute here, then put the phone down and actually try the suggested breathing and body steps in bed.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="ageExerciseModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModalBtn">&times;</button>
+
+      <p class="pill" id="modalAgeLabel" style="display:inline-block;margin-bottom:4px;"></p>
+      <h2 id="modalTitle" style="margin-top:2px;font-size:18px;"></h2>
+      <p id="modalDescription" style="font-size:12px;color:#9ca3af;margin-top:4px;"></p>
+
+      <div id="breathCircleWrapper" style="display:flex;flex-direction:column;align-items:center;margin-top:8px;">
+        <div id="breathCircle" class="rest"></div>
+        <p id="breathCue" style="font-size:11px;color:#cbd5f5;margin-top:6px;">
+          Follow the circle to breathe.
+        </p>
+      </div>
+
+      <div style="margin-top:10px;font-size:11px;color:#9ca3af;">
+        Breathing mode:
+        <label style="margin-right:8px;">
+          <input type="radio" name="mode" value="auto" id="modeAuto" checked>
+          Auto
+        </label>
+        <label>
+          <input type="radio" name="mode" value="custom" id="modeCustom">
+          Custom
+        </label>
+      </div>
+
+      <div id="customRatioBox" style="margin-top:8px;display:none;font-size:11px;color:#cbd5f5;">
+        <span>Custom ratio (seconds):</span>
+        <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
+          <label>Inhale
+            <input type="number" id="inhaleSec" min="2" max="6" value="4" style="width:48px;">
+          </label>
+          <label>Hold
+            <input type="number" id="holdSec" min="0" max="8" value="0" style="width:48px;">
+          </label>
+          <label>Exhale
+            <input type="number" id="exhaleSec" min="4" max="10" value="6" style="width:48px;">
+          </label>
+        </div>
+        <button class="modal-btn secondary" id="saveRatioBtn" style="margin-top:6px;">
+          💾 Save as my default ratio
+        </button>
+      </div>
+
+      <label style="display:block;font-size:13px;margin:14px 0 4px;">
+        How stressed do you feel right now? (1–10)
+        <input type="range" min="1" max="10" value="5" id="stressRange">
+        <span id="stressValue" style="font-size:12px;color:#cbd5f5;margin-left:4px;">5</span>
+      </label>
+
+      <label style="display:block;font-size:13px;margin:10px 0 4px;">
+        One thing on your mind:
+        <input type="text" id="thoughtInput" placeholder="e.g. tomorrow's maths paper" />
+      </label>
+
+      <button class="modal-btn" id="generatePlanBtn">
+        ✨ Generate wind‑down plan
+      </button>
+      <button class="modal-btn secondary" id="clearModalBtn">
+        ⟳ Clear
+      </button>
+
+      <p class="modal-output" id="planOutput"></p>
+    </div>
+  </div>
+
+  <button class="music-toggle" id="musicToggle">🔊</button>
+
+  <audio id="sleepingAudio" loop>
+    <source src="sleepingmusic.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const ageRow = document.getElementById("ageRow");
+    const openExerciseBtn = document.getElementById("openExerciseBtn");
+    const modal = document.getElementById("ageExerciseModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const modalAgeLabel = document.getElementById("modalAgeLabel");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const stressRange = document.getElementById("stressRange");
+    const stressValue = document.getElementById("stressValue");
+    const thoughtInput = document.getElementById("thoughtInput");
+    const planOutput = document.getElementById("planOutput");
+    const sleepingAudio = document.getElementById("sleepingAudio");
+    const musicToggle = document.getElementById("musicToggle");
+
+    const breathCircle = document.getElementById("breathCircle");
+    const breathCue = document.getElementById("breathCue");
+
+    const progressSummary = document.getElementById("progressSummary");
+    const progressStreak = document.getElementById("progressStreak");
+
+    const modeAuto = document.getElementById("modeAuto");
+    const modeCustom = document.getElementById("modeCustom");
+    const customRatioBox = document.getElementById("customRatioBox");
+    const inhaleSecInput = document.getElementById("inhaleSec");
+    const holdSecInput = document.getElementById("holdSec");
+    const exhaleSecInput = document.getElementById("exhaleSec");
+    const saveRatioBtn = document.getElementById("saveRatioBtn");
+    const generatePlanBtn = document.getElementById("generatePlanBtn");
+    const clearModalBtn = document.getElementById("clearModalBtn");
+
+    let customRatio = { inhale:4, hold:0, exhale:6 };
+    let currentAge = null;
+    let isMusicMuted = false;
+
+    const ageConfigs = {
+      teen: {
+        label: "Teen 13–18",
+        title: "Exam night wind down",
+        desc: "Quick reset for marks, overthinking and phone tired eyes."
+      },
+      college: {
+        label: "18–25",
+        title: "Campus sleep reset",
+        desc: "For assignments, placements and hostel brain that won't switch off."
+      },
+      youngAdult: {
+        label: "26–40",
+        title: "Work day cool down",
+        desc: "Let deadlines and commute stress wait till morning."
+      },
+      midLife: {
+        label: "41–60",
+        title: "Mid life sleep space",
+        desc: "Make room between responsibilities and rest."
+      },
+      retired: {
+        label: "60+ / retired",
+        title: "Gentle night landing",
+        desc: "Ease aches, worries and memories into a softer night."
+      }
+    };
+
+    function getTodayKey() {
+      const d = new Date();
+      return d.getFullYear() + "-" +
+        String(d.getMonth()+1).padStart(2,"0") + "-" +
+        String(d.getDate()).padStart(2,"0");
+    }
+
+    function loadProgress() {
+      const raw = localStorage.getItem("breathProgress");
+      if (!raw) {
+        progressSummary.textContent = "No sessions logged yet. Start tonight to build your streak.";
+        progressStreak.textContent = "";
+        return { totalSessions:0, streak:0, lastDate:null, totalMinutes:0 };
+      }
+      const data = JSON.parse(raw);
+      progressSummary.textContent =
+        "Total nights practised: " + data.totalSessions +
+        " • Approx minutes: " + data.totalMinutes;
+      progressStreak.textContent =
+        "Current streak: " + data.streak + " night(s) in a row.";
+      return data;
+    }
+
+    function saveProgress(data) {
+      localStorage.setItem("breathProgress", JSON.stringify(data));
+      progressData = loadProgress();
+    }
+
+    let progressData = loadProgress();
+
+    function loadCustomRatio() {
+      const raw = localStorage.getItem("breathRatio");
+      if (!raw) return;
+      customRatio = JSON.parse(raw);
+      inhaleSecInput.value = customRatio.inhale;
+      holdSecInput.value = customRatio.hold;
+      exhaleSecInput.value = customRatio.exhale;
+    }
+
+    function saveCustomRatioValues() {
+      const inh = Math.max(2, Math.min(6, Number(inhaleSecInput.value) || 4));
+      const hold = Math.max(0, Math.min(8, Number(holdSecInput.value) || 0));
+      const ex = Math.max(4, Math.min(10, Number(exhaleSecInput.value) || 6));
+      customRatio = { inhale:inh, hold:hold, exhale:ex };
+      localStorage.setItem("breathRatio", JSON.stringify(customRatio));
+    }
+
+    loadCustomRatio();
+
+    modeAuto.addEventListener("change", () => {
+      if (modeAuto.checked) customRatioBox.style.display = "none";
+    });
+    modeCustom.addEventListener("change", () => {
+      if (modeCustom.checked) customRatioBox.style.display = "block";
+    });
+
+    const breathPhases = [];
+    let breathTimerId = null;
+    let breathPhaseIndex = 0;
+
+    function setBreathPhase(phase) {
+      if (!breathCircle || !breathCue) return;
+      breathCircle.classList.remove("inhale","exhale","rest");
+      breathCircle.classList.add(phase.name);
+      breathCue.textContent = phase.cue;
+    }
+
+    function startBreathingAnimation() {
+      if (!breathCircle || !breathPhases.length) return;
+      clearTimeout(breathTimerId);
+      breathPhaseIndex = 0;
+
+      function nextPhase() {
+        const phase = breathPhases[breathPhaseIndex];
+        setBreathPhase(phase);
+        breathPhaseIndex = (breathPhaseIndex + 1) % breathPhases.length;
+        breathTimerId = setTimeout(nextPhase, phase.duration);
+      }
+      nextPhase();
+    }
+
+    function stopBreathingAnimation() {
+      clearTimeout(breathTimerId);
+      breathTimerId = null;
+      if (breathCircle && breathCue) {
+        breathCircle.classList.remove("inhale","exhale","rest");
+        breathCircle.classList.add("rest");
+        breathCue.textContent = "Follow the circle to breathe.";
+      }
+    }
+
+    function playSleepingAudio() {
+      if (isMusicMuted) return;
+      try {
+        sleepingAudio.currentTime = 0;
+        sleepingAudio.volume = 0.4;
+        sleepingAudio.play().catch(()=>{});
+      } catch(e){}
+    }
+
+    function pauseSleepingAudio() {
+      try { sleepingAudio.pause(); } catch(e){}
+    }
+
+    musicToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isMusicMuted = !isMusicMuted;
+      if (isMusicMuted) {
+        pauseSleepingAudio();
+        musicToggle.textContent = "🔇";
+        musicToggle.classList.add("muted");
+      } else {
+        if (modal.classList.contains("show")) {
+          playSleepingAudio();
+        }
+        musicToggle.textContent = "🔊";
+        musicToggle.classList.remove("muted");
+      }
+    });
+
+    ageRow.addEventListener("click", (e) => {
+      const pill = e.target.closest(".age-pill");
+      if (!pill) return;
+      ageRow.querySelectorAll(".age-pill").forEach(b => b.classList.remove("active"));
+      pill.classList.add("active");
+      currentAge = pill.dataset.age;
+      openExerciseBtn.disabled = false;
+      openExerciseBtn.textContent = "▶ Open " + ageConfigs[currentAge].title;
+    });
+
+    openExerciseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (!currentAge) return;
+      const cfg = ageConfigs[currentAge];
+      modalAgeLabel.textContent = cfg.label;
+      modalTitle.textContent = cfg.title;
+      modalDescription.textContent = cfg.desc;
+      stressRange.value = 5;
+      stressValue.textContent = "5";
+      thoughtInput.value = "";
+      planOutput.textContent = "";
+      modal.classList.add("show");
+
+      if (!breathPhases.length) {
+        breathPhases.push(
+          { name:"inhale", duration:4000, cue:"Inhale gently through the nose (count to 4)." },
+          { name:"exhale", duration:6000, cue:"Exhale slowly through the mouth (count to 6)." },
+          { name:"rest",   duration:2000, cue:"Rest and feel the body sink into the bed." }
+        );
+      }
+      startBreathingAnimation();
+      playSleepingAudio();
+    });
+
+    stressRange.addEventListener("input", () => {
+      stressValue.textContent = stressRange.value;
+    });
+
+    function closeModal() {
+      modal.classList.remove("show");
+      stopBreathingAnimation();
+      pauseSleepingAudio();
+    }
+
+    closeModalBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeModal();
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    saveRatioBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      saveCustomRatioValues();
+      customRatioBox.style.display = "none";
+      modeAuto.checked = true;
+      modeCustom.checked = false;
+    });
+
+    generatePlanBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const level = Number(stressRange.value);
+      const thought = (thoughtInput.value || "").trim();
+
+      let title, base, pattern, phases;
+
+      if (modeAuto.checked) {
+        if (level <= 3) {
+          title = "Gentle belly breathing";
+          base = "Stress is low. Use 3 to 5 minutes of soft belly breathing to glide into sleep.";
+          pattern = " Breathe in through the nose letting the belly rise, breathe out letting it fall, nice and easy.";
+          phases = [
+            { name:"inhale", duration:4000, cue:"Inhale softly into the belly." },
+            { name:"exhale", duration:4000, cue:"Exhale gently and feel the belly fall." },
+            { name:"rest",   duration:2000, cue:"Rest and notice the warmth in your body." }
+          ];
+        } else if (level <= 7) {
+          title = "4 to 6 calming breaths";
+          base = "Stress is medium. Try 4 to 6 breathing: slightly longer exhales to calm the system.";
+          pattern = " Inhale through the nose for about 4 seconds, exhale through the mouth for about 6 seconds.";
+          phases = [
+            { name:"inhale", duration:4000, cue:"Inhale gently through the nose (count to 4)." },
+            { name:"exhale", duration:6000, cue:"Exhale slowly through the mouth (count to 6)." },
+            { name:"rest",   duration:2000, cue:"Rest and feel the body sink into the bed." }
+          ];
+        } else {
+          title = "4-7-8 sleep breath";
+          base = "Stress is high. Use the 4-7-8 pattern a few rounds to slow everything down.";
+          pattern = " Inhale 4 counts, hold 7, exhale 8 with a soft whoosh out of the mouth.";
+          phases = [
+            { name:"inhale", duration:4000, cue:"Inhale through the nose for 4." },
+            { name:"rest",   duration:7000, cue:"Hold gently for 7, without straining." },
+            { name:"exhale", duration:8000, cue:"Exhale slowly for 8 through the mouth." }
+          ];
+        }
+      } else {
+        saveCustomRatioValues();
+        const inhMs = customRatio.inhale * 1000;
+        const holdMs = customRatio.hold * 1000;
+        const exMs = customRatio.exhale * 1000;
+
+        phases = [];
+        phases.push({
+          name:"inhale",
+          duration:inhMs,
+          cue:"Inhale for " + customRatio.inhale + " seconds, letting the belly rise."
+        });
+        if (customRatio.hold > 0) {
+          phases.push({
+            name:"rest",
+            duration:holdMs,
+            cue:"Hold gently for " + customRatio.hold + " seconds without straining."
+          });
+        }
+        phases.push({
+          name:"exhale",
+          duration:exMs,
+          cue:"Exhale slowly for " + customRatio.exhale + " seconds, feeling the body soften."
+        });
+
+        title = "Your custom breathing ratio";
+        base = "Using your personal inhale/hold/exhale timing tonight.";
+        pattern = " Pattern: " +
+          customRatio.inhale + "-" +
+          customRatio.hold + "-" +
+          customRatio.exhale + " seconds.";
+      }
+
+      breathPhases.splice(0, breathPhases.length, ...phases);
+      startBreathingAnimation();
+
+      let extra = "";
+      if (thought) {
+        extra = " Notice the thought: \"" + thought + "\". Let it wait outside the room while you follow this pattern.";
+      }
+      planOutput.textContent = title + ". " + base + pattern + extra;
+
+      let minutes;
+      if (level >= 8) minutes = 10;
+      else if (level >= 5) minutes = 5;
+      else minutes = 3;
+
+      const today = getTodayKey();
+      const y = new Date(today);
+      y.setDate(y.getDate() - 1);
+      const yesterdayKey = y.getFullYear() + "-" +
+        String(y.getMonth()+1).padStart(2,"0") + "-" +
+        String(y.getDate()).padStart(2,"0");
+
+      if (progressData.lastDate === today) {
+        progressData.totalMinutes += minutes;
+      } else {
+        progressData.totalSessions += 1;
+        progressData.totalMinutes += minutes;
+
+        if (progressData.lastDate === yesterdayKey) {
+          progressData.streak += 1;
+        } else {
+          progressData.streak = 1;
+        }
+        progressData.lastDate = today;
+      }
+      saveProgress(progressData);
+    });
+
+    clearModalBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stressRange.value = 5;
+      stressValue.textContent = "5";
+      thoughtInput.value = "";
+      planOutput.textContent = "";
+    });
+  </script>
+</body>
+</html>

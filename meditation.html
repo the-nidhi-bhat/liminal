@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Wellness & Meditation</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+      text-decoration: none;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      transition: background-image 0.5s ease;
+    }
+
+    body.dark-mode {
+      background-image: url("night.jpg");
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+      transition: background 0.5s ease;
+    }
+
+    body.dark-mode::before {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+    }
+
+    .shell {
+      width:100%;
+      max-width:1200px;
+      border-radius:28px;
+      padding:32px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      overflow:hidden;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(59,130,246,0.8), rgba(139,92,246,0.8), transparent);
+    }
+
+    /* HEADER */
+    .top-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      margin-bottom:28px;
+      flex-wrap:wrap;
+    }
+
+    .title-block h1 {
+      font-size:28px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      letter-spacing:-0.3px;
+      margin:0;
+    }
+    
+    .title-block p {
+      font-size:15px;
+      color:rgba(255,255,255,0.95);
+      margin-top:8px;
+      max-width:380px;
+      line-height:1.55;
+      font-weight:500;
+    }
+
+    .header-actions {
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .dark-toggle {
+      padding:12px 16px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:20px;
+      cursor:pointer;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s;
+    }
+    .dark-toggle:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 24px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    /* STREAK & PROGRESS BAR */
+    .progress-bar {
+      background:rgba(255,255,255,0.1);
+      border-radius:24px;
+      padding:20px 24px;
+      margin-bottom:24px;
+      border:1px solid rgba(255,255,255,0.18);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:16px;
+    }
+
+    .streak-info {
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .streak-flame {
+      font-size:40px;
+      animation:flame 2s ease-in-out infinite;
+    }
+
+    @keyframes flame {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.1); }
+    }
+
+    .streak-text h3 {
+      font-size:24px;
+      font-weight:800;
+      color:#fbbf24;
+      margin:0;
+    }
+
+    .streak-text p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      margin:4px 0 0;
+    }
+
+    .progress-stats {
+      display:flex;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .stat-item {
+      text-align:center;
+    }
+
+    .stat-value {
+      font-size:24px;
+      font-weight:800;
+      color:#10b981;
+      display:block;
+    }
+
+    .stat-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      margin-top:4px;
+    }
+
+    /* MOOD TRACKER */
+    .mood-tracker {
+      background:rgba(255,255,255,0.1);
+      border-radius:24px;
+      padding:20px 24px;
+      margin-bottom:24px;
+      border:1px solid rgba(255,255,255,0.18);
+    }
+
+    .mood-tracker h3 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:12px;
+    }
+
+    .mood-options {
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .mood-btn {
+      font-size:36px;
+      padding:12px;
+      border-radius:16px;
+      border:2px solid transparent;
+      background:rgba(255,255,255,0.1);
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .mood-btn:hover {
+      transform:scale(1.1);
+      background:rgba(255,255,255,0.2);
+    }
+
+    .mood-btn.selected {
+      border-color:#10b981;
+      background:rgba(16,185,129,0.2);
+      transform:scale(1.15);
+    }
+
+    /* QUICK ACTIONS */
+    .quick-actions {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+      margin-bottom:32px;
+    }
+
+    .quick-btn {
+      padding:16px 20px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.15));
+      border:1px solid rgba(16,185,129,0.4);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .quick-btn:hover {
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(16,185,129,0.3);
+      background:linear-gradient(135deg, rgba(16,185,129,0.3), rgba(5,150,105,0.2));
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+      font-size:22px;
+      font-weight:800;
+      color:#ffffff;
+      margin:32px 0 20px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .section-subtitle {
+      font-size:14px;
+      color:rgba(255,255,255,0.8);
+      margin:-12px 0 20px;
+    }
+
+    /* TIME-BASED SUGGESTIONS */
+    .time-suggestions {
+      background:linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+      border-radius:24px;
+      padding:20px 24px;
+      margin-bottom:24px;
+      border:1px solid rgba(59,130,246,0.3);
+    }
+
+    .time-suggestions h3 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .time-suggestions p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      margin-bottom:16px;
+    }
+
+    .suggestion-cards {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:12px;
+    }
+
+    .suggestion-card {
+      padding:16px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.2);
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .suggestion-card:hover {
+      transform:translateY(-2px);
+      background:rgba(255,255,255,0.15);
+    }
+
+    .suggestion-card h4 {
+      font-size:14px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .suggestion-card p {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      margin:0;
+    }
+
+    /* SESSIONS GRID */
+    .sessions-grid {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:20px;
+      margin-bottom:32px;
+    }
+    @media (min-width: 720px) {
+      .sessions-grid { grid-template-columns:1fr 1fr; gap:24px; }
+    }
+
+    .card {
+      border-radius:28px;
+      padding:28px 24px;
+      background: 
+        linear-gradient(145deg, rgba(255,255,255,0.95), rgba(248,250,252,0.92)),
+        rgba(255,255,255,0.6);
+      color:#0f172a;
+      box-shadow: 
+        0 24px 64px rgba(15,23,42,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.95);
+      border:1px solid rgba(255,255,255,0.92);
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      backdrop-filter:blur(20px);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .card::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(99,102,241,0.6), transparent);
+      opacity:0;
+      transition:opacity 0.35s ease;
+    }
+
+    .card:hover {
+      transform:translateY(-6px);
+      box-shadow: 
+        0 36px 96px rgba(15,23,42,0.28),
+        0 0 0 1px rgba(99,102,241,0.2);
+      border-color:rgba(99,102,241,0.3);
+    }
+    .card:hover::before {
+      opacity:1;
+    }
+
+    .card-header {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .card-title-wrap {
+      display:flex;
+      align-items:flex-start;
+      gap:16px;
+      flex:1;
+    }
+
+    .card-icon {
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      flex-shrink:0;
+      background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
+      color:#1e293b;
+      box-shadow:0 12px 32px rgba(0,0,0,0.15);
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .card:hover .card-icon {
+      transform:scale(1.08) rotate(8deg);
+      box-shadow:0 16px 40px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      font-size:20px;
+      font-weight:800;
+      color:#1e293b;
+      margin:0;
+      line-height:1.3;
+    }
+
+    .favorite-icon {
+      font-size:24px;
+      cursor:pointer;
+      transition:all 0.3s;
+      color:#d1d5db;
+    }
+
+    .favorite-icon.favorited {
+      color:#ef4444;
+      transform:scale(1.2);
+    }
+
+    .pill {
+      padding:8px 16px;
+      border-radius:24px;
+      font-size:13px;
+      font-weight:700;
+      background:linear-gradient(135deg, #ecfdf5, #d1fae5);
+      color:#065f46;
+      box-shadow:0 8px 24px rgba(16,185,129,0.25);
+      white-space:nowrap;
+    }
+
+    .card p {
+      font-size:15px;
+      color:#475569;
+      margin-bottom:20px;
+      line-height:1.65;
+      font-weight:500;
+    }
+
+    .mini-list {
+      list-style:none;
+      font-size:14px;
+      color:#64748b;
+      margin-bottom:24px;
+      flex-grow:1;
+    }
+    .mini-list li { 
+      margin-bottom:12px;
+      padding-left:24px;
+      position:relative;
+      line-height:1.5;
+    }
+    .mini-list li::before {
+      content:'✅';
+      position:absolute;
+      left:0;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .card-footer {
+      display:flex;
+      gap:8px;
+      margin-top:auto;
+    }
+
+    .card-btn {
+      flex:1;
+      padding:16px 28px;
+      border-radius:28px;
+      border:none;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      color:#ffffff;
+      background:linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow:0 12px 32px rgba(16,185,129,0.4);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+      text-decoration:none;
+    }
+    .card-btn::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+    .card-btn:hover::before {
+      left:100%;
+    }
+    .card-btn:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(16,185,129,0.5);
+    }
+
+    .session-count {
+      padding:12px 16px;
+      border-radius:20px;
+      background:rgba(99,102,241,0.1);
+      border:1px solid rgba(99,102,241,0.3);
+      font-size:12px;
+      color:#6366f1;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    /* COLLECTIONS */
+    .collection-card {
+      background:linear-gradient(135deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:24px;
+      border:1px solid rgba(139,92,246,0.3);
+      margin-bottom:20px;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .collection-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 20px 50px rgba(139,92,246,0.3);
+    }
+
+    .collection-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      margin-bottom:16px;
+    }
+
+    .collection-header h3 {
+      font-size:20px;
+      font-weight:800;
+      color:#ffffff;
+      margin:0;
+    }
+
+    .collection-badge {
+      padding:6px 12px;
+      border-radius:16px;
+      background:rgba(139,92,246,0.3);
+      font-size:11px;
+      font-weight:700;
+      color:#ffffff;
+    }
+
+    .collection-description {
+      font-size:14px;
+      color:rgba(255,255,255,0.9);
+      margin-bottom:16px;
+      line-height:1.6;
+    }
+
+    .collection-items {
+      display:grid;
+      gap:8px;
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+    }
+
+    .collection-item {
+      padding:8px 12px;
+      background:rgba(255,255,255,0.1);
+      border-radius:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    /* NOTE */
+    .note {
+      font-size:14px;
+      color:rgba(255,255,255,0.88);
+      text-align:center;
+      line-height:1.65;
+      padding:24px 32px;
+      background:rgba(255,255,255,0.1);
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,0.16);
+      backdrop-filter:blur(24px);
+      margin-top:32px;
+      font-weight:500;
+    }
+
+    @media (max-width: 768px) {
+      body { padding:20px 16px; }
+      .shell { 
+        padding:24px 20px; 
+        margin:8px;
+        border-radius:24px;
+      }
+      .sessions-grid { 
+        grid-template-columns:1fr; 
+        gap:20px; 
+      }
+      .top-row { 
+        flex-direction:column; 
+        gap:16px;
+      }
+      .title-block h1 { font-size:24px; }
+      .quick-actions {
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- HEADER -->
+    <div class="top-row">
+      <div class="title-block">
+        <h1>🧘 Wellness & Meditation Hub</h1>
+        <p>Meditation, workouts, and wellness tools to reset your mind and body.</p>
+      </div>
+      <div class="header-actions">
+        <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+        <div class="back-link">
+          <a href="journey.html">← Back to Calm Hub</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STREAK & PROGRESS -->
+    <div class="progress-bar">
+      <div class="streak-info">
+        <div class="streak-flame">🔥</div>
+        <div class="streak-text">
+          <h3 id="streakCount">0 Day Streak</h3>
+          <p>Keep going! You're building a healthy habit.</p>
+        </div>
+      </div>
+      <div class="progress-stats">
+        <div class="stat-item">
+          <span class="stat-value" id="totalMinutes">0</span>
+          <span class="stat-label">Minutes</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="totalSessions">0</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="badgesCount">0</span>
+          <span class="stat-label">Badges</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOOD TRACKER -->
+    <div class="mood-tracker">
+      <h3>How are you feeling right now?</h3>
+      <div class="mood-options">
+        <button class="mood-btn" data-mood="great" onclick="selectMood('great')">😊</button>
+        <button class="mood-btn" data-mood="good" onclick="selectMood('good')">🙂</button>
+        <button class="mood-btn" data-mood="okay" onclick="selectMood('okay')">😐</button>
+        <button class="mood-btn" data-mood="low" onclick="selectMood('low')">😔</button>
+        <button class="mood-btn" data-mood="stressed" onclick="selectMood('stressed')">😰</button>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions">
+      <button class="quick-btn" onclick="startQuickSession()">⚡ Start 3-min Session</button>
+      <button class="quick-btn" onclick="continueLastSession()">▶️ Continue Last Session</button>
+      <button class="quick-btn" onclick="showFavorites()">❤️ My Favorites</button>
+    </div>
+
+    <!-- TIME-BASED SUGGESTIONS -->
+    <div class="time-suggestions">
+      <h3 id="timeGreeting">Good Afternoon! 🌤</h3>
+      <p id="timeMessage">Take a break and recharge your focus.</p>
+      <div class="suggestion-cards" id="timeSuggestions">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- MEDITATION SESSIONS -->
+    <h2 class="section-header">🧘 Guided Meditations</h2>
+    <p class="section-subtitle">Short, gentle sessions to help you breathe, reset, and slow down.</p>
+
+    <div class="sessions-grid">
+      <!-- 3-minute pause -->
+      <div class="card" data-session="3min-breathe">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🕒</div>
+            <div>
+              <h2>3-min Pause & Breathe</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('3min-breathe', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">3 min</div>
+          <div class="session-count">Completed <span id="count-3min">0</span>×</div>
+        </div>
+        <p>A tiny reset between classes or whenever your mind feels crowded.</p>
+        <ul class="mini-list">
+          <li>Focus on slow, steady breathing</li>
+          <li>Notice thoughts without fighting them</li>
+          <li>Return to your day a little lighter</li>
+        </ul>
+        <div class="card-footer">
+          <a href="med.html" class="card-btn">Start Session</a>
+        </div>
+      </div>
+
+      <!-- Exam stress -->
+      <div class="card" data-session="exam-calm">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">📚</div>
+            <div>
+              <h2>Exam Stress Calm</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('exam-calm', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">5–8 min</div>
+          <div class="session-count">Completed <span id="count-exam">0</span>×</div>
+        </div>
+        <p>When deadlines feel too heavy and you need to slow your heartbeat.</p>
+        <ul class="mini-list">
+          <li>Grounding breath to relax your body</li>
+          <li>Re-frame anxious thoughts</li>
+          <li>Shift from panic to focused mode</li>
+        </ul>
+        <div class="card-footer">
+          <a href="med-exam.html" class="card-btn">Start Session</a>
+        </div>
+      </div>
+
+      <!-- Sleep -->
+      <div class="card" data-session="sleep-scan">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🌙</div>
+            <div>
+              <h2>Sleep Wind-Down</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('sleep-scan', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">10–15 min</div>
+          <div class="session-count">Completed <span id="count-sleep">0</span>×</div>
+        </div>
+        <p>Body scan to release tension and prepare for restful sleep.</p>
+        <ul class="mini-list">
+          <li>Notice and soften tight areas</li>
+          <li>Shift away from racing thoughts</li>
+          <li>Do in bed with eyes closed</li>
+        </ul>
+        <div class="card-footer">
+          <a href="med-sleep.html" class="card-btn">Start Session</a>
+        </div>
+      </div>
+
+      <!-- Yoga -->
+      <div class="card" data-session="yoga-movement">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🧘</div>
+            <div>
+              <h2>Yoga & Movement</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('yoga-movement', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">5–12 min</div>
+          <div class="session-count">Completed <span id="count-yoga">0</span>×</div>
+        </div>
+        <p>Simple stretches to release tension and improve focus.</p>
+        <ul class="mini-list">
+          <li>Child's Pose, Cat-Cow, Forward Bend</li>
+          <li>Improves concentration</li>
+          <li>No experience needed</li>
+        </ul>
+        <div class="card-footer">
+          <a href="med-yoga.html" class="card-btn">Start Session</a>
+        </div>
+      </div>
+
+      <!-- Pomodoro Focus -->
+      <div class="card" data-session="pomodoro">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🎯</div>
+            <div>
+              <h2>Pomodoro Focus</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('pomodoro', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">25 min</div>
+          <div class="session-count">Completed <span id="count-pomo">0</span>×</div>
+        </div>
+        <p>Structured work session with mindful breaks for deep focus.</p>
+        <ul class="mini-list">
+          <li>25-min focused work block</li>
+          <li>5-min mindful break</li>
+          <li>Boost productivity naturally</li>
+        </ul>
+        <div class="card-footer">
+          <a href="pomodoro.html" class="card-btn">Start Timer</a>
+        </div>
+      </div>
+
+      <!-- Anxiety SOS -->
+      <div class="card" data-session="anxiety-sos">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🆘</div>
+            <div>
+              <h2>Anxiety SOS</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('anxiety-sos', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">2–3 min</div>
+          <div class="session-count">Completed <span id="count-sos">0</span>×</div>
+        </div>
+        <p>Emergency calm for panic or overwhelm moments.</p>
+        <ul class="mini-list">
+          <li>4-7-8 breathing technique</li>
+          <li>Instant anxiety relief</li>
+          <li>Use anytime, anywhere</li>
+        </ul>
+        <div class="card-footer">
+          <a href="anxiety-sos.html" class="card-btn">Start Now</a>
+        </div>
+      </div>
+
+      <!-- Confidence Booster -->
+      <div class="card" data-session="confidence">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">💪</div>
+            <div>
+              <h2>Confidence Booster</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('confidence', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">5 min</div>
+          <div class="session-count">Completed <span id="count-conf">0</span>×</div>
+        </div>
+        <p>Before presentations or exams, build self-assurance.</p>
+        <ul class="mini-list">
+          <li>Positive affirmations</li>
+          <li>Power posing visualization</li>
+          <li>Face challenges with courage</li>
+        </ul>
+        <div class="card-footer">
+          <a href="confidence.html" class="card-btn">Start Session</a>
+        </div>
+      </div>
+
+      <!-- Pranayama -->
+      <div class="card" data-session="pranayama">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🕉</div>
+            <div>
+              <h2>Pranayama Breathing</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('pranayama', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">7 min</div>
+          <div class="session-count">Completed <span id="count-prana">0</span>×</div>
+        </div>
+        <p>Traditional Indian breathing techniques for energy and calm.</p>
+        <ul class="mini-list">
+          <li>Anulom Vilom & Bhastrika</li>
+          <li>Balance energy channels</li>
+          <li>Ancient wisdom, modern benefits</li>
+        </ul>
+        <div class="card-footer">
+          <a href="pranayama.html" class="card-btn">Start Practice</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKOUTS SECTION -->
+    <h2 class="section-header">💪 Quick Workouts</h2>
+    <p class="section-subtitle">No gym needed. Move your body to refresh your mind.</p>
+
+    <div class="sessions-grid">
+      <!-- HIIT Workout -->
+      <div class="card" data-session="hiit-workout">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🔥</div>
+            <div>
+              <h2>HIIT Workout</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('hiit-workout', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">12-20 min</div>
+          <div class="session-count">Completed <span id="count-hiit">0</span>×</div>
+        </div>
+        <p>High-intensity cardio burst to boost energy and burn maximum calories.</p>
+        <ul class="mini-list">
+          <li>3 intensity levels (Beginner to Advanced)</li>
+          <li>No equipment needed</li>
+          <li>Burns stress hormones fast</li>
+        </ul>
+        <div class="card-footer">
+          <a href="hiit.html" class="card-btn">Start Workout</a>
+        </div>
+      </div>
+
+      <!-- Desk Yoga -->
+      <div class="card" data-session="desk-yoga">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">🧘</div>
+            <div>
+              <h2>Desk Yoga</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('desk-yoga', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">5-12 min</div>
+          <div class="session-count">Completed <span id="count-desk">0</span>×</div>
+        </div>
+        <p>Stretches you can do right at your study desk to release tension.</p>
+        <ul class="mini-list">
+          <li>Neck rolls, shoulder shrugs, twists</li>
+          <li>Relieves study tension instantly</li>
+          <li>Perfect between study sessions</li>
+        </ul>
+        <div class="card-footer">
+          <a href="desk-yoga.html" class="card-btn">Start Stretches</a>
+        </div>
+      </div>
+
+      <!-- Morning Energizer -->
+      <div class="card" data-session="morning-energy">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">☀️</div>
+            <div>
+              <h2>Morning Energizer</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('morning-energy', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">5-15 min</div>
+          <div class="session-count">Completed <span id="count-morning">0</span>×</div>
+        </div>
+        <p>Wake up your body without coffee. Better than caffeine!</p>
+        <ul class="mini-list">
+          <li>3 routine options to choose from</li>
+          <li>Natural energy boost</li>
+          <li>Start your day powerful</li>
+        </ul>
+        <div class="card-footer">
+          <a href="morning-energizer.html" class="card-btn">Start Routine</a>
+        </div>
+      </div>
+
+      <!-- Strength Training -->
+      <div class="card" data-session="strength">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon">💪</div>
+            <div>
+              <h2>Strength Training</h2>
+            </div>
+          </div>
+          <span class="favorite-icon" onclick="toggleFavorite('strength', event)">♡</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div class="pill">15-25 min</div>
+          <div class="session-count">Completed <span id="count-strength">0</span>×</div>
+        </div>
+        <p>Bodyweight exercises to build physical and mental strength.</p>
+        <ul class="mini-list">
+          <li>Push-ups, squats, planks, lunges</li>
+          <li>Builds confidence naturally</li>
+          <li>3 difficulty levels available</li>
+        </ul>
+        <div class="card-footer">
+          <a href="strength.html" class="card-btn">Start Training</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLLECTIONS -->
+    <h2 class="section-header">🎁 Special Collections</h2>
+    <p class="section-subtitle">Curated programs for specific needs and goals.</p>
+
+    <div class="collection-card">
+      <div class="collection-header">
+        <h3>📚 Exam Season Survival Kit</h3>
+        <div class="collection-badge">4-part series</div>
+      </div>
+      <p class="collection-description">Complete daily routine to manage exam stress from morning to night.</p>
+      <div class="collection-items">
+        <div class="collection-item">
+          <span>☀️ Morning: Energy Boost</span>
+          <span>5 min</span>
+        </div>
+        <div class="collection-item">
+          <span>🎯 Study Break: Focus Reset</span>
+          <span>3 min</span>
+        </div>
+        <div class="collection-item">
+          <span>😌 Evening: Stress Release</span>
+          <span>8 min</span>
+        </div>
+        <div class="collection-item">
+          <span>🌙 Night: Sleep Wind-Down</span>
+          <span>10 min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-card">
+      <div class="collection-header">
+        <h3>🔥 Burnout Recovery Program</h3>
+        <div class="collection-badge">7-day plan</div>
+      </div>
+      <p class="collection-description">Gentle 7-day journey to rebuild energy, motivation, and joy.</p>
+      <div class="collection-items">
+        <div class="collection-item">
+          <span>Day 1: Rest & Acceptance</span>
+          <span>10 min</span>
+        </div>
+        <div class="collection-item">
+          <span>Day 2: Gentle Movement</span>
+          <span>8 min</span>
+        </div>
+        <div class="collection-item">
+          <span>Day 3: Gratitude Practice</span>
+          <span>7 min</span>
+        </div>
+        <div class="collection-item">
+          <span>+ 4 more sessions...</span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-card">
+      <div class="collection-header">
+        <h3>👥 Social Anxiety Toolkit</h3>
+        <div class="collection-badge">3-part toolkit</div>
+      </div>
+      <p class="collection-description">Techniques for before, during, and after social situations.</p>
+      <div class="collection-items">
+        <div class="collection-item">
+          <span>🎭 Pre-Event Calm</span>
+          <span>5 min</span>
+        </div>
+        <div class="collection-item">
+          <span>🧘 During-Event Grounding</span>
+          <span>2 min</span>
+        </div>
+        <div class="collection-item">
+          <span>💭 Post-Event Processing</span>
+          <span>7 min</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">
+      Every session is designed to fit into your day without pressure. Start with what feels manageable. 💚
+    </p>
+  </div>
+
+  <script>
+    // State management
+    let streak = parseInt(localStorage.getItem('streak') || '0');
+    let totalMinutes = parseInt(localStorage.getItem('totalMinutes') || '0');
+    let totalSessions = parseInt(localStorage.getItem('totalSessions') || '0');
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    let sessionCounts = JSON.parse(localStorage.getItem('sessionCounts') || '{}');
+    let currentMood = null;
+    let darkMode = localStorage.getItem('darkMode') === 'true';
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      updateStats();
+      loadFavorites();
+      loadSessionCounts();
+      updateTimeBasedSuggestions();
+      if (darkMode) document.body.classList.add('dark-mode');
+    });
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', darkMode);
+    }
+
+    // Update stats display
+    function updateStats() {
+      document.getElementById('streakCount').textContent = `${streak} Day Streak`;
+      document.getElementById('totalMinutes').textContent = totalMinutes;
+      document.getElementById('totalSessions').textContent = totalSessions;
+      document.getElementById('badgesCount').textContent = Math.floor(totalSessions / 5);
+    }
+
+    // Load favorites
+    function loadFavorites() {
+      favorites.forEach(sessionId => {
+        const card = document.querySelector(`[data-session="${sessionId}"]`);
+        if (card) {
+          const icon = card.querySelector('.favorite-icon');
+          if (icon) {
+            icon.textContent = '❤️';
+            icon.classList.add('favorited');
+          }
+        }
+      });
+    }
+
+    // Load session counts
+    function loadSessionCounts() {
+      Object.keys(sessionCounts).forEach(session => {
+        const el = document.getElementById(`count-${session.split('-')[0]}`);
+        if (el) el.textContent = sessionCounts[session] || 0;
+      });
+    }
+
+    // Mood selection
+    function selectMood(mood) {
+      currentMood = mood;
+      document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+      event.target.classList.add('selected');
+      localStorage.setItem('currentMood', mood);
+    }
+
+    // Toggle favorite
+    function toggleFavorite(sessionId, event) {
+      event.stopPropagation();
+      const icon = event.target;
+      const index = favorites.indexOf(sessionId);
+      
+      if (index > -1) {
+        favorites.splice(index, 1);
+        icon.textContent = '♡';
+        icon.classList.remove('favorited');
+      } else {
+        favorites.push(sessionId);
+        icon.textContent = '❤️';
+        icon.classList.add('favorited');
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    // Time-based suggestions
+    function updateTimeBasedSuggestions() {
+      const hour = new Date().getHours();
+      const greeting = document.getElementById('timeGreeting');
+      const message = document.getElementById('timeMessage');
+      const suggestions = document.getElementById('timeSuggestions');
+      
+      let greetingText, messageText, suggestedSessions;
+      
+      if (hour < 12) {
+        greetingText = 'Good Morning! ☀️';
+        messageText = 'Start your day with energy and intention.';
+        suggestedSessions = [
+          { title: 'Morning Energizer', time: '10 min' },
+          { title: '3-min Breathe', time: '3 min' }
+        ];
+      } else if (hour < 18) {
+        greetingText = 'Good Afternoon! 🌤';
+        messageText = 'Take a break and recharge your focus.';
+        suggestedSessions = [
+          { title: 'Desk Yoga', time: '5 min' },
+          { title: 'Exam Stress Calm', time: '8 min' }
+        ];
+      } else {
+        greetingText = 'Good Evening! 🌙';
+        messageText = 'Wind down and prepare for restful sleep.';
+        suggestedSessions = [
+          { title: 'Sleep Wind-Down', time: '15 min' },
+          { title: 'Yoga & Movement', time: '12 min' }
+        ];
+      }
+      
+      greeting.textContent = greetingText;
+      message.textContent = messageText;
+      
+      suggestions.innerHTML = suggestedSessions.map(s => `
+        <div class="suggestion-card">
+          <h4>${s.title}</h4>
+          <p>${s.time}</p>
+        </div>
+      `).join('');
+    }
+
+    // Quick actions
+    function startQuickSession() {
+      window.location.href = 'med.html';
+    }
+
+    function continueLastSession() {
+      const lastSession = localStorage.getItem('lastSession');
+      if (lastSession) {
+        window.location.href = lastSession;
+      } else {
+        alert('No previous session found. Start a new one!');
+      }
+    }
+
+    function showFavorites() {
+      if (favorites.length === 0) {
+        alert('No favorites yet! Click the ♡ icon on any session to add it.');
+        return;
+      }
+      
+      const cards = favorites.map(id => {
+        const card = document.querySelector(`[data-session="${id}"]`);
+        return card ? card.querySelector('h2').textContent : null;
+      }).filter(Boolean);
+      
+      alert('Your Favorites:\n\n' + cards.join('\n'));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anxiety SOS – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:900px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(239,68,68,0.8), rgba(251,191,36,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fca5a5 0%, #fde047 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* EMERGENCY BANNER */
+    .emergency-banner {
+      background:linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.2));
+      border-radius:20px;
+      padding:20px 24px;
+      margin-bottom:32px;
+      border:2px solid rgba(239,68,68,0.4);
+      animation:pulse-border 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { border-color:rgba(239,68,68,0.4); }
+      50% { border-color:rgba(239,68,68,0.8); }
+    }
+
+    .emergency-banner h3 {
+      font-size:18px;
+      font-weight:800;
+      color:#fca5a5;
+      margin-bottom:12px;
+    }
+
+    .emergency-buttons {
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .emergency-btn {
+      padding:12px 24px;
+      border-radius:20px;
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      transition:all 0.3s;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .emergency-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(239,68,68,0.5);
+    }
+
+    /* TECHNIQUE SELECTOR */
+    .technique-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:16px;
+      margin:32px 0;
+    }
+
+    .technique-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:2px solid rgba(255,255,255,0.12);
+      border-radius:20px;
+      cursor:pointer;
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .technique-card::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:3px;
+      background:linear-gradient(90deg, #ef4444, #fbbf24);
+      transform:scaleX(0);
+      transition:transform 0.3s;
+    }
+
+    .technique-card:hover::before, .technique-card.active::before {
+      transform:scaleX(1);
+    }
+
+    .technique-card:hover, .technique-card.active {
+      border-color:rgba(239,68,68,0.6);
+      background:linear-gradient(145deg, rgba(239,68,68,0.2), rgba(251,191,36,0.15));
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(239,68,68,0.3);
+    }
+
+    .technique-icon {
+      font-size:36px;
+      margin-bottom:12px;
+    }
+
+    .technique-card h3 {
+      font-size:18px;
+      font-weight:800;
+      color:#ffffff;
+      margin-bottom:8px;
+    }
+
+    .technique-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      line-height:1.6;
+      margin-bottom:12px;
+    }
+
+    .technique-meta {
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .meta-badge {
+      padding:4px 10px;
+      background:rgba(239,68,68,0.2);
+      border-radius:12px;
+      font-size:11px;
+      font-weight:700;
+      color:#fca5a5;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BREATHING SECTION */
+    .breathing-section {
+      background:linear-gradient(145deg, rgba(239,68,68,0.15), rgba(251,191,36,0.1));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:40px 0;
+      border:1px solid rgba(239,68,68,0.3);
+      backdrop-filter:blur(20px);
+    }
+
+    .technique-description {
+      background:rgba(239,68,68,0.15);
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:32px;
+      border:1px solid rgba(239,68,68,0.25);
+    }
+
+    .technique-description h4 {
+      font-size:18px;
+      font-weight:700;
+      color:#fca5a5;
+      margin-bottom:12px;
+    }
+
+    .technique-description p {
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.7;
+    }
+
+    .breathing-circle {
+      width:300px;
+      height:300px;
+      margin:32px auto;
+      border-radius:50%;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      transition:all 4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow:0 20px 60px rgba(239,68,68,0.5);
+    }
+
+    .breathing-circle::before {
+      content:'';
+      position:absolute;
+      inset:-15px;
+      border-radius:50%;
+      background:linear-gradient(135deg, rgba(239,68,68,0.3), rgba(251,191,36,0.2));
+      z-index:-1;
+      animation:ripple 3s ease-in-out infinite;
+    }
+
+    @keyframes ripple {
+      0%, 100% { transform:scale(1); opacity:0.5; }
+      50% { transform:scale(1.1); opacity:0.8; }
+    }
+
+    .breathing-circle.inhale {
+      transform:scale(1.3);
+      box-shadow:0 30px 80px rgba(239,68,68,0.7);
+    }
+
+    .breathing-circle.hold {
+      transform:scale(1.3);
+      box-shadow:0 30px 80px rgba(251,191,36,0.7);
+    }
+
+    .breathing-circle.exhale {
+      transform:scale(1);
+      box-shadow:0 20px 60px rgba(239,68,68,0.5);
+    }
+
+    .instruction-text {
+      font-size:24px;
+      font-weight:800;
+      color:#ffffff;
+      margin-bottom:12px;
+      text-shadow:0 4px 12px rgba(0,0,0,0.3);
+      text-align:center;
+      line-height:1.3;
+    }
+
+    .counter-display {
+      font-size:72px;
+      font-weight:800;
+      color:#ffffff;
+      text-shadow:0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .phase-indicator {
+      font-size:16px;
+      font-weight:600;
+      color:rgba(255,255,255,0.9);
+      margin-top:24px;
+      padding:12px 24px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      backdrop-filter:blur(10px);
+    }
+
+    .cycle-tracker {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin:24px 0;
+      padding:16px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+    }
+
+    .cycle-tracker span {
+      font-size:15px;
+      font-weight:700;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .cycle-num {
+      font-size:28px;
+      color:#fbbf24;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color:#ffffff;
+      box-shadow:0 12px 32px rgba(239,68,68,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(239,68,68,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    /* GROUNDING TECHNIQUES */
+    .grounding-section {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .grounding-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .grounding-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+      gap:16px;
+    }
+
+    .grounding-card {
+      padding:24px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.12);
+      transition:all 0.3s;
+      cursor:pointer;
+    }
+
+    .grounding-card:hover {
+      background:rgba(139,92,246,0.2);
+      border-color:rgba(139,92,246,0.4);
+      transform:translateY(-4px);
+    }
+
+    .grounding-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .grounding-card p {
+      font-size:14px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.6;
+    }
+
+    /* STATS */
+    .stats-section {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(239,68,68,0.2);
+    }
+
+    .stat-value {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* GUIDE */
+    .guide-section {
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(59,130,246,0.25);
+      text-align:left;
+    }
+
+    .guide-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .steps-grid {
+      display:grid;
+      gap:16px;
+    }
+
+    .step-card {
+      padding:20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      transition:all 0.3s;
+    }
+
+    .step-card:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(8px);
+    }
+
+    .step-number {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:800;
+      color:#ffffff;
+      flex-shrink:0;
+    }
+
+    .step-content h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .step-content p {
+      font-size:14px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.6;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:20px;
+      background:linear-gradient(145deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+      border-radius:16px;
+      border:1px solid rgba(16,185,129,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(16,185,129,0.3);
+    }
+
+    .benefit-card h4 {
+      font-size:32px;
+      margin-bottom:8px;
+    }
+
+    .benefit-card p {
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+      font-weight:600;
+      line-height:1.5;
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .breathing-circle { width:240px; height:240px; }
+      .counter-display { font-size:56px; }
+      .technique-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>🆘 Anxiety SOS</h1>
+    <p class="subtitle">Instant relief techniques for panic, overwhelm, and anxiety attacks</p>
+
+    <!-- EMERGENCY BANNER -->
+    <div class="emergency-banner">
+      <h3>⚠️ In Crisis? Get Immediate Help</h3>
+      <div class="emergency-buttons">
+        <button class="emergency-btn" onclick="window.location.href='tel:9152987821'">
+          📞 iCall: 9152987821
+        </button>
+        <button class="emergency-btn" onclick="window.location.href='tel:9820466726'">
+          💬 AASRA: 9820466726
+        </button>
+        <button class="emergency-btn" onclick="window.location.href='tel:108'">
+          🚨 Emergency: 108
+        </button>
+      </div>
+    </div>
+
+    <!-- TECHNIQUE SELECTOR -->
+    <div class="technique-grid">
+      <div class="technique-card active" onclick="selectTechnique('478')" data-technique="478">
+        <div class="technique-icon">🫁</div>
+        <h3>4-7-8 Breathing</h3>
+        <p>Scientifically proven to activate your parasympathetic nervous system and calm panic instantly</p>
+        <div class="technique-meta">
+          <span class="meta-badge">Best for Panic</span>
+          <span class="meta-badge">2-3 mins</span>
+        </div>
+      </div>
+      
+      <div class="technique-card" onclick="selectTechnique('box')" data-technique="box">
+        <div class="technique-icon">◼️</div>
+        <h3>Box Breathing</h3>
+        <p>Used by Navy SEALs to stay calm under extreme stress. Equal counts for ultimate balance</p>
+        <div class="technique-meta">
+          <span class="meta-badge">Exam Stress</span>
+          <span class="meta-badge">3-5 mins</span>
+        </div>
+      </div>
+      
+      <div class="technique-card" onclick="selectTechnique('triangle')" data-technique="triangle">
+        <div class="technique-icon">🔺</div>
+        <h3>Triangle Breathing</h3>
+        <p>Simple 3-count pattern perfect for quick anxiety relief anytime, anywhere</p>
+        <div class="technique-meta">
+          <span class="meta-badge">Quick Relief</span>
+          <span class="meta-badge">1-2 mins</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREATHING SECTION -->
+    <div class="breathing-section">
+      <div class="technique-description" id="techniqueDesc">
+        <h4>4-7-8 Breathing (Relaxing Breath)</h4>
+        <p>This technique acts as a natural tranquilizer for your nervous system. It reduces anxiety, helps you fall asleep, and manages cravings. The longer you practice, the more powerful it becomes.</p>
+      </div>
+
+      <div class="breathing-circle" id="breathingCircle">
+        <div class="instruction-text" id="instructionText">Press Start</div>
+        <div class="counter-display" id="counterDisplay">Ready</div>
+      </div>
+
+      <div class="phase-indicator" id="phaseIndicator">Click Start when ready. Find a comfortable position.</div>
+
+      <div class="cycle-tracker">
+        <span>Cycle</span>
+        <span class="cycle-num" id="cycleNum">0</span>
+        <span>of <span id="targetCycles">4</span></span>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startBreathing()">▶ Start Breathing</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseBreathing()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="stopBreathing()">⏹ Stop</button>
+    </div>
+
+    <!-- GROUNDING TECHNIQUES -->
+    <div class="grounding-section">
+      <h3>🌍 Quick Grounding Techniques</h3>
+      <div class="grounding-grid">
+        <div class="grounding-card" onclick="showGroundingDetail('54321')">
+          <h4>🔢 5-4-3-2-1 Method</h4>
+          <p>Name 5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste. Brings you back to the present instantly.</p>
+        </div>
+        
+        <div class="grounding-card" onclick="showGroundingDetail('ice')">
+          <h4>🧊 Ice Technique</h4>
+          <p>Hold ice cubes in your hands or splash cold water on your face. The shock interrupts anxiety spirals immediately.</p>
+        </div>
+        
+        <div class="grounding-card" onclick="showGroundingDetail('movement')">
+          <h4>🚶 Movement Reset</h4>
+          <p>Do 10 jumping jacks, run in place, or shake your body vigorously. Physical movement releases trapped anxiety energy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <span class="stat-value" id="totalCycles">0</span>
+        <span class="stat-label">Total Cycles</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalSessions">0</span>
+        <span class="stat-label">Sessions</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Mins</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ Why This Works</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h4>🧠</h4>
+          <p>Activates Vagus Nerve</p>
+        </div>
+        <div class="benefit-card">
+          <h4>💆</h4>
+          <p>Lowers Cortisol</p>
+        </div>
+        <div class="benefit-card">
+          <h4>❤️</h4>
+          <p>Slows Heart Rate</p>
+        </div>
+        <div class="benefit-card">
+          <h4>🫁</h4>
+          <p>Increases Oxygen</p>
+        </div>
+        <div class="benefit-card">
+          <h4>😌</h4>
+          <p>Calms Mind</p>
+        </div>
+        <div class="benefit-card">
+          <h4>💤</h4>
+          <p>Improves Sleep</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="guide-section">
+      <h3>📖 What to Do During an Anxiety Attack</h3>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Recognize It's Anxiety</h4>
+            <p>Tell yourself: "This is anxiety. It's uncomfortable but not dangerous. It will pass." This alone reduces fear.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Find a Safe Space</h4>
+            <p>If possible, move to a quiet, comfortable place. Sit or lie down. You're safe right now.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Start Breathing Technique</h4>
+            <p>Begin with 4-7-8 breathing or whichever technique feels most natural. Focus only on counting.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Use Grounding Method</h4>
+            <p>Try the 5-4-3-2-1 technique or ice method to anchor yourself in the present moment.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>Wait It Out</h4>
+            <p>Panic attacks peak in 10 minutes and rarely last more than 30. You're already halfway there.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h4>Be Kind to Yourself</h4>
+            <p>After it passes, don't judge yourself. You handled it. You're stronger than you think.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const techniques = {
+      '478': {
+        name: '4-7-8 Breathing',
+        description: 'This technique acts as a natural tranquilizer for your nervous system. It reduces anxiety, helps you fall asleep, and manages cravings. The longer you practice, the more powerful it becomes.',
+        sequence: [
+          { text: 'Breathe In\nThrough Nose', duration: 4, class: 'inhale' },
+          { text: 'Hold\nBoth Nostrils', duration: 7, class: 'hold' },
+          { text: 'Breathe Out\nThrough Mouth', duration: 8, class: 'exhale' }
+        ],
+        cycles: 4,
+        totalTime: 3
+      },
+      box: {
+        name: 'Box Breathing',
+        description: 'Used by Navy SEALs, athletes, and police officers to maintain calm during high-stress situations. The equal 4-count pattern creates perfect balance and focus.',
+        sequence: [
+          { text: 'Breathe In\nSlowly', duration: 4, class: 'inhale' },
+          { text: 'Hold\nStay Still', duration: 4, class: 'hold' },
+          { text: 'Breathe Out\nFully', duration: 4, class: 'exhale' },
+          { text: 'Hold\nEmpty', duration: 4, class: 'hold' }
+        ],
+        cycles: 5,
+        totalTime: 4
+      },
+      triangle: {
+        name: 'Triangle Breathing',
+        description: 'The simplest anxiety relief technique. Perfect for beginners or when you need quick relief in public without drawing attention.',
+        sequence: [
+          { text: 'Breathe In\n3 Counts', duration: 3, class: 'inhale' },
+          { text: 'Hold\n3 Counts', duration: 3, class: 'hold' },
+          { text: 'Breathe Out\n3 Counts', duration: 3, class: 'exhale' }
+        ],
+        cycles: 6,
+        totalTime: 2
+      }
+    };
+
+    let currentTechnique = '478';
+    let isRunning = false;
+    let isPaused = false;
+    let interval;
+    let phase = 0;
+    let count = 4;
+    let currentCycle = 0;
+    let totalCyclesCompleted = parseInt(localStorage.getItem('anxietyTotalCycles') || '0');
+    let totalSessions = parseInt(localStorage.getItem('anxietyTotalSessions') || '0');
+    let totalMinutes = parseInt(localStorage.getItem('anxietyTotalMinutes') || '0');
+
+    // Load stats
+    document.getElementById('totalCycles').textContent = totalCyclesCompleted;
+    document.getElementById('totalSessions').textContent = totalSessions;
+    document.getElementById('totalMinutes').textContent = totalMinutes;
+
+    // Calculate streak
+    const lastDate = localStorage.getItem('anxietyLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('anxietyStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    function selectTechnique(tech) {
+      if (isRunning) {
+        alert('Please stop the current session first!');
+        return;
+      }
+      
+      currentTechnique = tech;
+      document.querySelectorAll('.technique-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-technique="${tech}"]`).classList.add('active');
+      
+      updateTechniqueInfo();
+      resetBreathing();
+    }
+
+    function updateTechniqueInfo() {
+      const tech = techniques[currentTechnique];
+      
+      document.getElementById('techniqueDesc').innerHTML = `
+        <h4>${tech.name}</h4>
+        <p>${tech.description}</p>
+      `;
+      
+      document.getElementById('targetCycles').textContent = tech.cycles;
+    }
+
+    function startBreathing() {
+      if (isRunning && !isPaused) return;
+      
+      if (!isRunning) {
+        currentCycle = 0;
+        phase = 0;
+      }
+      
+      isRunning = true;
+      isPaused = false;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      runCycle();
+    }
+
+    function pauseBreathing() {
+      isPaused = true;
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('instructionText').textContent = 'Paused';
+      document.getElementById('phaseIndicator').textContent = 'Take your time. Resume when ready.';
+    }
+
+    function stopBreathing() {
+      isRunning = false;
+      isPaused = false;
+      clearInterval(interval);
+      resetBreathing();
+    }
+
+    function resetBreathing() {
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('breathingCircle').className = 'breathing-circle';
+      document.getElementById('instructionText').textContent = 'Press Start';
+      document.getElementById('counterDisplay').textContent = 'Ready';
+      document.getElementById('cycleNum').textContent = '0';
+      document.getElementById('phaseIndicator').textContent = 'Click Start when ready. Find a comfortable position.';
+      currentCycle = 0;
+      phase = 0;
+    }
+
+    function runCycle() {
+      if (!isRunning) return;
+
+      const tech = techniques[currentTechnique];
+      const sequence = tech.sequence;
+      const current = sequence[phase];
+      count = current.duration;
+
+      document.getElementById('instructionText').textContent = current.text;
+      document.getElementById('phaseIndicator').textContent = getPhaseMessage(current.class);
+      
+      document.getElementById('breathingCircle').className = 'breathing-circle ' + current.class;
+
+      interval = setInterval(() => {
+        count--;
+        document.getElementById('counterDisplay').textContent = count;
+
+        if (count <= 0) {
+          clearInterval(interval);
+          phase++;
+
+          if (phase >= sequence.length) {
+            phase = 0;
+            currentCycle++;
+            document.getElementById('cycleNum').textContent = currentCycle;
+
+            if (currentCycle >= tech.cycles) {
+              completeSession();
+              return;
+            }
+          }
+
+          runCycle();
+        }
+      }, 1000);
+    }
+
+    function getPhaseMessage(phaseClass) {
+      const messages = {
+        inhale: 'Fill your lungs completely and slowly',
+        hold: 'Hold gently - don\'t strain',
+        exhale: 'Release all tension with your breath'
+      };
+      return messages[phaseClass] || 'Focus on your breath';
+    }
+
+    function completeSession() {
+      isRunning = false;
+      clearInterval(interval);
+
+      const tech = techniques[currentTechnique];
+      
+      // Save progress
+      totalCyclesCompleted += tech.cycles;
+      totalSessions++;
+      totalMinutes += tech.totalTime;
+      
+      localStorage.setItem('anxietyTotalCycles', totalCyclesCompleted);
+      localStorage.setItem('anxietyTotalSessions', totalSessions);
+      localStorage.setItem('anxietyTotalMinutes', totalMinutes);
+      
+      // Update streak
+      const lastDate = localStorage.getItem('anxietyLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('anxietyStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('anxietyStreak', streak);
+        localStorage.setItem('anxietyLastDate', today);
+      }
+
+      // Update display
+      document.getElementById('totalCycles').textContent = totalCyclesCompleted;
+      document.getElementById('totalSessions').textContent = totalSessions;
+      document.getElementById('totalMinutes').textContent = totalMinutes;
+      document.getElementById('currentStreak').textContent = streak;
+
+      document.getElementById('breathingCircle').classList.remove('inhale', 'hold', 'exhale');
+      document.getElementById('instructionText').textContent = 'Well Done! 🌟';
+      document.getElementById('counterDisplay').textContent = '✨';
+      document.getElementById('phaseIndicator').textContent = 'You successfully calmed your nervous system!';
+
+      setTimeout(() => {
+        alert(`🆘 ${tech.name} Complete!\n\n✅ ${tech.cycles} cycles completed\n💆 Nervous system calmed\n🔥 ${streak} day streak\n\nYou just activated your body's natural relaxation response. Notice how much calmer you feel! 🌟`);
+        resetBreathing();
+      }, 500);
+    }
+
+    function showGroundingDetail(technique) {
+      const details = {
+        '54321': '5-4-3-2-1 Grounding:\n\n👀 Name 5 things you SEE\n✋ Name 4 things you TOUCH\n👂 Name 3 things you HEAR\n👃 Name 2 things you SMELL\n👅 Name 1 thing you TASTE\n\nThis brings your awareness back to the present moment and interrupts the anxiety spiral.',
+        'ice': 'Ice Technique:\n\n🧊 Hold ice cubes in both hands\n💧 Or splash ice-cold water on your face\n🚿 Or take a cold shower\n\nThe intense cold sensation interrupts your panic response and forces your brain to focus on the physical sensation instead of anxious thoughts.',
+        'movement': 'Movement Reset:\n\n🤸 Do 10 jumping jacks\n🏃 Run in place for 30 seconds\n💃 Shake your entire body vigorously\n🦘 Jump up and down\n\nPhysical movement releases the trapped fight-or-flight energy that anxiety creates in your body.'
+      };
+      
+      alert(details[technique]);
+    }
+
+    // Initialize
+    updateTechniqueInfo();
+  </script>
+</body>
+</html>

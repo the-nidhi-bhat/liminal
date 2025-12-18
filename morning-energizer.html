@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Energizer – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:1000px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(251,191,36,0.8), rgba(245,158,11,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fde68a 0%, #fbbf24 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* ROUTINE SELECTOR */
+    .routine-selector {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin:24px 0;
+      flex-wrap:wrap;
+    }
+
+    .routine-btn {
+      padding:12px 28px;
+      border-radius:20px;
+      border:2px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.8);
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .routine-btn:hover {
+      border-color:rgba(251,191,36,0.5);
+      background:rgba(251,191,36,0.15);
+    }
+
+    .routine-btn.active {
+      border-color:#fbbf24;
+      background:linear-gradient(135deg, rgba(251,191,36,0.3), rgba(245,158,11,0.2));
+      color:#fde68a;
+      box-shadow:0 8px 24px rgba(251,191,36,0.3);
+    }
+
+    /* EXERCISE SECTION */
+    .exercise-section {
+      background:linear-gradient(145deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:32px 0;
+      border:1px solid rgba(251,191,36,0.3);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .exercise-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(251,191,36,0.2), transparent 70%);
+      animation:pulse-glow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity:0.5; }
+      50% { opacity:1; }
+    }
+
+    .exercise-display {
+      position:relative;
+      z-index:1;
+    }
+
+    .status-badge {
+      display:inline-block;
+      padding:10px 24px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      color:#1e293b;
+      box-shadow:0 8px 24px rgba(251,191,36,0.4);
+    }
+
+    .status-badge.work {
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      color:#ffffff;
+      animation:pulse-badge 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.05); }
+    }
+
+    .status-badge.prep {
+      background:linear-gradient(135deg, #10b981, #059669);
+      color:#ffffff;
+    }
+
+    .exercise-icon {
+      font-size:120px;
+      margin-bottom:20px;
+      animation:bounce-strong 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce-strong {
+      0%, 100% { transform:translateY(0) scale(1); }
+      50% { transform:translateY(-25px) scale(1.1); }
+    }
+
+    .exercise-icon.prep {
+      animation:rotate-slow 4s linear infinite;
+    }
+
+    @keyframes rotate-slow {
+      from { transform:rotate(0deg); }
+      to { transform:rotate(360deg); }
+    }
+
+    .exercise-name {
+      font-size:48px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:16px;
+      line-height:1.2;
+    }
+
+    .exercise-motivation {
+      font-size:18px;
+      color:#fde68a;
+      font-weight:700;
+      font-style:italic;
+      margin-bottom:24px;
+    }
+
+    .exercise-instruction {
+      font-size:18px;
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      line-height:1.8;
+      margin-bottom:24px;
+      padding:20px 28px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      text-align:left;
+      max-width:700px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .exercise-target {
+      display:inline-block;
+      padding:12px 24px;
+      background:rgba(139,92,246,0.15);
+      border:1px solid rgba(139,92,246,0.3);
+      border-radius:16px;
+      margin-bottom:24px;
+    }
+
+    .exercise-target-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .exercise-target-text {
+      font-size:14px;
+      font-weight:700;
+      color:#a78bfa;
+    }
+
+    .timer-display {
+      font-size:120px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:32px 0;
+      font-variant-numeric:tabular-nums;
+      line-height:1;
+    }
+
+    .timer-display.critical {
+      animation:shake-timer 0.5s ease-in-out infinite;
+      color:#ef4444;
+      -webkit-text-fill-color:#ef4444;
+    }
+
+    @keyframes shake-timer {
+      0%, 100% { transform:translateX(0) scale(1); }
+      25% { transform:translateX(-8px) scale(1.05); }
+      75% { transform:translateX(8px) scale(1.05); }
+    }
+
+    .energy-cue {
+      font-size:20px;
+      font-weight:700;
+      color:#fbbf24;
+      padding:12px 28px;
+      background:rgba(251,191,36,0.2);
+      border-radius:999px;
+      display:inline-block;
+      margin-top:16px;
+      animation:energy-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes energy-pulse {
+      0%, 100% { opacity:0.8; transform:scale(1); }
+      50% { opacity:1; transform:scale(1.05); }
+    }
+
+    .next-exercise {
+      background:rgba(16,185,129,0.15);
+      border:1px solid rgba(16,185,129,0.3);
+      border-radius:16px;
+      padding:16px 24px;
+      margin-top:24px;
+      display:inline-block;
+    }
+
+    .next-exercise-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .next-exercise-name {
+      font-size:18px;
+      font-weight:700;
+      color:#10b981;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:center;
+    }
+
+    /* EXERCISE PROGRESS */
+    .exercise-progress {
+      margin:32px 0;
+    }
+
+    .progress-header {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .progress-header span {
+      font-size:16px;
+      font-weight:700;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .exercise-num {
+      font-size:36px;
+      color:#fbbf24;
+      font-weight:800;
+    }
+
+    .exercise-dots {
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .exercise-dot {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      border:2px solid rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      color:rgba(255,255,255,0.5);
+      transition:all 0.3s;
+    }
+
+    .exercise-dot.completed {
+      background:linear-gradient(135deg, #10b981, #059669);
+      border-color:#10b981;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(16,185,129,0.4);
+    }
+
+    .exercise-dot.active {
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-color:#fbbf24;
+      color:#1e293b;
+      box-shadow:0 4px 12px rgba(251,191,36,0.4);
+      animation:pulse-dot 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.15); }
+    }
+
+    .progress-bar {
+      width:100%;
+      height:10px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:20px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #fbbf24, #f59e0b);
+      border-radius:999px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 20px rgba(251,191,36,0.6);
+    }
+
+    /* ENERGY METER */
+    .energy-meter {
+      background:linear-gradient(145deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1));
+      border:1px solid rgba(239,68,68,0.3);
+      border-radius:20px;
+      padding:20px 28px;
+      display:inline-block;
+      margin-top:20px;
+    }
+
+    .energy-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #fbbf24);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:4px;
+    }
+
+    .energy-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color:#1e293b;
+      box-shadow:0 12px 32px rgba(251,191,36,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(251,191,36,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    /* STATS */
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(251,191,36,0.2);
+    }
+
+    .stat-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
+      border-radius:20px;
+      border:1px solid rgba(251,191,36,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(251,191,36,0.3);
+      border-color:rgba(251,191,36,0.4);
+    }
+
+    .benefit-icon {
+      font-size:40px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .benefit-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .benefit-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.5;
+    }
+
+    /* EXERCISES PREVIEW */
+    .exercises-preview {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .exercises-preview h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .exercises-list {
+      display:grid;
+      gap:12px;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    .exercise-preview-item {
+      padding:16px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      transition:all 0.3s;
+    }
+
+    .exercise-preview-item:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(4px);
+    }
+
+    .exercise-preview-icon {
+      font-size:32px;
+      flex-shrink:0;
+    }
+
+    .exercise-preview-content {
+      flex:1;
+      text-align:left;
+    }
+
+    .exercise-preview-name {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .exercise-preview-detail {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .timer-display { font-size:90px; }
+      .exercise-name { font-size:36px; }
+      .exercise-icon { font-size:80px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .routine-selector { flex-direction:column; }
+      .routine-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>☀️ Morning Energizer</h1>
+    <p class="subtitle">Wake up your body & mind • Start your day powerfully • Own the morning!</p>
+
+    <!-- ROUTINE SELECTOR -->
+    <div class="routine-selector">
+      <button class="routine-btn" onclick="selectRoutine('quick')" data-routine="quick">
+        ⚡ Quick Boost (5 mins • 6 moves)
+      </button>
+      <button class="routine-btn active" onclick="selectRoutine('standard')" data-routine="standard">
+        ☀️ Full Energizer (10 mins • 10 moves)
+      </button>
+      <button class="routine-btn" onclick="selectRoutine('power')" data-routine="power">
+        🔥 Power Morning (15 mins • 15 moves)
+      </button>
+    </div>
+
+    <!-- EXERCISE SECTION -->
+    <div class="exercise-section">
+      <div class="exercise-display">
+        <div class="status-badge prep" id="statusBadge">Get Ready</div>
+        <div class="exercise-icon prep" id="exerciseIcon">☀️</div>
+        <div class="exercise-name" id="exerciseName">Morning Champion</div>
+        <div class="exercise-motivation" id="exerciseMotivation">"You're about to WIN the day!"</div>
+        
+        <div class="exercise-instruction" id="exerciseInstruction">
+          • Find a comfortable space to move<br>
+          • This routine activates your entire body<br>
+          • Gets blood flowing and energy surging<br>
+          • Perfect way to start your day with power!
+        </div>
+
+        <div class="exercise-target" id="exerciseTarget" style="display:none;">
+          <div class="exercise-target-label">Targets:</div>
+          <div class="exercise-target-text" id="exerciseTargetText">Full Body</div>
+        </div>
+        
+        <div class="timer-display" id="timer">5</div>
+        <div class="energy-cue" id="energyCue">Get ready to energize! ⚡</div>
+        
+        <div class="next-exercise" id="nextExercise" style="display:none;">
+          <div class="next-exercise-label">Next Up:</div>
+          <div class="next-exercise-name">
+            <span id="nextExerciseIcon">🙆</span>
+            <span id="nextExerciseText">Full Body Stretch</span>
+          </div>
+        </div>
+
+        <div class="energy-meter">
+          <div class="energy-value" id="energyLevel">0%</div>
+          <div class="energy-label">Energy Level ⚡</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE PROGRESS -->
+    <div class="exercise-progress">
+      <div class="progress-header">
+        <span>Exercise</span>
+        <span class="exercise-num" id="exerciseNum">0</span>
+        <span>of <span id="totalExercises">10</span></span>
+      </div>
+      
+      <div class="exercise-dots" id="exerciseDots">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startRoutine()">▶ Start Routine</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseRoutine()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="stopRoutine()">⏹ Stop</button>
+      <button class="btn btn-secondary" onclick="nextExercise()">⏭ Next</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="totalRoutines">0</span>
+        <span class="stat-label">Routines Done</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Minutes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="morningsWon">0</span>
+        <span class="stat-label">Mornings Won</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- EXERCISES PREVIEW -->
+    <div class="exercises-preview">
+      <h3>💪 Today's Moves</h3>
+      <div class="exercises-list" id="exercisesList">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ Morning Energizer Benefits</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">☀️</span>
+          <h4>Wakes You Up</h4>
+          <p>Activates your system better than coffee ever could</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⚡</span>
+          <h4>Boosts Energy</h4>
+          <p>Releases endorphins for sustained natural energy all day</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🧠</span>
+          <h4>Sharpens Mind</h4>
+          <p>Increases blood flow to brain for peak mental performance</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">😊</span>
+          <h4>Improves Mood</h4>
+          <p>Floods system with feel-good hormones from first thing</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">💪</span>
+          <h4>Activates Muscles</h4>
+          <p>Wakes up your entire muscular system for the day ahead</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🎯</span>
+          <h4>Sets Positive Tone</h4>
+          <p>Win your morning, win your day - momentum starts here</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const routineSets = {
+      quick: {
+        exercises: [
+          { 
+            name: 'Full Body Stretch', 
+            icon: '🙆', 
+            motivation: '"Wake up every muscle!"',
+            instruction: '• Reach arms overhead as high as possible<br>• Interlace fingers, palms up to sky<br>• Rise up on toes, stretch entire body<br>• Take 5 deep breaths, feel yourself wake up',
+            duration: 40,
+            target: 'Full Body'
+          },
+          { 
+            name: 'Jumping Jacks', 
+            icon: '🤸', 
+            motivation: '"Get that heart pumping!"',
+            instruction: '• Jump with arms and legs spreading wide<br>• Clap hands overhead<br>• Land softly, repeat with energy<br>• Do 20 reps - feel the blood flowing!',
+            duration: 40,
+            target: 'Cardio & Full Body'
+          },
+          { 
+            name: 'Arm Circles', 
+            icon: '🔄', 
+            motivation: '"Loosen those shoulders!"',
+            instruction: '• Extend arms straight to sides<br>• Make large circles forward 10 times<br>• Reverse direction, 10 times backward<br>• Wakes up shoulders and upper body',
+            duration: 40,
+            target: 'Shoulders & Arms'
+          },
+          { 
+            name: 'Bodyweight Squats', 
+            icon: '💪', 
+            motivation: '"Power up those legs!"',
+            instruction: '• Feet shoulder-width apart<br>• Lower hips back and down<br>• Push through heels to stand<br>• 15 reps - feel leg muscles activate!',
+            duration: 50,
+            target: 'Legs & Glutes'
+          },
+          { 
+            name: 'High Knees', 
+            icon: '🏃', 
+            motivation: '"Sprint into your day!"',
+            instruction: '• Run in place powerfully<br>• Drive knees up to chest height<br>• Pump arms with intensity<br>• 30 seconds of pure energy!',
+            duration: 40,
+            target: 'Cardio & Core'
+          },
+          { 
+            name: 'Victory Pose', 
+            icon: '🙌', 
+            motivation: '"You already WON!"',
+            instruction: '• Stand tall, arms raised high in V<br>• Smile BIG - you conquered your morning!<br>• Take 3 powerful breaths<br>• Feel pride, energy, and readiness!',
+            duration: 40,
+            target: 'Mind & Spirit'
+          }
+        ],
+        totalTime: 5,
+        energyBoostRate: 16.67
+      },
+      standard: {
+        exercises: [
+          { 
+            name: 'Full Body Stretch', 
+            icon: '🙆', 
+            motivation: '"Reach for greatness!"',
+            instruction: '• Reach arms overhead, fingers interlaced<br>• Rise on toes, stretch tall<br>• Side bend left and right<br>• Take 5 deep energizing breaths',
+            duration: 40,
+            target: 'Full Body Wake-Up'
+          },
+          { 
+            name: 'Jumping Jacks', 
+            icon: '🤸', 
+            motivation: '"Heart rate UP!"',
+            instruction: '• Explosive jumps, full arm extension<br>• Clap overhead with each jump<br>• Land softly, spring back up<br>• 25 reps - feel alive!',
+            duration: 40,
+            target: 'Cardiovascular System'
+          },
+          { 
+            name: 'Arm Circles', 
+            icon: '🔄', 
+            motivation: '"Shoulders ready!"',
+            instruction: '• Arms extended, make big circles<br>• 10 forward with power<br>• 10 backward with control<br>• Loosens entire upper body',
+            duration: 40,
+            target: 'Shoulders & Upper Back'
+          },
+          { 
+            name: 'Torso Twists', 
+            icon: '🌀', 
+            motivation: '"Wake that spine!"',
+            instruction: '• Feet wide, arms at shoulder height<br>• Twist powerfully side to side<br>• Let arms swing freely<br>• 20 twists - spine activated!',
+            duration: 45,
+            target: 'Core & Spine'
+          },
+          { 
+            name: 'High Knees', 
+            icon: '🏃', 
+            motivation: '"Energy surge!"',
+            instruction: '• Sprint in place with intensity<br>• Drive knees to chest height<br>• Pump arms powerfully<br>• 30 seconds - feel your power!',
+            duration: 40,
+            target: 'Cardio & Hip Flexors'
+          },
+          { 
+            name: 'Squats', 
+            icon: '💪', 
+            motivation: '"Build that foundation!"',
+            instruction: '• Feet shoulder-width, chest up<br>• Lower hips back and down<br>• Explode back up<br>• 18 reps - legs activated!',
+            duration: 50,
+            target: 'Legs & Glutes'
+          },
+          { 
+            name: 'Push-Ups', 
+            icon: '🦾', 
+            motivation: '"Upper body power!"',
+            instruction: '• Hands under shoulders<br>• Lower chest to ground with control<br>• Push up powerfully<br>• 12 reps (knees down is great!)',
+            duration: 50,
+            target: 'Chest & Arms'
+          },
+          { 
+            name: 'Lunges', 
+            icon: '🚶', 
+            motivation: '"Balance & strength!"',
+            instruction: '• Step forward into lunge<br>• Lower back knee toward ground<br>• Push back to standing<br>• 16 total (8 each leg)',
+            duration: 50,
+            target: 'Legs & Balance'
+          },
+          { 
+            name: 'Standing Ab Twist', 
+            icon: '🌀', 
+            motivation: '"Core engaged!"',
+            instruction: '• Hands behind head<br>• Lift right knee to left elbow<br>• Alternate sides with power<br>• 20 total - abs on fire!',
+            duration: 45,
+            target: 'Core & Obliques'
+          },
+          { 
+            name: 'Victory Pose', 
+            icon: '🏆', 
+            motivation: '"CHAMPION!"',
+            instruction: '• Stand tall, arms raised in victory<br>• Smile HUGE - you DID IT!<br>• Take 3 champion breaths<br>• Own this energy ALL DAY!',
+            duration: 40,
+            target: 'Confidence & Pride'
+          }
+        ],
+        totalTime: 10,
+        energyBoostRate: 10
+      },
+      power: {
+        exercises: [
+          { 
+            name: 'Dynamic Stretch', 
+            icon: '🙆', 
+            motivation: '"Full activation!"',
+            instruction: '• Reach overhead, side bends<br>• Forward fold, roll up slowly<br>• Neck rolls, shoulder rolls<br>• Complete body wake-up sequence',
+            duration: 50,
+            target: 'Full Body Mobility'
+          },
+          { 
+            name: 'Jumping Jacks', 
+            icon: '🤸', 
+            motivation: '"Heart rate climbing!"',
+            instruction: '• Explosive full-body jumps<br>• Arms fully extended overhead<br>• 30 reps with maximum effort<br>• Feel your engine starting!',
+            duration: 50,
+            target: 'Cardiovascular System'
+          },
+          { 
+            name: 'Arm Circles & Swings', 
+            icon: '🔄', 
+            motivation: '"Shoulders loose!"',
+            instruction: '• Large arm circles forward and back<br>• Cross-body arm swings<br>• Overhead reaches<br>• Complete shoulder preparation',
+            duration: 45,
+            target: 'Shoulders & Mobility'
+          },
+          { 
+            name: 'Torso Twists', 
+            icon: '🌀', 
+            motivation: '"Spine alive!"',
+            instruction: '• Feet wide, twist powerfully<br>• Arms swinging freely<br>• 30 twists with rhythm<br>• Wake every vertebrae!',
+            duration: 45,
+            target: 'Core & Spine'
+          },
+          { 
+            name: 'High Knees Sprint', 
+            icon: '🏃', 
+            motivation: '"Maximum intensity!"',
+            instruction: '• Sprint in place at max speed<br>• Knees driving to chest<br>• Arms pumping hard<br>• 40 seconds - give everything!',
+            duration: 50,
+            target: 'Cardio & Endurance'
+          },
+          { 
+            name: 'Jump Squats', 
+            icon: '🦘', 
+            motivation: '"Explosive power!"',
+            instruction: '• Squat down deep<br>• EXPLODE up into jump<br>• Land softly, repeat<br>• 20 reps - leg power maxed!',
+            duration: 60,
+            target: 'Legs & Power'
+          },
+          { 
+            name: 'Push-Ups', 
+            icon: '🦾', 
+            motivation: '"Upper body engaged!"',
+            instruction: '• Perfect form, controlled movement<br>• Lower chest fully<br>• Push up with power<br>• 15 quality reps',
+            duration: 60,
+            target: 'Chest & Triceps'
+          },
+          { 
+            name: 'Walking Lunges', 
+            icon: '🚶', 
+            motivation: '"Leg activation!"',
+            instruction: '• Step into deep lunge<br>• Push off, step into next<br>• Walk forward with lunges<br>• 20 total steps',
+            duration: 60,
+            target: 'Legs & Balance'
+          },
+          { 
+            name: 'Mountain Climbers', 
+            icon: '⛰️', 
+            motivation: '"Core fire!"',
+            instruction: '• Plank position solid<br>• Drive knees to chest alternating<br>• Fast pace, stay strong<br>• 40 seconds - core burning!',
+            duration: 50,
+            target: 'Core & Cardio'
+          },
+          { 
+            name: 'Burpees', 
+            icon: '💥', 
+            motivation: '"Full body beast!"',
+            instruction: '• Squat, hands down<br>• Jump back to plank<br>• Jump feet forward, explode up<br>• 12 reps - ultimate move!',
+            duration: 60,
+            target: 'Total Body Power'
+          },
+          { 
+            name: 'Plank Hold', 
+            icon: '🏋️', 
+            motivation: '"Core stability!"',
+            instruction: '• Forearms down, body straight<br>• Squeeze abs, glutes, legs<br>• Hold strong and steady<br>• 45 seconds of strength',
+            duration: 50,
+            target: 'Core Endurance'
+          },
+          { 
+            name: 'Side Lunges', 
+            icon: '🦵', 
+            motivation: '"Lateral power!"',
+            instruction: '• Step wide to side<br>• Bend one knee, other straight<br>• Push back to center<br>• 16 total (8 each side)',
+            duration: 50,
+            target: 'Inner Thighs & Glutes'
+          },
+          { 
+            name: 'Bicycle Crunches', 
+            icon: '🚴', 
+            motivation: '"Abs engaged!"',
+            instruction: '• Hands behind head<br>• Alternate elbow to opposite knee<br>• Full range of motion<br>• 30 reps - abs shredded!',
+            duration: 50,
+            target: 'Core & Obliques'
+          },
+          { 
+            name: 'Star Jumps', 
+            icon: '⭐', 
+            motivation: '"Explosive finish!"',
+            instruction: '• Squat down low<br>• Jump up spreading into star<br>• Arms and legs wide<br>• 15 reps - final burst!',
+            duration: 50,
+            target: 'Power & Coordination'
+          },
+          { 
+            name: 'Champion Pose', 
+            icon: '👑', 
+            motivation: '"YOU ARE UNSTOPPABLE!"',
+            instruction: '• Stand like a CHAMPION<br>• Arms raised, chest proud<br>• MASSIVE smile - you EARNED this!<br>• You just WON your morning! 🏆',
+            duration: 50,
+            target: 'Mental Victory'
+          }
+        ],
+        totalTime: 15,
+        energyBoostRate: 6.67
+      }
+    };
+
+    let currentRoutine = 'standard';
+    let currentExercise = 0;
+    let timeLeft = 5;
+    let isRunning = false;
+    let isPreparing = true;
+    let interval;
+    let energyLevel = 0;
+    let totalRoutines = parseInt(localStorage.getItem('morningRoutines') || '0');
+    let totalMins = parseInt(localStorage.getItem('morningMinutes') || '0');
+    let morningsWon = parseInt(localStorage.getItem('morningsWon') || '0');
+
+    document.getElementById('totalRoutines').textContent = totalRoutines;
+    document.getElementById('totalMinutes').textContent = totalMins;
+    document.getElementById('morningsWon').textContent = morningsWon;
+
+    const lastDate = localStorage.getItem('morningLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('morningStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    // Initialize
+    updateExercisesList();
+    updateExerciseDots();
+
+    function selectRoutine(routine) {
+      if (isRunning) {
+        alert('Stop the current routine first!');
+        return;
+      }
+      
+      currentRoutine = routine;
+      document.querySelectorAll('.routine-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-routine="${routine}"]`).classList.add('active');
+      
+      updateExercisesList();
+      updateExerciseDots();
+      document.getElementById('totalExercises').textContent = routineSets[currentRoutine].exercises.length;
+    }
+
+    function updateExercisesList() {
+      const set = routineSets[currentRoutine];
+      const html = set.exercises.map((ex, i) => `
+        <div class="exercise-preview-item">
+          <div class="exercise-preview-icon">${ex.icon}</div>
+          <div class="exercise-preview-content">
+            <div class="exercise-preview-name">${i + 1}. ${ex.name}</div>
+            <div class="exercise-preview-detail">${ex.duration}s • ${ex.target}</div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('exercisesList').innerHTML = html;
+    }
+
+    function updateExerciseDots() {
+      const set = routineSets[currentRoutine];
+      const html = set.exercises.map((_, i) => {
+        const completed = i < currentExercise;
+        const active = i === currentExercise && currentExercise > 0;
+        return `<div class="exercise-dot ${completed ? 'completed' : ''} ${active ? 'active' : ''}">${i + 1}</div>`;
+      }).join('');
+      document.getElementById('exerciseDots').innerHTML = html;
+    }
+
+    function startRoutine() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      if (isPreparing && currentExercise === 0) {
+        runPreparation();
+      } else {
+        runExercise();
+      }
+    }
+
+    function pauseRoutine() {
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function stopRoutine() {
+      isRunning = false;
+      clearInterval(interval);
+      currentExercise = 0;
+      timeLeft = 5;
+      isPreparing = true;
+      energyLevel = 0;
+      
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('statusBadge').className = 'status-badge prep';
+      document.getElementById('statusBadge').textContent = 'Get Ready';
+      document.getElementById('exerciseIcon').className = 'exercise-icon prep';
+      document.getElementById('exerciseIcon').textContent = '☀️';
+      document.getElementById('exerciseName').textContent = 'Morning Champion';
+      document.getElementById('exerciseMotivation').textContent = '"You\'re about to WIN the day!"';
+      document.getElementById('exerciseInstruction').innerHTML = '• Find a comfortable space to move<br>• This routine activates your entire body<br>• Gets blood flowing and energy surging<br>• Perfect way to start your day with power!';
+      document.getElementById('exerciseTarget').style.display = 'none';
+      document.getElementById('timer').className = 'timer-display';
+      document.getElementById('timer').textContent = '5';
+      document.getElementById('energyCue').textContent = 'Get ready to energize! ⚡';
+      document.getElementById('exerciseNum').textContent = '0';
+      document.getElementById('energyLevel').textContent = '0%';
+      document.getElementById('progress').style.width = '0%';
+      document.getElementById('nextExercise').style.display = 'none';
+      updateExerciseDots();
+    }
+
+    function runPreparation() {
+      isPreparing = true;
+      timeLeft = 5;
+      
+      document.getElementById('statusBadge').className = 'status-badge prep';
+      document.getElementById('statusBadge').textContent = 'Starting Soon!';
+      document.getElementById('exerciseIcon').className = 'exercise-icon prep';
+      document.getElementById('exerciseIcon').textContent = '⚡';
+      document.getElementById('exerciseName').textContent = 'Get Ready!';
+      document.getElementById('exerciseMotivation').textContent = '"Your amazing morning starts NOW!"';
+      document.getElementById('energyCue').textContent = 'Countdown to energy! 🔥';
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 3) {
+          document.getElementById('timer').classList.add('critical');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          document.getElementById('timer').classList.remove('critical');
+          isPreparing = false;
+          currentExercise = 0;
+          runExercise();
+        }
+      }, 1000);
+    }
+
+    function runExercise() {
+      if (!isRunning) return;
+
+      const set = routineSets[currentRoutine];
+      const exercise = set.exercises[currentExercise];
+      timeLeft = exercise.duration;
+      
+      document.getElementById('statusBadge').className = 'status-badge work';
+      document.getElementById('statusBadge').textContent = `Exercise ${currentExercise + 1}/${set.exercises.length}`;
+      document.getElementById('exerciseIcon').className = 'exercise-icon';
+      document.getElementById('exerciseIcon').textContent = exercise.icon;
+      document.getElementById('exerciseName').textContent = exercise.name;
+      document.getElementById('exerciseMotivation').textContent = exercise.motivation;
+      document.getElementById('exerciseInstruction').innerHTML = exercise.instruction;
+      document.getElementById('exerciseTarget').style.display = 'inline-block';
+      document.getElementById('exerciseTargetText').textContent = exercise.target;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('energyCue').textContent = 'Push yourself! You got this! 💪';
+      document.getElementById('exerciseNum').textContent = currentExercise + 1;
+      
+      // Show next exercise
+      if (currentExercise + 1 < set.exercises.length) {
+        const nextEx = set.exercises[currentExercise + 1];
+        document.getElementById('nextExercise').style.display = 'inline-block';
+        document.getElementById('nextExerciseIcon').textContent = nextEx.icon;
+        document.getElementById('nextExerciseText').textContent = nextEx.name;
+      } else {
+        document.getElementById('nextExercise').style.display = 'none';
+      }
+      
+      updateExerciseDots();
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 5 && timeLeft > 0) {
+          document.getElementById('timer').classList.add('critical');
+        } else {
+          document.getElementById('timer').classList.remove('critical');
+        }
+        
+        // Update progress
+        const totalTime = set.exercises.reduce((sum, ex) => sum + ex.duration, 0);
+        const elapsedTime = set.exercises.slice(0, currentExercise).reduce((sum, ex) => sum + ex.duration, 0);
+        const currentElapsed = exercise.duration - timeLeft;
+        const overallProgress = ((elapsedTime + currentElapsed) / totalTime) * 100;
+        document.getElementById('progress').style.width = overallProgress + '%';
+
+        if (timeLeft <= 0) {
+          nextExercise();
+        }
+      }, 1000);
+    }
+
+    function nextExercise() {
+      const set = routineSets[currentRoutine];
+      
+      energyLevel = Math.min(100, energyLevel + set.energyBoostRate);
+      document.getElementById('energyLevel').textContent = Math.round(energyLevel) + '%';
+      
+      currentExercise++;
+      
+      if (currentExercise >= set.exercises.length) {
+        completeRoutine();
+        return;
+      }
+      
+      if (isRunning) {
+        clearInterval(interval);
+        runExercise();
+      }
+    }
+
+    function completeRoutine() {
+      isRunning = false;
+      clearInterval(interval);
+      
+      const set = routineSets[currentRoutine];
+      
+      totalRoutines++;
+      totalMins += set.totalTime;
+      morningsWon++;
+      
+      localStorage.setItem('morningRoutines', totalRoutines);
+      localStorage.setItem('morningMinutes', totalMins);
+      localStorage.setItem('morningsWon', morningsWon);
+      
+      const lastDate = localStorage.getItem('morningLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('morningStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('morningStreak', streak);
+        localStorage.setItem('morningLastDate', today);
+      }
+      
+      document.getElementById('totalRoutines').textContent = totalRoutines;
+      document.getElementById('totalMinutes').textContent = totalMins;
+      document.getElementById('morningsWon').textContent = morningsWon;
+      document.getElementById('currentStreak').textContent = streak;
+      
+      document.getElementById('statusBadge').className = 'status-badge work';
+      document.getElementById('statusBadge').textContent = '🏆 CHAMPION!';
+      document.getElementById('exerciseIcon').className = 'exercise-icon';
+      document.getElementById('exerciseIcon').textContent = '👑';
+      document.getElementById('exerciseName').textContent = 'YOU WON THE MORNING!';
+      document.getElementById('exerciseMotivation').textContent = '"Nothing can stop you today!"';
+      document.getElementById('exerciseInstruction').innerHTML = '• INCREDIBLE energy achieved! ⚡<br>• Your day is set up for SUCCESS<br>• Carry this momentum forward<br>• You are UNSTOPPABLE!';
+      document.getElementById('exerciseTarget').style.display = 'none';
+      document.getElementById('timer').textContent = '✨';
+      document.getElementById('energyCue').textContent = 'Champion energy activated! 🔥';
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('nextExercise').style.display = 'none';
+      document.getElementById('energyLevel').textContent = '100%';
+      
+      setTimeout(() => {
+        alert(`☀️ Morning Energizer Complete!\n\n✅ ${set.totalTime} minutes completed\n💪 ${set.exercises.length} exercises crushed\n⚡ 100% energy activated\n🔥 ${streak} day streak\n\nYou are UNSTOPPABLE today! 👑\nGo DOMINATE your day!`);
+        stopRoutine();
+      }, 500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bubble Pop Board – Calm Hub</title>
+  <style>
+    /* --- Premium Reset & Typography --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Luxury Animated Background --- */
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                    url("image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 20px;
+    }
+
+    /* --- The Glass Shell --- */
+    .shell {
+        width: 100%;
+        max-width: 600px;
+        border-radius: 32px;
+        padding: 40px;
+        
+        /* High-end Frosted Glass */
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+
+        /* Entry Animation */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes floatUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Header --- */
+    .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .title-block h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 4px;
+        letter-spacing: -0.5px;
+    }
+
+    .title-block p {
+        font-size: 15px;
+        color: #64748b;
+    }
+
+    .back-link a {
+        font-size: 14px;
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .back-link a span {
+        color: #6366f1;
+        font-weight: 700;
+    }
+
+    .back-link a:hover {
+        color: #334155;
+    }
+
+    /* --- Game Area --- */
+    .game-area {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        text-align: center;
+    }
+
+    .bubble-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+        justify-items: center;
+        margin-bottom: 32px;
+    }
+
+    /* Glassy Bubble Style */
+    .bubble {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        
+        /* Default background (will be overridden by JS colors) */
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(165, 180, 252, 0.4));
+        
+        box-shadow: 
+            inset 0 0 10px rgba(255,255,255,0.6),
+            0 4px 8px rgba(0, 0, 0, 0.05),
+            0 0 0 1px rgba(255, 255, 255, 0.4);
+            
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        backdrop-filter: blur(2px);
+    }
+
+    .bubble:hover {
+        transform: scale(1.15);
+        box-shadow: 
+            inset 0 0 12px rgba(255,255,255,0.8),
+            0 8px 16px rgba(0, 0, 0, 0.1);
+        filter: brightness(1.05);
+    }
+
+    .bubble:active {
+        transform: scale(0.9);
+    }
+
+    .bubble.popped {
+        opacity: 0;
+        transform: scale(1.5);
+        pointer-events: none;
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    /* Pop Animation */
+    .pop-ripple {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        left: 0;
+        top: 0;
+        opacity: 1;
+        pointer-events: none;
+        animation: ripple 0.4s ease-out forwards;
+    }
+
+    @keyframes ripple {
+        from { transform: scale(0.5); opacity: 1; border-width: 4px; }
+        to   { transform: scale(2); opacity: 0; border-width: 0px; }
+    }
+
+    /* --- Controls --- */
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .score-block {
+        font-size: 15px;
+        color: #64748b;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    #bubbleCount {
+        font-size: 18px;
+        font-weight: 700;
+        color: #4f46e5;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #ffffff;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .mini-note {
+        font-size: 13px;
+        color: #94a3b8;
+        margin-top: 16px;
+        font-weight: 500;
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+        .shell { padding: 24px 20px; }
+        .bubble-grid { gap: 10px; }
+        .bubble { width: 40px; height: 40px; }
+        .controls { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="top-row">
+      <div class="title-block">
+        <h1>Bubble Pop Board 🫧</h1>
+        <p>Pop the colorful bubbles at your own pace.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <div id="bubbleGrid" class="bubble-grid"></div>
+      
+      <div class="controls">
+        <div class="score-block">
+          Popped: <span id="bubbleCount">0</span>
+        </div>
+        <button class="btn" id="resetBubblesBtn">Refill Board</button>
+      </div>
+      
+      <p class="mini-note">Tip: Use this for 1–2 minutes between study blocks to reset your attention.</p>
+    </div>
+  </div>
+
+  <script>
+    // --- Audio Context (Soft Pop) ---
+    let audioCtx;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playPopSound() {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      // Softer, rounder pop sound
+      osc.type = "sine"; 
+      osc.frequency.setValueAtTime(350, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.1);
+
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.12);
+    }
+
+    // --- Pastel Color Palette ---
+    const BUBBLE_COLORS = [
+        "linear-gradient(135deg, #e0f2fe 0%, #3b82f6 100%)", // Blue
+        "linear-gradient(135deg, #fce7f3 0%, #ec4899 100%)", // Pink
+        "linear-gradient(135deg, #f3e8ff 0%, #a855f7 100%)", // Purple
+        "linear-gradient(135deg, #dcfce7 0%, #22c55e 100%)", // Green
+        "linear-gradient(135deg, #ffedd5 0%, #f97316 100%)", // Orange
+        "linear-gradient(135deg, #cffafe 0%, #06b6d4 100%)", // Cyan
+        "linear-gradient(135deg, #ffe4e6 0%, #f43f5e 100%)"  // Rose
+    ];
+
+    const bubbleGridEl = document.getElementById("bubbleGrid");
+    const bubbleCountEl = document.getElementById("bubbleCount");
+    const resetBubblesBtn = document.getElementById("resetBubblesBtn");
+    let bubbleCount = 0;
+
+    function createBubbles() {
+      bubbleGridEl.innerHTML = "";
+      bubbleCount = 0;
+      bubbleCountEl.textContent = "0";
+
+      // 6x4 Grid = 24 bubbles
+      const total = 24;
+      for (let i = 0; i < total; i++) {
+        const b = document.createElement("div");
+        b.className = "bubble";
+        
+        // Assign random pastel color
+        const randomColor = BUBBLE_COLORS[Math.floor(Math.random() * BUBBLE_COLORS.length)];
+        b.style.background = randomColor;
+        
+        b.addEventListener("click", () => {
+          if (!b.classList.contains("popped")) {
+            b.classList.add("popped");
+            bubbleCount++;
+            bubbleCountEl.textContent = String(bubbleCount);
+
+            // Add ripple visual
+            const ripple = document.createElement("div");
+            ripple.className = "pop-ripple";
+            b.appendChild(ripple);
+            
+            // Clean up visual
+            setTimeout(() => ripple.remove(), 400);
+
+            playPopSound();
+            
+            if (bubbleCount === total) {
+                setTimeout(() => {
+                    resetBubblesBtn.textContent = "All Popped! Refill?";
+                    resetBubblesBtn.style.transform = "scale(1.1)";
+                    setTimeout(() => resetBubblesBtn.style.transform = "scale(1)", 200);
+                }, 500);
+            }
+          }
+        });
+        
+        bubbleGridEl.appendChild(b);
+      }
+      resetBubblesBtn.textContent = "Refill Board";
+    }
+
+    resetBubblesBtn.addEventListener("click", () => {
+        // Small satisfying animation on refill
+        const bubbles = document.querySelectorAll('.bubble');
+        bubbles.forEach(b => b.style.transform = "scale(0)");
+        setTimeout(createBubbles, 200);
+    });
+    
+    // Init
+    createBubbles();
+  </script>
+</body>
+</html>

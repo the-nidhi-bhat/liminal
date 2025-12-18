@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kind Words to Self – Calm Hub</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 640px;
+      border-radius: 22px;
+      padding: 20px 20px 22px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+      border: 1px solid #e2e8f0;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .title-block h1 {
+      font-size: 22px;
+      color: #111827;
+    }
+
+    .title-block p {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .back-link a {
+      font-size: 12px;
+      color: #64748b;
+      text-decoration: none;
+    }
+
+    .back-link a span {
+      color: #6366f1;
+      font-weight: 600;
+    }
+
+    .back-link a:hover { text-decoration: underline; }
+
+    .game-area {
+      margin-top: 6px;
+      padding: 14px 10px 12px;
+      border-radius: 16px;
+      background: #fff5f7;
+      border: 1px solid #fecdd3;
+    }
+
+    .message-box {
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #fed7e2;
+      padding: 14px 12px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 15px;
+      color: #7f1d1d;
+      box-shadow: 0 10px 22px rgba(248, 113, 150, 0.15);
+    }
+
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #ffffff;
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+      box-shadow: 0 10px 22px rgba(248, 113, 150, 0.45);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+    }
+
+    .btn.secondary {
+      background: #f9fafb;
+      color: #4b5563;
+      box-shadow: none;
+      border: 1px solid #e5e7eb;
+    }
+
+    .btn:hover { filter: brightness(1.03); }
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 12px rgba(248, 113, 150, 0.4);
+    }
+
+    .input {
+      flex: 1;
+      min-width: 180px;
+      border-radius: 999px;
+      border: 1px solid #fecdd3;
+      padding: 7px 10px;
+      font-size: 12px;
+      color: #111827;
+      background: #ffffff;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: #ec4899;
+      box-shadow: 0 0 0 2px rgba(244, 114, 182, 0.3);
+    }
+
+    .note {
+      font-size: 11px;
+      color: #9f1239;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="top-row">
+      <div class="title-block">
+        <h1>Kind Words to Self 💌</h1>
+        <p>Let the screen speak gently to you, or write your own kind sentence.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <div id="messageBox" class="message-box">
+        Tap “Random kind word” or write one for yourself below.
+      </div>
+
+      <div class="controls" style="margin-top: 12px;">
+        <button id="randomBtn" class="btn">Random kind word</button>
+        <input id="customInput" class="input" type="text"
+               placeholder="Write 1 gentle sentence to yourself…" />
+        <button id="showMineBtn" class="btn secondary">Show my sentence</button>
+      </div>
+
+      <p class="note">
+        You don’t have to believe it fully right now. Just let the words sit with you for a moment.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const messageBox = document.getElementById("messageBox");
+    const randomBtn = document.getElementById("randomBtn");
+    const customInput = document.getElementById("customInput");
+    const showMineBtn = document.getElementById("showMineBtn");
+
+    const MESSAGES = [
+      "You are allowed to take up space and rest.",
+      "Right now, you are doing the best you can with what you have.",
+      "You don’t have to be perfect to be worthy of care.",
+      "Your feelings are real and important, even if others don’t see them.",
+      "It’s okay to move slowly. Healing and growth are not a race.",
+      "You’ve already survived so many hard days. That strength is still with you.",
+      "You deserve gentleness, from yourself and from others.",
+      "Even if today is heavy, you are still worthy of kindness and small joys."
+    ];
+
+    function showRandomMessage() {
+      const idx = Math.floor(Math.random() * MESSAGES.length);
+      fadeTo(MESSAGES[idx]);
+    }
+
+    function showCustomMessage() {
+      const text = customInput.value.trim();
+      if (!text) return;
+      fadeTo(text);
+    }
+
+    function fadeTo(text) {
+      messageBox.style.opacity = "0";
+      setTimeout(() => {
+        messageBox.textContent = text;
+        messageBox.style.opacity = "1";
+      }, 150);
+    }
+
+    randomBtn.addEventListener("click", showRandomMessage);
+    showMineBtn.addEventListener("click", showCustomMessage);
+
+    customInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        showCustomMessage();
+      }
+    });
+  </script>
+</body>
+</html>

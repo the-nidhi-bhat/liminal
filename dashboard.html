@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Progress Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing:antialiased; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)), url('image.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 32px;
+      padding: 32px 32px 28px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+      animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes floatUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .top-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px; }
+    .title-block h1 { font-size:28px; font-weight:700; color:#1e293b; margin-bottom:4px; }
+    .title-block p { font-size:14px; color:#64748b; }
+    .back-link a { font-size:14px; color:#64748b; text-decoration:none; font-weight:500; display:flex; align-items:center; gap:6px; }
+    .back-link a span { color:#6366f1; font-weight:700; }
+    .back-link a:hover { color:#334155; }
+
+    .routine-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 50px;
+      padding: 4px;
+      height: 36px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .routine-toggle:hover { background: #e2e8f0; transform: translateY(-1px); }
+
+    .toggle-slider {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      border-radius: 50%;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .routine-toggle.active .toggle-slider {
+      transform: translateX(36px);
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      padding: 0 16px;
+      white-space: nowrap;
+    }
+
+    .routine-toggle.active .toggle-label.off { opacity: 0.4; }
+    .routine-toggle .toggle-label.on { opacity: 0.4; }
+    .routine-toggle.active .toggle-label.on { opacity: 1; color: #6366f1; }
+
+    .dashboard-layout {
+      display:grid;
+      grid-template-columns: 2fr 2fr 1.5fr;
+      gap:20px;
+      margin-bottom:20px;
+    }
+    @media (max-width:1100px){ .dashboard-layout{grid-template-columns:1fr 1fr;} }
+    @media (max-width:800px){ .dashboard-layout{grid-template-columns:1fr;} }
+
+    .progress-card {
+      background:#ffffff;
+      border-radius:24px;
+      padding:20px 22px 18px;
+      box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);
+      border:1px solid #f1f5f9;
+      position:relative;
+      overflow:hidden;
+    }
+    .progress-card::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0;
+      height:3px;
+      background:linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+    }
+    .progress-card header {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      margin-bottom:14px;
+      gap:8px;
+    }
+    .card-title { font-size:16px; font-weight:700; color:#1e293b; }
+    .card-sub { font-size:12px; color:#64748b; margin-top:3px; }
+    .card-badge {
+      padding:4px 10px;
+      border-radius:16px;
+      font-size:11px;
+      font-weight:700;
+      background:linear-gradient(135deg,#10b981,#34d399);
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .streak-counter { text-align:center; margin-bottom:14px; margin-top:4px; }
+    .streak-number {
+      font-size:32px;
+      font-weight:900;
+      background:linear-gradient(135deg,#10b981,#34d399);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      line-height:1;
+    }
+    .streak-label { font-size:12px; color:#64748b; font-weight:500; margin-top:2px; }
+
+    .progress-bar { background:#f1f5f9; border-radius:10px; height:10px; overflow:hidden; margin:10px 0 4px; }
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #6366f1, #ec4899);
+      border-radius:10px;
+      transition:all 0.6s cubic-bezier(0.16,1,0.3,1);
+      box-shadow:0 2px 8px rgba(99,102,241,0.3);
+    }
+    .progress-text { display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:#475569; margin-top:4px; }
+
+    .tasks-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin-top:10px; }
+    .task-item {
+      text-align:center;
+      padding:14px 10px;
+      background:#f8fafc;
+      border-radius:14px;
+      border:2px solid transparent;
+      transition:all 0.2s;
+      cursor:pointer;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+    }
+    .task-item:hover { transform: translateY(-2px); }
+    .task-item.active { background:#ecfdf5; border-color:#10b981; box-shadow:0 4px 12px rgba(16,185,129,0.15); }
+    .task-item.morning { border-top: 3px solid #f59e0b; }
+    .task-item.afternoon { border-top: 3px solid #10b981; }
+    .task-item.evening { border-top: 3px solid #6366f1; }
+    .task-item.night { border-top: 3px solid #ec4899; }
+    .task-item.morning.active { background:#fef3c7; }
+    .task-item.afternoon.active { background:#d1fae5; }
+    .task-item.evening.active { background:#e0e7ff; }
+    .task-item.night.active { background:#fce7f3; }
+
+    .task-icon { font-size:22px; display:block; margin-bottom:2px; }
+    .task-name { font-size:12px; font-weight:600; color:#1e293b; text-align:center; }
+    .task-time { font-size:11px; color:#94a3be; font-weight:500; }
+    .edit-time-btn {
+      font-size:11px;
+      color:#6366f1 !important;
+      background:none;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      padding:3px 6px;
+      border-radius:6px;
+      transition:all 0.2s;
+      margin-top:2px;
+    }
+    .edit-time-btn:hover { background:rgba(99,102,241,0.1); color:#4f46e5 !important; }
+
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:10px; }
+    .stat-card { text-align:center; padding:12px 8px; background:#f8fafc; border-radius:12px; }
+    .stat-number { font-size:20px; font-weight:900; color:#1e293b; display:block; }
+    .stat-label { font-size:11px; color:#64748b; margin-top:3px; font-weight:500; }
+
+    .btn {
+      padding:9px 16px;
+      border-radius:12px;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(135deg,#6366f1,#ec4899);
+      box-shadow:0 4px 10px rgba(99,102,241,0.2);
+      transition:all 0.2s ease;
+      margin-right:8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn:hover { transform:translateY(-1px); box-shadow:0 6px 14px rgba(99,102,241,0.3); }
+    .btn.secondary { background:#f1f5f9; color:#475569; box-shadow:none; }
+    .btn.secondary:hover { background:#e2e8f0; transform:none; }
+
+    .status-message {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .status-success { background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0; }
+    .status-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    .report-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .report-modal.show { display:flex; }
+    .report-content {
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      padding: 24px 22px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(16px);
+    }
+    .report-period {
+      margin-bottom: 16px;
+      padding: 14px;
+      background: #f8fafc;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    .period-header {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .period-task {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      border-left: 3px solid #10b981;
+    }
+    .period-task.pending { border-left-color: #94a3be; opacity: 0.8; }
+    .period-task.completed { background: #ecfdf5; border-left-color: #10b981; }
+
+    .time-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      z-index: 9000;
+      justify-content: center;
+      align-items: center;
+    }
+    .time-modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 22px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    }
+    .time-input-group { margin-bottom: 16px; }
+    .time-input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    .time-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .time-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+    .time-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+
+    .charts-grid {
+      display:grid;
+      grid-template-columns:1.4fr 1.2fr;
+      gap:18px;
+    }
+    @media (max-width:800px){ .charts-grid{grid-template-columns:1fr;} }
+
+    .chart-container {
+      position:relative;
+      width:100%;
+      height:220px;
+    }
+
+    .badge-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+    .badge-item {
+      padding:10px 10px;
+      border-radius:12px;
+      background:#f8fafc;
+      border:1px solid #e5e7eb;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+    }
+    .badge-icon {
+      font-size:20px;
+    }
+    .badge-label {
+      font-weight:600;
+      color:#111827;
+    }
+    .badge-desc {
+      font-size:11px;
+      color:#6b7280;
+      margin-top:2px;
+    }
+
+    .mini-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+      font-size:12px;
+      color:#64748b;
+    }
+    .mini-pill {
+      padding:4px 8px;
+      border-radius:999px;
+      background:#f3f4ff;
+      color:#4f46e5;
+      font-size:11px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .heatmap-grid {
+      display:grid;
+      grid-template-columns:repeat(7, 1fr);
+      gap:3px;
+      margin-top:10px;
+    }
+    .heatmap-cell {
+      width:100%;
+      padding-top:100%;
+      border-radius:4px;
+      position:relative;
+      background:#f3f4f6;
+    }
+    .heatmap-cell-inner {
+      position:absolute;
+      inset:0;
+      border-radius:4px;
+    }
+    .hm-0 { background:#e5e7eb; }
+    .hm-1 { background:#fee2e2; }
+    .hm-2 { background:#fecaca; }
+    .hm-3 { background:#fef3c7; }
+    .hm-4 { background:#bbf7d0; }
+    .hm-5 { background:#22c55e; }
+    .heatmap-legend {
+      margin-top:6px;
+      font-size:11px;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .goals-list {
+      margin-top:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:12px;
+    }
+    .goal-line {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+    .goal-label { font-weight:600; color:#111827; }
+    .goal-bar {
+      flex:1;
+      height:6px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+      margin:0 6px;
+    }
+    .goal-bar-fill {
+      height:100%;
+      background:linear-gradient(90deg,#6366f1,#22c55e);
+      transition:width 0.4s ease;
+    }
+    .goal-count { font-size:11px; color:#6b7280; white-space:nowrap; }
+
+    .footer-row {
+      margin-top:6px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:11px;
+      color:#6b7280;
+      border-top:1px solid #e5e7eb;
+      padding-top:10px;
+    }
+    .footer-row a { color:#6366f1; text-decoration:none; font-weight:500; }
+
+    /* Screen-reader-only helper (sr-only) */
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0, 0, 0, 0);
+      white-space:nowrap;
+      border:0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="top-row">
+    <div class="title-block">
+      <h1>Progress Dashboard 📊</h1>
+      <p>See your mood trends, activity stats, badges, and daily routine in one place.</p>
+    </div>
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <button class="btn secondary" onclick="exportAllData()">💾 Export JSON</button>
+      <button class="btn secondary" onclick="shareProgress()">📤 Share progress</button>
+      <div class="routine-toggle" id="routineToggle">
+        <div class="toggle-label off">Planner</div>
+        <div class="toggle-slider">📅</div>
+        <div class="toggle-label on">Tasks</div>
+      </div>
+      <div class="back-link">
+        <a href="journey.html">← <span>Back to Journey</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-layout">
+    <!-- Column 1: Daily tasks / report -->
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title" id="currentGoalTitle">Daily Routine</div>
+          <div id="currentGoalSubtitle" class="card-sub">Complete today's small steps</div>
+        </div>
+        <div class="card-badge" id="goalProgressBadge">0/13 Tasks</div>
+      </header>
+
+      <div class="streak-counter">
+        <span class="streak-number" id="streakNumber">0</span>
+        <span class="streak-label">Task streak (today)</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-text">
+        <span id="daysCompletedText">0 tasks completed</span>
+        <span id="daysLeftText">13 tasks left</span>
+      </div>
+
+      <div style="margin-top:10px;">
+        <button id="generateReportBtn" class="btn" style="width:100%; justify-content:center;">📋 Daily tasks report</button>
+        <div id="goalStatus"></div>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Scheduled Tasks</div>
+          <div class="card-sub">Tap to mark as done, ✏️ to edit time</div>
+        </div>
+      </header>
+
+      <div class="tasks-grid" id="tasksGrid"></div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-number" id="completionRate">0%</span>
+          <span class="stat-label">Completion</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="totalTasks">13</span>
+          <span class="stat-label">Total tasks</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Charts -->
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Mood Trend</div>
+          <div class="card-sub">Last 30 days line graph</div>
+        </div>
+      </header>
+      <div class="chart-container">
+        <canvas id="moodLineChart" aria-label="Mood scores over last 30 days" role="img"></canvas>
+      </div>
+      <!-- Screen-reader table for mood line chart -->
+      <div class="sr-only" aria-hidden="false">
+        <h2>Mood scores table (last 30 days)</h2>
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Mood score (1–5)</th></tr>
+          </thead>
+          <tbody id="moodTableBody"></tbody>
+        </table>
+      </div>
+      <div class="mini-row">
+        <span class="mini-pill" id="weeklyComparisonText">This week vs last week: —</span>
+        <span style="font-size:11px;">Best: <span id="bestDayText">—</span></span>
+        <span style="font-size:11px;">Toughest: <span id="worstDayText">—</span></span>
+      </div>
+      <div style="margin-top:6px; font-size:11px; color:#9ca3af;">
+        These graphs are for self‑awareness only and do not replace professional diagnosis or treatment.
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Activity Breakdown</div>
+          <div class="card-sub">Journal • Music • Meditation • Chat</div>
+        </div>
+      </header>
+      <div class="chart-container">
+        <canvas id="activityPieChart" aria-label="Activity breakdown for this week" role="img"></canvas>
+      </div>
+      <!-- Screen-reader table for activity chart -->
+      <div class="sr-only" aria-hidden="false">
+        <h2>Weekly activity table</h2>
+        <table>
+          <thead>
+            <tr><th>Activity</th><th>Count / hours</th></tr>
+          </thead>
+          <tbody id="activityTableBody"></tbody>
+        </table>
+      </div>
+      <div class="mini-row">
+        <span style="font-size:11px;">Time this week: <span id="timeSummaryText">—</span></span>
+      </div>
+      <div style="margin-top:6px; font-size:11px; color:#9ca3af;">
+        Use these numbers as gentle feedback, not pressure. Even small activity counts are valid.
+      </div>
+    </div>
+
+    <!-- Column 3: Badges + Heatmap + Goals -->
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Achievements & Badges</div>
+          <div class="card-sub">Earned from your daily efforts</div>
+        </div>
+      </header>
+      <div id="badgeGrid" class="badge-grid"></div>
+      <div class="mini-row">
+        <span style="font-size:11px;">Badges are a small celebration of consistency, not a score of your worth.</span>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Mood Heatmap</div>
+          <div class="card-sub">Last 28 days (Sun–Sat)</div>
+        </div>
+      </header>
+      <div id="heatmapGrid" class="heatmap-grid"></div>
+      <div class="heatmap-legend">
+        <span style="display:flex;align-items:center;gap:4px;">
+          <span style="width:10px;height:10px;border-radius:2px;background:#e5e7eb;"></span>
+          No data
+        </span>
+        <span style="display:flex;align-items:center;gap:4px;">
+          <span style="width:10px;height:10px;border-radius:2px;background:#22c55e;"></span>
+          Better days
+        </span>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <header>
+        <div>
+          <div class="card-title">Weekly Goals</div>
+          <div class="card-sub">Auto-filled from your usage</div>
+        </div>
+      </header>
+      <div class="goals-list" id="goalsList"></div>
+      <div class="mini-row" style="margin-top:10px;">
+        <a href="journal.html" class="btn secondary">📓 Journal</a>
+        <a href="music.html" class="btn secondary">🎧 Music</a>
+        <a href="meditations.html" class="btn secondary">🧘 Meditate</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-row">
+    <span>Tip: You don't need perfect stats. Even one tiny step today moves your graph forward.</span>
+    <span><a href="assessment.html">Take healing assessment</a> for a more guided plan.</span>
+  </div>
+</div>
+
+<!-- Time Edit Modal -->
+<div class="time-modal" id="timeModal">
+  <div class="time-modal-content">
+    <h3 style="font-size:18px; font-weight:700; color:#1e293b; margin-bottom:12px;">Edit Task Time</h3>
+    <div class="time-input-group">
+      <label>Custom time (e.g., "9-10AM", "2-4PM")</label>
+      <input type="text" class="time-input" id="timeInput" placeholder="9-10AM">
+    </div>
+    <div class="time-buttons">
+      <button class="btn secondary" onclick="closeTimeModal()">Cancel</button>
+      <button class="btn" onclick="saveTaskTime()">✅ Save Time</button>
+    </div>
+  </div>
+</div>
+
+<!-- Report Modal -->
+<div class="report-modal" id="reportModal">
+  <div class="report-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h2 style="font-size:18px; font-weight:700; color:#1e293b; margin:0;">📊 Daily Tasks Report</h2>
+      <button onclick="closeReport()" class="btn secondary" style="padding:4px 10px; font-size:12px;">✕</button>
+    </div>
+    <div id="reportContent"></div>
+  </div>
+</div>
+
+<script>
+  function getData(key, defaultValue = {}) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : defaultValue;
+    } catch(e) {
+      console.error('Storage error:', e);
+      return defaultValue;
+    }
+  }
+  function saveData(key, data) {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      return true;
+    } catch(e) {
+      console.error('Save error:', e);
+      return false;
+    }
+  }
+
+  let tasksData = {};
+  let todayTasks = null;
+  let currentEditingTaskId = null;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    initTasks();
+    setupTaskUI();
+    initChartsAndAnalytics();
+    setupToggle();
+  });
+
+  function initTasks() {
+    tasksData = getData('calmHubDailyTasks', {});
+    const todayKey = new Date().toDateString();
+
+    if (!tasksData[todayKey]) {
+      tasksData[todayKey] = {
+        tasks: [
+          { id: 'morning_wakeup', text: 'Wake up', time: '6-7AM', period: 'morning', completed: false },
+          { id: 'morning_hydrate', text: 'Hydrate 2x', time: '7-9AM', period: 'morning', completed: false, counter: 0, target: 2 },
+          { id: 'morning_stretch', text: 'Stretch', time: '8-9AM', period: 'morning', completed: false },
+          { id: 'morning_journal', text: 'Journal', time: '9-10AM', period: 'morning', completed: false },
+          { id: 'afternoon_lunch', text: 'Healthy lunch', time: '12-1PM', period: 'afternoon', completed: false },
+          { id: 'afternoon_walk', text: 'Walk break', time: '2-3PM', period: 'afternoon', completed: false },
+          { id: 'afternoon_study', text: 'Study session', time: '3-5PM', period: 'afternoon', completed: false },
+          { id: 'evening_dinner', text: 'Dinner', time: '6-7PM', period: 'evening', completed: false },
+          { id: 'evening_family', text: 'Family time', time: '7-8PM', period: 'evening', completed: false },
+          { id: 'evening_review', text: 'Day review', time: '9-10PM', period: 'evening', completed: false },
+          { id: 'night_winddown', text: 'Wind down', time: '10-11PM', period: 'night', completed: false },
+          { id: 'night_read', text: 'Read book', time: '11PM-12AM', period: 'night', completed: false },
+          { id: 'night_sleep', text: 'Sleep time', time: '12AM-6AM', period: 'night', completed: false }
+        ],
+        streak: 0
+      };
+      saveData('calmHubDailyTasks', tasksData);
+    }
+
+    todayTasks = tasksData[todayKey];
+    renderTasks();
+    updateProgress();
+    updateStats();
+  }
+
+  function setupTaskUI() {
+    document.addEventListener('click', function(e) {
+      const editBtn = e.target.closest('.edit-time-btn');
+      if (editBtn) return;
+      const taskItem = e.target.closest('.task-item');
+      if (!taskItem) return;
+
+      const taskId = taskItem.dataset.taskId;
+      const task = todayTasks.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      if (task.id === 'morning_hydrate') {
+        task.counter = (task.counter || 0) + 1;
+        if (task.counter >= (task.target || 2)) {
+          task.completed = true;
+          showStatus('💧 Hydration goal completed!', 'success');
+          todayTasks.streak++;
+        } else {
+          showStatus(`💧 Glass ${task.counter}/${task.target || 2}`, 'success');
+        }
+      } else {
+        task.completed = !task.completed;
+        if (task.completed) {
+          showStatus(`${getTaskIcon(taskId)} ${task.text} ✓`, 'success');
+          todayTasks.streak++;
+        }
+      }
+
+      saveData('calmHubDailyTasks', tasksData);
+      renderTasks();
+      updateProgress();
+    });
+
+    document.getElementById('generateReportBtn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      generateReport();
+    });
+
+    document.getElementById('timeModal').addEventListener('click', function(e) {
+      if (e.target === this) closeTimeModal();
+    });
+    document.getElementById('reportModal').addEventListener('click', function(e) {
+      if (e.target === this) closeReport();
+    });
+    document.getElementById('timeInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') saveTaskTime();
+    });
+
+    setInterval(() => {
+      if (tasksData) saveData('calmHubDailyTasks', tasksData);
+    }, 30000);
+  }
+
+  function renderTasks() {
+    const tasksGrid = document.getElementById('tasksGrid');
+    tasksGrid.innerHTML = '';
+
+    todayTasks.tasks.forEach(task => {
+      const item = document.createElement('div');
+      item.className = `task-item ${task.period} ${task.completed ? 'active' : ''}`;
+      item.dataset.taskId = task.id;
+
+      let displayText = task.text;
+      if (task.id === 'morning_hydrate') {
+        displayText += ` (${task.counter || 0}/${task.target || 2})`;
+      }
+
+      item.innerHTML = `
+        <span class="task-icon">${getTaskIcon(task.id)}</span>
+        <div class="task-name">${displayText}</div>
+        <div class="task-time">${task.time}</div>
+        <button class="edit-time-btn" onclick="editTaskTime('${task.id}'); event.stopPropagation();">✏️ Edit</button>
+      `;
+      tasksGrid.appendChild(item);
+    });
+  }
+
+  function getTaskIcon(taskId) {
+    const icons = {
+      morning_wakeup: '🌅', morning_hydrate: '💧', morning_stretch: '🧘', morning_journal: '📓',
+      afternoon_lunch: '🍎', afternoon_walk: '🚶', afternoon_study: '📚',
+      evening_dinner: '🍽️', evening_family: '👨‍👩‍👧', evening_review: '📋',
+      night_winddown: '🛀', night_read: '📖', night_sleep: '😴'
+    };
+    return icons[taskId] || '📋';
+  }
+
+  function editTaskTime(taskId) {
+    currentEditingTaskId = taskId;
+    const task = todayTasks.tasks.find(t => t.id === taskId);
+    document.getElementById('timeInput').value = task.time;
+    document.getElementById('timeModal').style.display = 'flex';
+    document.getElementById('timeInput').focus();
+  }
+
+  function closeTimeModal() {
+    document.getElementById('timeModal').style.display = 'none';
+    currentEditingTaskId = null;
+  }
+
+  function saveTaskTime() {
+    const newTime = document.getElementById('timeInput').value.trim();
+    if (!newTime) {
+      showStatus('Please enter a time!', 'error');
+      return;
+    }
+
+    if (currentEditingTaskId) {
+      const task = todayTasks.tasks.find(t => t.id === currentEditingTaskId);
+      if (task) {
+        task.time = newTime;
+        saveData('calmHubDailyTasks', tasksData);
+        renderTasks();
+        showStatus(`Time set to "${newTime}" ✓`, 'success');
+      }
+    }
+    closeTimeModal();
+  }
+
+  function generateReport() {
+    const reportModal = document.getElementById('reportModal');
+    const reportContent = document.getElementById('reportContent');
+
+    const totalTasks = todayTasks.tasks.length;
+    const completedTotal = todayTasks.tasks.filter(t => t.completed).length;
+
+    const periods = {
+      morning: { emoji: '🌅', title: 'Morning (6AM–12PM)' },
+      afternoon: { emoji: '☀️', title: 'Afternoon (12–6PM)' },
+      evening: { emoji: '🌆', title: 'Evening (6–10PM)' },
+      night: { emoji: '🌙', title: 'Night (10PM–6AM)' }
+    };
+
+    let reportHTML = `
+      <div style="text-align:center; margin-bottom:18px; padding:14px; background:linear-gradient(135deg, #10b981, #34d399); border-radius:18px; color:white;">
+        <div style="font-size:32px; font-weight:900; margin-bottom:4px;">${Math.round((completedTotal / totalTasks) * 100)}%</div>
+        <div style="font-size:14px; font-weight:600;">Overall completion</div>
+        <div style="font-size:13px; opacity:0.9;">${completedTotal}/${totalTasks} tasks • Today streak: ${todayTasks.streak}</div>
+      </div>
+    `;
+
+    Object.keys(periods).forEach(period => {
+      const periodTasks = todayTasks.tasks.filter(t => t.period === period);
+      if (!periodTasks.length) return;
+      const completedCount = periodTasks.filter(t => t.completed).length;
+
+      reportHTML += `
+        <div class="report-period">
+          <div class="period-header">
+            ${periods[period].emoji} ${periods[period].title}
+            <span style="font-size:12px; color:#64748b; font-weight:500; background:#e2e8f0; padding:3px 10px; border-radius:16px; margin-left:auto;">
+              ${completedCount}/${periodTasks.length}
+            </span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            ${periodTasks.map(task => `
+              <div class="period-task ${task.completed ? 'completed' : 'pending'}">
+                ${task.completed ? '✅' : '⭕'}
+                <strong>${task.text}</strong>
+                <span style="color:#64748b; margin-left:auto;">${task.time}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    reportContent.innerHTML = reportHTML;
+    reportModal.classList.add('show');
+  }
+
+  function closeReport() {
+    document.getElementById('reportModal').classList.remove('show');
+  }
+
+  function updateProgress() {
+    const completedTasks = todayTasks.tasks.filter(t => t.completed).length;
+    const totalTasks = todayTasks.tasks.length;
+    const progressPercent = (completedTasks / totalTasks) * 100;
+
+    document.getElementById('progressFill').style.width = `${progressPercent}%`;
+    document.getElementById('goalProgressBadge').textContent = `${completedTasks}/${totalTasks} Tasks`;
+    document.getElementById('daysCompletedText').textContent = `${completedTasks} tasks completed`;
+    document.getElementById('daysLeftText').textContent = `${totalTasks - completedTasks} tasks left`;
+    document.getElementById('streakNumber').textContent = todayTasks.streak;
+  }
+
+  function updateStats() {
+    const completedTasks = todayTasks.tasks.filter(t => t.completed).length;
+    const totalTasks = todayTasks.tasks.length;
+    const completionRate = Math.round((completedTasks / totalTasks) * 100);
+
+    document.getElementById('completionRate').textContent = completionRate + '%';
+    document.getElementById('totalTasks').textContent = totalTasks;
+  }
+
+  function showStatus(message, type = 'success') {
+    const statusEl = document.getElementById('goalStatus');
+    const statusDiv = document.createElement('div');
+    statusDiv.className = `status-message status-${type}`;
+    statusDiv.textContent = message;
+    statusEl.innerHTML = '';
+    statusEl.appendChild(statusDiv);
+    setTimeout(() => { statusEl.innerHTML = ''; }, 3000);
+  }
+
+  function setupToggle() {
+    const toggle = document.getElementById('routineToggle');
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
+      if (this.classList.contains('active')) {
+        setTimeout(() => window.location.href = 'planner.html', 200);
+      }
+    });
+  }
+
+  // ---------- Analytics: moods, charts, badges, goals ----------
+
+  function moodToScore(m) {
+    if (!m) return 0;
+    if (m === 'very_low') return 1;
+    if (m === 'low') return 2;
+    if (m === 'okay') return 3;
+    if (m === 'good') return 4;
+    if (m === 'very_good') return 5;
+    return 0;
+  }
+
+  function scoreToEmoji(score) {
+    if (score >= 4.5) return '😊';
+    if (score >= 3.5) return '🙂';
+    if (score >= 2.5) return '😌';
+    if (score >= 1.5) return '😕';
+    if (score > 0) return '😔';
+    return '—';
+  }
+
+  function initChartsAndAnalytics() {
+    const moodsObj = getData('calmHubMoods', {});
+    const journalEntries = getData('calmHubJournal', []);
+    const musicHours = Number(localStorage.getItem('calmHubMusicHoursWeek') || '0');
+    const chatCount = Number(localStorage.getItem('calmHubChatCountWeek') || '0');
+    const featureClicks = getData('calmHubFeatureClicks', {});
+
+    buildMoodLineChart(moodsObj);
+    buildActivityPieChart(moodsObj, journalEntries, musicHours, chatCount, featureClicks);
+    renderBadgesGrid();
+    renderWeeklyComparisonAndBestWorst(moodsObj);
+    renderHeatmap(moodsObj);
+    renderGoals(moodsObj, journalEntries, musicHours, chatCount, featureClicks);
+  }
+
+  function buildMoodLineChart(moodsObj) {
+    const labels = [];
+    const data = [];
+    const today = new Date();
+
+    const tableBody = document.getElementById('moodTableBody');
+    tableBody.innerHTML = '';
+
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      const label = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      labels.push(label);
+      const val = moodsObj[key];
+      const mood = typeof val === 'string' ? val : (val ? val.mood : null);
+      const score = moodToScore(mood);
+      data.push(score);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${key}</td><td>${score || ''}</td>`;
+      tableBody.appendChild(tr);
+    }
+
+    const ctx = document.getElementById('moodLineChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Mood score',
+          data,
+          borderColor: '#6366f1',
+          backgroundColor: 'rgba(99,102,241,0.15)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 2,
+          pointHoverRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            min: 0,
+            max: 5,
+            ticks: {
+              stepSize: 1,
+              callback: v => ({0:'',1:'Very low',2:'Low',3:'Okay',4:'Good',5:'Great'}[v] || '')
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const score = ctx.parsed.y;
+                const map = {1:'Very low',2:'Low',3:'Okay',4:'Good',5:'Great',0:'No data'};
+                return map[score] || 'No data';
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function buildActivityPieChart(moodsObj, journalEntries, musicHours, chatCount, featureClicks) {
+    const now = new Date();
+    const weekStart = new Date(now.getTime() - 7*24*60*60*1000);
+
+    const journalThisWeek = journalEntries.filter(entry => {
+      const ts = entry.timestamp || entry.date || entry.createdAt;
+      if (!ts) return false;
+      const d = new Date(ts);
+      return !Number.isNaN(d.getTime()) && d >= weekStart;
+    }).length;
+
+    const moodThisWeek = Object.keys(moodsObj).filter(key => {
+      const d = new Date(key);
+      return d >= weekStart;
+    }).length;
+
+    const meditationsClicks = featureClicks['meditations'] || 0;
+
+    const raw = {
+      Journal: journalThisWeek,
+      Mood: moodThisWeek,
+      Music: Math.max(musicHours, 0),
+      Meditation: Math.max(meditationsClicks, 0),
+      Chat: Math.max(chatCount, 0)
+    };
+
+    const values = Object.values(raw);
+    const total = values.reduce((a,b) => a + b, 0);
+    const safeTotal = total || 1;
+
+    const labels = Object.keys(raw);
+    const data = values.map(v => v);
+
+    // Fill screen-reader table
+    const tbody = document.getElementById('activityTableBody');
+    tbody.innerHTML = '';
+    labels.forEach((name, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${name}</td><td>${data[idx]}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    const ctx = document.getElementById('activityPieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor: ['#6366f1','#22c55e','#f97316','#a855f7','#0ea5e9'],
+          borderWidth: 1,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins: {
+          legend: { position:'bottom', labels:{ boxWidth:10, font:{size:11} } },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const v = ctx.parsed;
+                const pct = Math.round((v / safeTotal) * 100);
+                return `${ctx.label}: ${v} (${pct}%)`;
+              }
+            }
+          }
+        },
+        cutout: '55%'
+      }
+    });
+
+    const timeSummary = [];
+    if (musicHours) timeSummary.push(`${musicHours}h music`);
+    if (journalThisWeek) timeSummary.push(`${journalThisWeek} journal`);
+    if (moodThisWeek) timeSummary.push(`${moodThisWeek} moods`);
+    if (chatCount) timeSummary.push(`${chatCount} chats`);
+    document.getElementById('timeSummaryText').textContent =
+      timeSummary.length ? timeSummary.join(' • ') : 'Log a few activities to see a breakdown.';
+  }
+
+  function renderBadgesGrid() {
+    const badges = getData('calmHubBadges', {});
+    const grid = document.getElementById('badgeGrid');
+    grid.innerHTML = '';
+
+    const def = [
+      { key:'firstCheckin', icon:'🏆', title:'First mood check‑in', desc:'You logged your first mood.' },
+      { key:'weekStreak', icon:'🔥', title:'7‑day streak', desc:'You checked in 7 days in a row.' },
+      { key:'journalFirst', icon:'📓', title:'First journal', desc:'You wrote your first entry.' },
+      { key:'musicRelax', icon:'🎧', title:'Music session', desc:'You used Calm music to relax.' },
+      { key:'chatSupport', icon:'🤖', title:'Chat support', desc:'You reached out to Calm chatbot.' }
+    ];
+
+    const unlocked = def.filter(b => badges[b.key]);
+    if (!unlocked.length) {
+      grid.innerHTML = `<div style="font-size:12px;color:#6b7280;">No badges yet. Your first badge appears after your first mood check‑in or journal entry.</div>`;
+      return;
+    }
+
+    unlocked.forEach(b => {
+      const div = document.createElement('div');
+      div.className = 'badge-item';
+      div.innerHTML = `
+        <div class="badge-icon">${b.icon}</div>
+        <div>
+          <div class="badge-label">${b.title}</div>
+          <div class="badge-desc">${b.desc}</div>
+        </div>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  function renderWeeklyComparisonAndBestWorst(moodsObj) {
+    const keys = Object.keys(moodsObj).sort();
+    if (!keys.length) {
+      document.getElementById('weeklyComparisonText').textContent = 'This week vs last week: no data yet.';
+      document.getElementById('bestDayText').textContent = '—';
+      document.getElementById('worstDayText').textContent = '—';
+      return;
+    }
+
+    const today = new Date();
+    const startThis = new Date(today.getTime() - 6*24*60*60*1000);
+    const startLast = new Date(today.getTime() - 13*24*60*60*1000);
+    const endLast = new Date(today.getTime() - 7*24*60*60*1000);
+
+    function isInRange(dateStr, from, to) {
+      const d = new Date(dateStr);
+      return d >= from && d <= to;
+    }
+
+    let goodThis = 0, goodLast = 0;
+    let bestScore = 0, bestDay = null;
+    let worstScore = 6, worstDay = null;
+
+    keys.forEach(k => {
+      const entry = moodsObj[k];
+      const mood = typeof entry === 'string' ? entry : entry.mood;
+      const score = moodToScore(mood);
+
+      if (isInRange(k, startThis, today)) {
+        if (mood === 'good' || mood === 'very_good') goodThis++;
+      } else if (isInRange(k, startLast, endLast)) {
+        if (mood === 'good' || mood === 'very_good') goodLast++;
+      }
+
+      if (score > 0 && score >= bestScore) {
+        bestScore = score;
+        bestDay = k;
+      }
+      if (score > 0 && score <= worstScore) {
+        worstScore = score;
+        worstDay = k;
+      }
+    });
+
+    const diff = goodThis - goodLast;
+    let text = `This week vs last week: `;
+    if (!goodThis && !goodLast) text += 'track a few days to see the change.';
+    else if (diff > 0) text += `+${diff} good days 🎉`;
+    else if (diff < 0) text += `${diff} good days (this week is tougher)`;
+    else text += 'same number of good days.';
+
+    document.getElementById('weeklyComparisonText').textContent = text;
+
+    const bestSpan = document.getElementById('bestDayText');
+    const worstSpan = document.getElementById('worstDayText');
+
+    if (bestDay) {
+      const d = new Date(bestDay);
+      bestSpan.textContent = `${d.toLocaleDateString('en-IN',{weekday:'short'})} ${scoreToEmoji(bestScore)}`;
+    } else bestSpan.textContent = '—';
+
+    if (worstDay) {
+      const d = new Date(worstDay);
+      worstSpan.textContent = `${d.toLocaleDateString('en-IN',{weekday:'short'})} ${scoreToEmoji(worstScore)}`;
+    } else worstSpan.textContent = '—';
+  }
+
+  function renderHeatmap(moodsObj) {
+    const grid = document.getElementById('heatmapGrid');
+    grid.innerHTML = '';
+    const today = new Date();
+
+    const cells = [];
+    for (let i = 27; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      const entry = moodsObj[key];
+      const mood = typeof entry === 'string' ? entry : (entry ? entry.mood : null);
+      cells.push({ date:key, score:moodToScore(mood) });
+    }
+
+    const weeks = [];
+    for (let i = 0; i < cells.length; i += 7) {
+      weeks.push(cells.slice(i, i+7));
+    }
+
+    weeks.forEach(week => {
+      week.forEach(c => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'heatmap-cell';
+        const inner = document.createElement('div');
+        inner.className = 'heatmap-cell-inner hm-' + (c.score || 0);
+        wrapper.appendChild(inner);
+        wrapper.title = `${c.date} – ${scoreToEmoji(c.score)}`;
+        grid.appendChild(wrapper);
+      });
+    });
+  }
+
+  function renderGoals(moodsObj, journalEntries, musicHours, chatCount, featureClicks) {
+    const now = new Date();
+    const weekStart = new Date(now.getTime() - 7*24*60*60*1000);
+
+    const moodsThisWeek = Object.keys(moodsObj).filter(key => {
+      const d = new Date(key);
+      return d >= weekStart;
+    }).length;
+    const journalThisWeek = journalEntries.filter(entry => {
+      const ts = entry.timestamp || entry.date || entry.createdAt;
+      if (!ts) return false;
+      const d = new Date(ts);
+      return !Number.isNaN(d.getTime()) && d >= weekStart;
+    }).length;
+    const meditateCount = featureClicks['meditations'] || 0;
+    const chatsThisWeek = chatCount;
+
+    const list = document.getElementById('goalsList');
+    list.innerHTML = '';
+
+    const goals = [
+      { label:'Mood check‑ins', target:5, value:moodsThisWeek },
+      { label:'Journal sessions', target:3, value:journalThisWeek },
+      { label:'Meditations', target:3, value:meditateCount },
+      { label:'Music focus blocks', target:3, value:musicHours },
+      { label:'Support chats', target:1, value:chatsThisWeek }
+    ];
+
+    goals.forEach(g => {
+      const pct = Math.min(100, Math.round((g.value / g.target) * 100));
+      const line = document.createElement('div');
+      line.className = 'goal-line';
+      line.innerHTML = `
+        <span class="goal-label">${g.label}</span>
+        <div class="goal-bar"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
+        <span class="goal-count">${g.value}/${g.target}</span>
+      `;
+      list.appendChild(line);
+    });
+  }
+
+  function exportAllData() {
+    const data = {
+      profile: getData('userProfile', {}),
+      moods: getData('calmHubMoods', {}),
+      journal: getData('calmHubJournal', []),
+      badges: getData('calmHubBadges', {}),
+      featureClicks: getData('calmHubFeatureClicks', {}),
+      weekly: {
+        musicHours: Number(localStorage.getItem('calmHubMusicHoursWeek') || '0'),
+        chatCount: Number(localStorage.getItem('calmHubChatCountWeek') || '0')
+      },
+      tasks: getData('calmHubDailyTasks', {}),
+      exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `calmhub-report-${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+    alert("✅ Your progress report JSON has been downloaded.");
+  }
+
+  function shareProgress() {
+    alert("A shareable image feature can be added later using HTML-to-canvas. For now, you can share your exported JSON or a screenshot.");
+  }
+</script>
+
+</body>
+</html>

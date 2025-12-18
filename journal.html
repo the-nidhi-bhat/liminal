@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Hub – Journal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing:antialiased; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)), url('image.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1100px;
+      border-radius: 32px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+      animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes floatUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .top-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+    .title-block h1 { font-size:32px; font-weight:700; color:#1e293b; margin-bottom:4px; }
+    .title-block p { font-size:15px; color:#64748b; }
+    .back-link a { font-size:14px; color:#64748b; text-decoration:none; font-weight:500; display:flex; align-items:center; gap:6px; }
+    .back-link a span { color:#6366f1; font-weight:700; }
+    .back-link a:hover { color:#334155; }
+
+    .layout { display:grid; grid-template-columns:1.6fr 1fr; gap:24px; }
+    @media (max-width:900px) { .layout { grid-template-columns:1fr; } }
+
+    .panel { background:#ffffff; border-radius:24px; padding:32px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); border:1px solid #f1f5f9; }
+    .panel-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+    .panel-title { font-size:18px; font-weight:700; color:#1e293b; }
+    .panel-sub { font-size:13px; color:#94a3b8; margin-top:4px; }
+    .chip { padding:6px 12px; border-radius:999px; font-size:11px; font-weight:700; background:#f0f9ff; color:#0369a1; border:1px solid #bae6fd; }
+
+    .editor label { font-size:13px; font-weight:600; color:#475569; display:block; margin-bottom:8px; }
+    .editor input[type="text"] { width:100%; border-radius:14px; border:1px solid #cbd5e1; padding:14px 16px; font-size:15px; margin-bottom:16px; background:#f8fafc; }
+    .editor input:focus { outline:none; border-color:#6366f1; background:#fff; box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
+
+    .mood-voice-row { display:flex; gap:12px; width:100%; margin-bottom:16px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .mood-stickers { display:flex; gap:8px; flex-wrap:wrap; }
+    .mood-sticker { width:40px; height:40px; border-radius:12px; border:2px solid #e2e8f0; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; transition:all 0.2s; background:#f8fafc; }
+    .mood-sticker:hover { transform:scale(1.1); border-color:#6366f1; }
+    .mood-sticker.selected { border-color:#6366f1; background:#e0e7ff; transform:scale(1.05); }
+
+    .voice-btn { width:44px; height:44px; border-radius:12px; border:none; background:linear-gradient(135deg,#10b981,#059669); color:white; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .voice-btn:hover:not(.recording) { transform:scale(1.05); box-shadow:0 4px 12px rgba(16,185,129,0.3); }
+    .voice-btn.recording { background:linear-gradient(135deg,#ef4444,#dc2626); animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.7);} 70%{box-shadow:0 0 0 10px rgba(239,68,68,0);} }
+
+    .toolbar-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
+    .rte-btn {
+      padding:6px 10px;
+      font-size:12px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      cursor:pointer;
+      color:#4b5563;
+      font-weight:600;
+    }
+    .rte-btn:hover { background:#e5e7eb; }
+    #journalBody {
+      width:100%;
+      border-radius:16px;
+      border:1px solid #cbd5e1;
+      padding:14px;
+      font-size:15px;
+      min-height:180px;
+      background:#f8fafc;
+      font-family:inherit;
+      outline:none;
+      overflow-y:auto;
+    }
+    #journalBody:focus { border-color:#6366f1; background:#fff; box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
+
+    .editor-meta-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:8px; font-size:12px; color:#6b7280; }
+    #charCount { font-weight:600; }
+
+    .attach-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; font-size:12px; color:#6b7280; }
+    .photo-thumb { width:40px; height:40px; border-radius:10px; object-fit:cover; border:1px solid #e5e7eb; }
+
+    .entry-image { 
+      max-width: 100%; 
+      border-radius: 12px; 
+      margin-top: 12px; 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    }
+
+    .crisis-note { margin-top:8px; font-size:11px; color:#f97316; }
+
+    .ai-summary { background:#f0f9ff; border:1px solid #bae6fd; border-radius:16px; padding:16px; margin-top:16px; display:none; }
+    .ai-summary.show { display:block; animation:fadeIn 0.3s; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
+    .ai-title { font-size:14px; font-weight:700; color:#0369a1; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+    .ai-content { font-size:13px; color:#0c4a6e; line-height:1.5; }
+    .ai-mood { font-size:12px; padding:4px 10px; border-radius:999px; background:#dcfce7; color:#166534; font-weight:600; margin-top:8px; display:inline-block; }
+
+    .editor-footer { margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+    .status { font-size:13px; font-weight:600; color:#16a34a; }
+    .status.error { color:#dc2626; }
+
+    .prompt-row { margin-bottom:10px; display:flex; flex-wrap:wrap; gap:8px; font-size:12px; align-items:center; }
+    .prompt-pill { padding:4px 8px; border-radius:999px; background:#f3f4ff; color:#4f46e5; cursor:pointer; }
+    .prompt-pill:hover { background:#e0e7ff; }
+
+    .doodle-wrap { margin-top:32px; padding-top:24px; border-top:1px solid #f1f5f9; }
+    .doodle-header { font-size:16px; font-weight:700; color:#1e293b; margin-bottom:16px; }
+
+    .doodle-toolbar { 
+      display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center;
+      margin-bottom:0;
+      background: #1e293b;
+      padding:12px 16px;
+      border-top-left-radius:16px; border-top-right-radius:16px;
+      border:1px solid #1e293b;
+    }
+
+    .color-group { display:flex; gap:12px; align-items:center; }
+    .color-dot { width:24px; height:24px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:transform 0.2s; box-shadow:0 2px 4px rgba(0,0,0,0.3); }
+    .color-dot:hover { transform:scale(1.15); }
+    .color-dot.selected { border-color:#fff; transform:scale(1.2); box-shadow: 0 0 0 2px #3b82f6; }
+
+    .tool-group { display:flex; gap:8px; align-items:center; }
+
+    .canvas-container {
+      width: 100%;
+      height: 320px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      cursor: crosshair !important;
+      background-image: radial-gradient(#334155 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    canvas {
+      display:block;
+      width:100%;
+      height:100%;
+      touch-action: none;
+    }
+
+    .entries-list { list-style:none; max-height:640px; overflow-y:auto; padding-right:6px; }
+    .entry-item { background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:20px; margin-bottom:16px; transition:all 0.2s ease; cursor:pointer; position:relative; }
+    .entry-item:hover { transform:translateY(-2px); background:#fff; box-shadow:0 8px 16px rgba(0,0,0,0.06); border-color:#cbd5e1; }
+    .entry-item.treasure { border:2px solid #fbbf24; background:linear-gradient(135deg, #fffbeb, #fef3c7); }
+    .entry-item.treasure:hover { border-color:#f59e0b; }
+    .entry-title { font-weight:700; color:#334155; font-size:15px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+    .entry-meta { font-size:12px; color:#94a3af; margin-bottom:10px; font-weight:500; }
+    .entry-preview { font-size:14px; color:#64748b; line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+    .delete-btn { position:absolute; top:16px; right:16px; width:28px; height:28px; border-radius:50%; background:#fee2e2; color:#ef4444; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:all 0.2s; }
+    .entry-item:hover .delete-btn { opacity:1; }
+    .delete-btn:hover { transform:scale(1.1); background:#ef4444; color:#fff; }
+
+    .fav-btn { background:none; border:none; cursor:pointer; font-size:16px; padding:0; margin:0; }
+    .fav-btn.active { color:#f59e0b; }
+
+    .btn { padding:10px 20px; border-radius:12px; border:none; font-size:13px; font-weight:600; cursor:pointer; color:#fff; background:linear-gradient(135deg,#6366f1,#ec4899); box-shadow:0 4px 10px rgba(99,102,241,0.2); transition:all 0.2s ease; }
+    .btn:hover { transform:translateY(-1px); box-shadow:0 6px 14px rgba(99,102,241,0.3); }
+
+    .btn.secondary { background:#f1f5f9; color:#475569; box-shadow:none; border:1px solid #e5e7eb; }
+    .btn.secondary:hover { background:#e2e8f0; }
+    .btn.small { padding:8px 14px; font-size:12px; border-radius:10px; }
+
+    .btn.treasure { background:linear-gradient(135deg,#fbbf24,#f59e0b); color:#fff; }
+    .btn.treasure:hover { box-shadow:0 6px 14px rgba(251,191,36,0.4); }
+
+    .empty-state { font-size:14px; color:#94a3b8; text-align:center; padding:40px 20px; background:#f8fafc; border-radius:16px; border:1px dashed #cbd5e1; }
+
+    .search-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; align-items:center; }
+    .search-input {
+      flex:1;
+      min-width:0;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      font-size:13px;
+    }
+    .search-input:focus { outline:none; border-color:#6366f1; box-shadow:0 0 0 2px rgba(99,102,241,0.1); }
+    .filter-pill { padding:4px 8px; border-radius:999px; font-size:11px; cursor:pointer; border:1px solid #e5e7eb; background:#f9fafb; }
+    .filter-pill.active { background:#e0e7ff; border-color:#6366f1; color:#4338ca; }
+
+    .stats-row { font-size:12px; color:#6b7280; margin-bottom:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+
+    .crisis-banner {
+      display:none;
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:#fee2e2;
+      color:#991b1b;
+      font-size:12px;
+      border:1px solid #fecaca;
+    }
+    .crisis-banner a { color:#b91c1c; font-weight:600; text-decoration:underline; }
+
+    /* Tab navigation */
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .tab-btn {
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      color: #334155;
+    }
+    .tab-btn.active {
+      color: #6366f1;
+      border-bottom-color: #6366f1;
+    }
+    .tab-btn.treasure-tab {
+      color: #f59e0b;
+    }
+    .tab-btn.treasure-tab.active {
+      border-bottom-color: #f59e0b;
+    }
+
+    /* Treasure unlock modal */
+    .treasure-unlock-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .treasure-unlock-modal.show {
+      display: flex;
+    }
+    .treasure-unlock-box {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 3px solid #fbbf24;
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: modalPop 0.3s ease;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .treasure-unlock-box h3 {
+      font-size: 24px;
+      color: #92400e;
+      margin-bottom: 12px;
+    }
+    .treasure-unlock-box p {
+      font-size: 14px;
+      color: #78350f;
+      margin-bottom: 20px;
+    }
+    .treasure-unlock-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 2px solid #fbbf24;
+      font-size: 14px;
+      margin-bottom: 16px;
+      background: #ffffff;
+    }
+    .treasure-unlock-box input:focus {
+      outline: none;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+    }
+    .treasure-lock-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Treasure Unlock Modal -->
+<div id="treasureUnlockModal" class="treasure-unlock-modal">
+  <div class="treasure-unlock-box">
+    <div class="treasure-lock-icon">🔐</div>
+    <h3>Unlock Treasure Box</h3>
+    <p>Enter your password to view your private treasures</p>
+    <input id="treasureUnlockInput" type="password" placeholder="Enter password">
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button id="unlockTreasureBtn" class="btn treasure">🔓 Unlock</button>
+      <button id="cancelUnlockBtn" class="btn secondary">Cancel</button>
+    </div>
+    <p style="font-size:11px;margin-top:12px;color:#78350f;">
+      Don't have a password? <a href="#" id="setPasswordLink" style="color:#f59e0b;font-weight:600;">Set one now</a>
+    </p>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="top-row">
+    <div class="title-block">
+      <h1>Your Journal 📓</h1>
+      <p>Write your thoughts, doodle freely, add mood stickers. Entries stay private on this device.</p>
+    </div>
+    <div class="back-link">
+      <a href="journey.html">← <span>Back to Journey</span></a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: Editor -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">New Entry</div>
+          <div class="panel-sub">Capture your moment in words, art, or voice.</div>
+        </div>
+        <span class="chip">Private</span>
+      </div>
+
+      <div class="editor">
+        <!-- Prompts -->
+        <div class="prompt-row">
+          <span style="font-weight:600;">Need a prompt?</span>
+          <span id="randomPrompt" class="prompt-pill">🎲 Random prompt</span>
+          <span class="prompt-pill" data-prompt="What made you smile today?">😊 Smile today</span>
+          <span class="prompt-pill" data-prompt="Three things I'm grateful for are...">🙏 Gratitude x3</span>
+        </div>
+
+        <!-- Mood + voice -->
+        <div class="mood-voice-row">
+          <div class="mood-stickers">
+            <div class="mood-sticker selected" data-mood="😊" title="Happy">😊</div>
+            <div class="mood-sticker" data-mood="😌" title="Calm">😌</div>
+            <div class="mood-sticker" data-mood="😔" title="Sad">😔</div>
+            <div class="mood-sticker" data-mood="😰" title="Anxious">😰</div>
+            <div class="mood-sticker" data-mood="😴" title="Tired">😴</div>
+            <div class="mood-sticker" data-mood="😡" title="Angry">😡</div>
+          </div>
+          <button id="voiceBtn" class="voice-btn" title="Voice input">🎤</button>
+        </div>
+
+        <label for="journalTitle">Title</label>
+        <input id="journalTitle" type="text" placeholder="e.g., Morning Thoughts">
+
+        <!-- Rich text toolbar -->
+        <label for="journalBody">Reflection</label>
+        <div class="toolbar-row">
+          <button type="button" class="rte-btn" data-cmd="bold"><b>B</b></button>
+          <button type="button" class="rte-btn" data-cmd="italic"><i>I</i></button>
+          <button type="button" class="rte-btn" data-cmd="underline"><u>U</u></button>
+          <button type="button" class="rte-btn" data-cmd="insertUnorderedList">• List</button>
+        </div>
+        <div id="journalBody" contenteditable="true" aria-label="Journal text"></div>
+
+        <div class="editor-meta-row">
+          <span id="charCount">0 characters</span>
+          <span id="wordCount">0 words</span>
+        </div>
+
+        <div class="attach-row">
+          <label for="photoInput" style="cursor:pointer;display:flex;align-items:center;gap:4px;">
+            📎 Attach photo
+          </label>
+          <input id="photoInput" type="file" accept="image/*" style="display:none;">
+          <img id="photoPreview" class="photo-thumb" style="display:none;" alt="Attached photo">
+        </div>
+
+        <div id="crisisBanner" class="crisis-banner">
+          Some of these words sound really heavy. If you are in danger or thinking about harming yourself, please reach out now –
+          <a href="sos.html">open SOS support</a>.
+        </div>
+
+        <!-- AI summary -->
+        <div id="aiSummary" class="ai-summary">
+          <div class="ai-title">🤖 Quick Summary <span id="aiMood"></span></div>
+          <div id="aiContent" class="ai-content"></div>
+          <div class="ai-mood">This is just a helper, not a diagnosis.</div>
+        </div>
+
+        <div class="crisis-note">
+          This journal is for self-reflection. If you feel unsafe, please use the SOS page or contact local emergency services.
+        </div>
+
+        <div class="editor-footer">
+          <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            <button id="saveEntryBtn" class="btn">💾 Save Entry</button>
+            <button id="saveTreasureBtn" class="btn treasure">🔒 Save to Treasure Box</button>
+            <button id="exportPdfBtn" class="btn secondary">📄 Export PDF</button>
+          </div>
+          <span id="saveStatus" class="status"></span>
+        </div>
+      </div>
+
+      <!-- Doodle canvas -->
+      <div class="doodle-wrap">
+        <div class="doodle-header">Creative Canvas (Dark Mode)</div>
+
+        <div class="doodle-toolbar">
+          <div class="color-group">
+            <div class="color-dot selected" style="background:#f97316;" data-color="#f97316"></div>
+            <div class="color-dot" style="background:#22c55e;" data-color="#22c55e"></div>
+            <div class="color-dot" style="background:#3b82f6;" data-color="#3b82f6"></div>
+            <div class="color-dot" style="background:#a855f7;" data-color="#a855f7"></div>
+            <div class="color-dot" style="background:#ef4444;" data-color="#ef4444"></div>
+            <div class="color-dot" style="background:#ffffff;" data-color="#ffffff"></div>
+          </div>
+          <div class="tool-group">
+            <button id="eraserToggle" class="btn secondary small">Eraser</button>
+            <button id="clearDoodleBtn" class="btn secondary small">Clear</button>
+            <button id="saveDoodleBtn" class="btn secondary small">Download</button>
+          </div>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="doodleCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Entries with tabs -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Your Entries</div>
+          <div class="panel-sub">Switch between journal & treasure box.</div>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="all">📝 All Entries</button>
+        <button class="tab-btn treasure-tab" data-tab="treasure">🔒 Treasure Box</button>
+      </div>
+
+      <div class="stats-row">
+        <span id="entryStats">0 entries • 0 words</span>
+        <span id="filterInfo"></span>
+      </div>
+
+      <div class="search-row">
+        <input id="searchInput" class="search-input" type="text" placeholder="Search by keyword...">
+        <button id="clearSearchBtn" class="btn secondary small">Clear</button>
+      </div>
+      <div class="search-row" style="margin-bottom:10px;">
+        <span style="font-size:11px;color:#6b7280;">Filter:</span>
+        <span class="filter-pill active" data-filter="all">All</span>
+        <span class="filter-pill" data-filter="fav">⭐ Favourites</span>
+        <span class="filter-pill" data-filter="😊">😊</span>
+        <span class="filter-pill" data-filter="😔">😔</span>
+        <span class="filter-pill" data-filter="😰">😰</span>
+      </div>
+
+      <ul id="entriesList" class="entries-list"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const titleInput = document.getElementById("journalTitle");
+  const bodyDiv   = document.getElementById("journalBody");
+  const saveBtn   = document.getElementById("saveEntryBtn");
+  const saveTreasureBtn = document.getElementById("saveTreasureBtn");
+  const statusEl  = document.getElementById("saveStatus");
+  const entriesListEl = document.getElementById("entriesList");
+  const aiSummaryEl = document.getElementById("aiSummary");
+  const aiContentEl = document.getElementById("aiContent");
+  const aiMoodEl = document.getElementById("aiMood");
+  const charCountEl = document.getElementById("charCount");
+  const wordCountEl = document.getElementById("wordCount");
+  const crisisBanner = document.getElementById("crisisBanner");
+  const photoInput = document.getElementById("photoInput");
+  const photoPreview = document.getElementById("photoPreview");
+  const entryStatsEl = document.getElementById("entryStats");
+  const filterInfoEl = document.getElementById("filterInfo");
+  const searchInput = document.getElementById("searchInput");
+  const clearSearchBtn = document.getElementById("clearSearchBtn");
+  const exportPdfBtn = document.getElementById("exportPdfBtn");
+
+  let currentMood = "😊";
+  let recognition = null;
+  let isRecording = false;
+  let attachedPhoto = null;
+  let entries = getEntriesSafely();
+  let currentFilter = "all";
+  let currentSearch = "";
+  let currentTab = "all"; // "all" or "treasure"
+  let treasurePassword = localStorage.getItem('treasurePassword') || null;
+  let isTreasureUnlocked = false;
+
+  const PROMPTS = [
+    "What made you smile today?",
+    "Three things I'm grateful for are...",
+    "Right now, I feel... because...",
+    "One small win from today is...",
+    "If my feelings had a color, it would be...",
+    "Something that's worrying me is...",
+    "A message I wish someone would tell me:",
+    "What do I need most right now?",
+    "Today I handled this situation well:",
+    "I want to be kinder to myself by...",
+    "A memory that still warms my heart:",
+    "Three things I can't control (and will release):",
+    "Three things I can control (and will focus on):",
+    "What does a 'good enough' day look like for me?",
+    "If my younger self could see me now, they would say...",
+    "Something I'm proud of but rarely mention:",
+    "What would I say to a friend feeling like me?",
+    "What drained my energy today?",
+    "What gave me energy today?",
+    "One thing I can forgive myself for is..."
+  ];
+
+  function getEntriesSafely() {
+    try {
+      const raw = localStorage.getItem("calmHubJournal");
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch(e) { return []; }
+  }
+  function saveEntries(data) {
+    try { localStorage.setItem("calmHubJournal", JSON.stringify(data)); } catch(e) {}
+  }
+
+  // Mood stickers
+  document.querySelectorAll('.mood-sticker').forEach(sticker => {
+    sticker.onclick = () => {
+      document.querySelectorAll('.mood-sticker').forEach(s => s.classList.remove('selected'));
+      sticker.classList.add('selected');
+      currentMood = sticker.dataset.mood;
+    };
+  });
+
+  // Rich text
+  document.querySelectorAll('.rte-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.execCommand(btn.dataset.cmd, false, null);
+      updateCountsAndCrisis();
+    });
+  });
+
+  function getPlainText() {
+    return bodyDiv.innerText || "";
+  }
+
+  function updateCountsAndCrisis() {
+    const text = getPlainText();
+    charCountEl.textContent = text.length + " characters";
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    wordCountEl.textContent = words + " words";
+    generateAISummary(text);
+    checkCrisisWords(text);
+  }
+
+  function generateAISummary(text) {
+    if (!text.trim()) {
+      aiSummaryEl.classList.remove('show');
+      return;
+    }
+    const words = text.toLowerCase().split(/\s+/);
+    const positiveWords = ['happy','good','great','love','amazing','wonderful','grateful','blessed','peace','calm'];
+    const negativeWords = ['sad','bad','hurt','anxious','stressed','tired','angry','depressed','worried','scared'];
+    const anxiousWords  = ['anxious','worried','stress','panic','nervous','overwhelmed'];
+
+    const posCount = words.filter(w => positiveWords.some(pw => w.includes(pw))).length;
+    const negCount = words.filter(w => negativeWords.some(nw => w.includes(nw))).length;
+    const anxCount = words.filter(w => anxiousWords.some(aw => w.includes(aw))).length;
+
+    let mood = "😊 Positive";
+    let summary = "Reflecting on positive thoughts and feelings.";
+    if (negCount > posCount || anxCount > 0) {
+      mood = "😔 Reflective";
+      summary = "Processing emotions and challenges thoughtfully.";
+    }
+    if (anxCount > negCount) {
+      mood = "😰 Thoughtful";
+      summary = "Exploring worries and seeking clarity.";
+    }
+
+    if (text.length > 80) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim());
+      if (sentences.length) {
+        const first = sentences[0].trim();
+        summary = first.charAt(0).toUpperCase() + first.slice(1) + ".";
+      }
+    }
+
+    aiMoodEl.textContent = mood;
+    aiContentEl.textContent = summary;
+    aiSummaryEl.classList.add('show');
+  }
+
+  const CRISIS_WORDS = ["suicide","kill myself","die","want to die","end my life","self harm","self-harm","cut myself","hurt myself","no reason to live"];
+
+  function checkCrisisWords(text) {
+    const lower = text.toLowerCase();
+    const found = CRISIS_WORDS.some(w => lower.includes(w));
+    crisisBanner.style.display = found ? "block" : "none";
+  }
+
+  // Voice
+  const voiceBtn = document.getElementById('voiceBtn');
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-IN';
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      bodyDiv.focus();
+      document.execCommand('insertText', false, (getPlainText() ? ' ' : '') + transcript);
+      updateCountsAndCrisis();
+      voiceBtn.classList.remove('recording');
+      voiceBtn.innerHTML = '🎤';
+      isRecording = false;
+    };
+    recognition.onerror = () => {
+      voiceBtn.classList.remove('recording');
+      voiceBtn.innerHTML = '🎤';
+      isRecording = false;
+    };
+
+    voiceBtn.onclick = () => {
+      if (isRecording) {
+        recognition.stop();
+        voiceBtn.classList.remove('recording');
+        voiceBtn.innerHTML = '🎤';
+        isRecording = false;
+      } else {
+        recognition.start();
+        voiceBtn.classList.add('recording');
+        voiceBtn.innerHTML = '⏹️';
+        isRecording = true;
+      }
+    };
+  } else {
+    voiceBtn.style.opacity = '0.5';
+    voiceBtn.title = 'Voice not supported';
+  }
+
+  bodyDiv.addEventListener('input', updateCountsAndCrisis);
+
+  // Prompts
+  document.getElementById("randomPrompt").onclick = () => {
+    bodyDiv.innerHTML = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+    updateCountsAndCrisis();
+  };
+  document.querySelectorAll('.prompt-pill[data-prompt]').forEach(p => {
+    p.onclick = () => {
+      bodyDiv.innerHTML = p.dataset.prompt;
+      updateCountsAndCrisis();
+    };
+  });
+
+  // Photo
+  photoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      attachedPhoto = ev.target.result;
+      photoPreview.src = attachedPhoto;
+      photoPreview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function computeTotalStats(list) {
+    const totalEntries = list.length;
+    const totalWords = list.reduce((sum, e) => {
+      const text = (e.bodyPlain || e.body || "").trim();
+      if (!text) return sum;
+      return sum + text.split(/\s+/).length;
+    }, 0);
+    entryStatsEl.textContent = `${totalEntries} entries • ${totalWords} words`;
+  }
+
+  function renderEntries() {
+    let filtered = [...entries];
+    
+    // Tab filter
+    if (currentTab === "treasure") {
+      if (!isTreasureUnlocked) {
+        entriesListEl.innerHTML = `
+          <div class="empty-state" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fbbf24;">
+            <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+            <div style="font-weight:700;color:#92400e;margin-bottom:8px;">Treasure Box Locked</div>
+            <p style="color:#78350f;">Click the Treasure Box tab to unlock with your password</p>
+          </div>
+        `;
+        return;
+      }
+      filtered = filtered.filter(e => e.isTreasure);
+    } else {
+      filtered = filtered.filter(e => !e.isTreasure);
+    }
+
+    // Other filters
+    if (currentFilter === "fav") {
+      filtered = filtered.filter(e => e.favorite);
+    } else if (currentFilter !== "all" && currentFilter) {
+      filtered = filtered.filter(e => e.mood === currentFilter);
+    }
+    if (currentSearch.trim()) {
+      const q = currentSearch.toLowerCase();
+      filtered = filtered.filter(e =>
+        (e.title || "").toLowerCase().includes(q) ||
+        (e.bodyPlain || e.body || "").toLowerCase().includes(q)
+      );
+    }
+
+    filtered.sort((a,b) => b.date - a.date);
+    entriesListEl.innerHTML = "";
+    if (!filtered.length) {
+      entriesListEl.innerHTML = "<div class='empty-state'>No entries match this filter yet.</div>";
+      filterInfoEl.textContent = "";
+      computeTotalStats(entries);
+      return;
+    }
+
+    filtered.forEach(entry => {
+      const li = document.createElement("li");
+      li.className = "entry-item" + (entry.isTreasure ? " treasure" : "");
+      li.innerHTML = `
+        <button class="delete-btn">✕</button>
+        <div class="entry-title">
+          <button class="fav-btn ${entry.favorite ? 'active' : ''}" title="Mark favourite">⭐</button>
+          ${entry.isTreasure ? '<span style="font-size:16px;">🔒</span>' : ''}
+          <span>${entry.title || "Untitled"}</span> <span>${entry.mood || ""}</span>
+        </div>
+        <div class="entry-meta">${new Date(entry.date).toLocaleString()}</div>
+        <div class="entry-preview">${(entry.bodyPlain || entry.body || "").replace(/<[^>]+>/g,'') || "..."}</div>
+        ${entry.photo ? `<img src="${entry.photo}" alt="Entry photo" style="max-width:60px;border-radius:8px;margin-top:8px;">` : ''}
+      `;
+      const favBtn = li.querySelector(".fav-btn");
+      favBtn.onclick = (e) => {
+        e.stopPropagation();
+        entry.favorite = !entry.favorite;
+        saveEntries(entries);
+        renderEntries();
+      };
+      li.onclick = () => {
+        titleInput.value = entry.title || "";
+        bodyDiv.innerHTML = entry.body || "";
+        attachedPhoto = entry.photo || null;
+        if (attachedPhoto) {
+          photoPreview.src = attachedPhoto;
+          photoPreview.style.display = "block";
+        } else {
+          photoPreview.style.display = "none";
+        }
+        currentMood = entry.mood || "😊";
+        document.querySelectorAll('.mood-sticker').forEach(s => {
+          s.classList.toggle('selected', s.dataset.mood === currentMood);
+        });
+        updateCountsAndCrisis();
+        window.scrollTo({top:0,behavior:'smooth'});
+      };
+      li.querySelector(".delete-btn").onclick = (e) => {
+        e.stopPropagation();
+        if (confirm("Delete this entry?")) {
+          entries = entries.filter(x => x.id !== entry.id);
+          saveEntries(entries);
+          renderEntries();
+        }
+      };
+      entriesListEl.appendChild(li);
+    });
+
+    filterInfoEl.textContent =
+      currentFilter === "all" && !currentSearch ? "" :
+      `Showing ${filtered.length} entries (filter applied)`;
+    computeTotalStats(entries);
+  }
+
+  // Save normal entry
+  saveBtn.onclick = () => {
+    const title = titleInput.value.trim();
+    let bodyHtml = bodyDiv.innerHTML;
+    const bodyPlain = getPlainText();
+
+    if (!title && !bodyPlain) return;
+
+    if (attachedPhoto) {
+      bodyHtml += `<br><img src="${attachedPhoto}" class="entry-image" alt="Attached image">`;
+    }
+
+    const newEntry = {
+      id: Date.now().toString(),
+      title,
+      body: bodyHtml,
+      bodyPlain,
+      mood: currentMood,
+      photo: attachedPhoto,
+      favorite: false,
+      isTreasure: false,
+      date: Date.now()
+    };
+    entries.push(newEntry);
+    saveEntries(entries);
+    
+    let weekCount = Number(localStorage.getItem("calmHubJournalCountWeek") || "0");
+    localStorage.setItem("calmHubJournalCountWeek", String(weekCount + 1));
+
+    clearEditor();
+    statusEl.textContent = "Saved! ✔";
+    setTimeout(() => statusEl.textContent = "", 2000);
+    renderEntries();
+  };
+
+  // Save to treasure box
+  saveTreasureBtn.onclick = () => {
+    const title = titleInput.value.trim();
+    let bodyHtml = bodyDiv.innerHTML;
+    const bodyPlain = getPlainText();
+
+    if (!title && !bodyPlain) {
+      alert("Write something first!");
+      return;
+    }
+
+    // Check/set password
+    if (!treasurePassword) {
+      const pwd = prompt("Set a password for your Treasure Box (min 4 characters):");
+      if (!pwd || pwd.trim().length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+      }
+      treasurePassword = pwd.trim();
+      localStorage.setItem('treasurePassword', treasurePassword);
+    } else {
+      const pwd = prompt("Enter your Treasure Box password:");
+      if (pwd !== treasurePassword) {
+        alert("Incorrect password! ❌");
+        return;
+      }
+    }
+
+    if (attachedPhoto) {
+      bodyHtml += `<br><img src="${attachedPhoto}" class="entry-image" alt="Attached image">`;
+    }
+
+    const newEntry = {
+      id: Date.now().toString(),
+      title,
+      body: bodyHtml,
+      bodyPlain,
+      mood: currentMood,
+      photo: attachedPhoto,
+      favorite: false,
+      isTreasure: true,
+      date: Date.now()
+    };
+    entries.push(newEntry);
+    saveEntries(entries);
+
+    clearEditor();
+    statusEl.textContent = "Saved to Treasure Box! 🔒✔";
+    setTimeout(() => statusEl.textContent = "", 2000);
+    renderEntries();
+  };
+
+  function clearEditor() {
+    titleInput.value = "";
+    bodyDiv.innerHTML = "";
+    attachedPhoto = null;
+    photoPreview.style.display = "none";
+    aiSummaryEl.classList.remove('show');
+    document.querySelectorAll('.mood-sticker').forEach(s => {
+      s.classList.toggle('selected', s.dataset.mood === "😊");
+    });
+    currentMood = "😊";
+    updateCountsAndCrisis();
+    localStorage.removeItem("calmHubJournalDraft");
+  }
+
+  // Auto-save draft
+  setInterval(() => {
+    const draft = {
+      title: titleInput.value,
+      bodyHtml: bodyDiv.innerHTML,
+      bodyPlain: getPlainText(),
+      mood: currentMood,
+      photo: attachedPhoto
+    };
+    try {
+      localStorage.setItem("calmHubJournalDraft", JSON.stringify(draft));
+      statusEl.textContent = "Draft saved…";
+      setTimeout(() => { if (statusEl.textContent === "Draft saved…") statusEl.textContent = ""; }, 1500);
+    } catch(e) {}
+  }, 30000);
+
+  // Load draft
+  (function() {
+    try {
+      const raw = localStorage.getItem("calmHubJournalDraft");
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (!d) return;
+      if (d.title) titleInput.value = d.title;
+      if (d.bodyHtml) bodyDiv.innerHTML = d.bodyHtml;
+      attachedPhoto = d.photo || null;
+      if (attachedPhoto) {
+        photoPreview.src = attachedPhoto;
+        photoPreview.style.display = "block";
+      }
+      currentMood = d.mood || "😊";
+      document.querySelectorAll('.mood-sticker').forEach(s => {
+        s.classList.toggle('selected', s.dataset.mood === currentMood);
+      });
+      updateCountsAndCrisis();
+    } catch(e) {}
+  })();
+
+  // Search + filters
+  searchInput.addEventListener('input', () => {
+    currentSearch = searchInput.value;
+    renderEntries();
+  });
+  clearSearchBtn.onclick = () => {
+    searchInput.value = "";
+    currentSearch = "";
+    renderEntries();
+  };
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.onclick = () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.dataset.filter;
+      renderEntries();
+    };
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.onclick = () => {
+      const tab = btn.dataset.tab;
+      if (tab === "treasure" && !isTreasureUnlocked) {
+        // Show unlock modal
+        document.getElementById('treasureUnlockModal').classList.add('show');
+        return;
+      }
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEntries();
+    };
+  });
+
+  // Treasure unlock modal
+  const unlockModal = document.getElementById('treasureUnlockModal');
+  const unlockInput = document.getElementById('treasureUnlockInput');
+  const unlockBtn = document.getElementById('unlockTreasureBtn');
+  const cancelBtn = document.getElementById('cancelUnlockBtn');
+  const setPasswordLink = document.getElementById('setPasswordLink');
+
+  unlockBtn.onclick = () => {
+    if (!treasurePassword) {
+      alert("Please set a password first using the link below.");
+      return;
+    }
+    const pwd = unlockInput.value.trim();
+    if (pwd === treasurePassword) {
+      isTreasureUnlocked = true;
+      unlockModal.classList.remove('show');
+      unlockInput.value = "";
+      currentTab = "treasure";
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-tab="treasure"]').classList.add('active');
+      renderEntries();
+    } else {
+      alert("Incorrect password! ❌");
+      unlockInput.value = "";
+    }
+  };
+
+  cancelBtn.onclick = () => {
+    unlockModal.classList.remove('show');
+    unlockInput.value = "";
+  };
+
+  setPasswordLink.onclick = (e) => {
+    e.preventDefault();
+    const pwd = prompt("Set a new password for your Treasure Box (min 4 characters):");
+    if (!pwd || pwd.trim().length < 4) {
+      alert("Password must be at least 4 characters.");
+      return;
+    }
+    treasurePassword = pwd.trim();
+    localStorage.setItem('treasurePassword', treasurePassword);
+    alert("Password set successfully! 🔐");
+  };
+
+  renderEntries();
+  updateCountsAndCrisis();
+
+  // Export PDF
+  exportPdfBtn.onclick = () => {
+    const { jsPDF } = window.jspdf || {};
+    if (!jsPDF) {
+      alert("PDF export library failed to load.");
+      return;
+    }
+    const text = getPlainText();
+    const title = titleInput.value.trim() || "Journal Entry";
+    if (!text) {
+      alert("Write something first to export as PDF.");
+      return;
+    }
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const margin = 40;
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(title, margin, margin);
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(11);
+    const bodyLines = doc.splitTextToSize(text, 500);
+    doc.text(bodyLines, margin, margin + 24);
+    doc.save(`CalmHub-Journal-${Date.now()}.pdf`);
+  };
+
+  // Doodle canvas
+  const canvas = document.getElementById("doodleCanvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    const container = document.querySelector(".canvas-container");
+    let isDrawing = false;
+    let isErasing = false;
+    let brushColor = "#f97316";
+    let brushSize = 4;
+
+    function resizeCanvas() {
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        updateContext();
+      }
+    }
+
+    function updateContext() {
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.lineWidth = isErasing ? 20 : brushSize;
+      ctx.globalCompositeOperation = isErasing ? "destination-out" : "source-over";
+      ctx.strokeStyle = brushColor;
+    }
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDraw(e) {
+      if (e.cancelable) e.preventDefault();
+      isDrawing = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+    function draw(e) {
+      if (!isDrawing) return;
+      if (e.cancelable) e.preventDefault();
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    function stopDraw() { isDrawing = false; ctx.closePath(); }
+
+    canvas.addEventListener("mousedown", startDraw);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", stopDraw);
+    canvas.addEventListener("mouseout", stopDraw);
+    canvas.addEventListener("touchstart", startDraw, {passive:false});
+    canvas.addEventListener("touchmove", draw, {passive:false});
+    canvas.addEventListener("touchend", stopDraw);
+
+    document.querySelectorAll(".color-dot").forEach(c => {
+      c.onclick = () => {
+        isErasing = false;
+        document.getElementById("eraserToggle").classList.remove("active");
+        document.querySelectorAll(".color-dot").forEach(x => x.classList.remove("selected"));
+        c.classList.add("selected");
+        brushColor = c.getAttribute("data-color");
+        updateContext();
+      };
+    });
+
+    const eraserBtn = document.getElementById("eraserToggle");
+    eraserBtn.onclick = () => {
+      isErasing = !isErasing;
+      eraserBtn.classList.toggle("active", isErasing);
+      updateContext();
+    };
+
+    document.getElementById("clearDoodleBtn").onclick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+    document.getElementById("saveDoodleBtn").onclick = () => {
+      const tCanvas = document.createElement("canvas");
+      tCanvas.width = canvas.width;
+      tCanvas.height = canvas.height;
+      const tCtx = tCanvas.getContext("2d");
+      tCtx.fillStyle = "#0f172a";
+      tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
+      tCtx.drawImage(canvas, 0, 0);
+      const link = document.createElement("a");
+      link.download = `dark-doodle-${Date.now()}.png`;
+      link.href = tCanvas.toDataURL();
+      link.click();
+    };
+
+    setTimeout(() => { resizeCanvas(); updateContext(); }, 100);
+    window.addEventListener("resize", resizeCanvas);
+  }
+});
+</script>
+</body>
+</html>

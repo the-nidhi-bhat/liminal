@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Yoga & Movement – Calm Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin:0; padding:0; box-sizing:border-box;
+      font-family:"Poppins",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    body {
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position:relative;
+      color:#1a1a2e;
+    }
+
+    .shell {
+      width:100%;
+      max-width:960px;
+      border-radius:36px;
+      padding:36px 32px 32px;
+      background:rgba(255,255,255,0.96);
+      border:1px solid rgba(200,200,220,0.5);
+      box-shadow:
+        0 40px 80px rgba(100,100,150,0.2),
+        0 0 0 1px rgba(255,255,255,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+      max-height:90vh;
+      overflow-y:auto;
+    }
+
+    .shell::before {
+      content:"";
+      position:absolute;
+      inset:-100px -50px auto auto;
+      background:
+        radial-gradient(circle at top, rgba(126,87,194,0.15), transparent 70%),
+        radial-gradient(circle at bottom left, rgba(171,71,188,0.1), transparent 75%);
+      opacity:0.7;
+      pointer-events:none;
+      filter:blur(40px);
+    }
+
+    .inner { position:relative; z-index:1; }
+
+    .top-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .title-block h1 {
+      font-size:26px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:600;
+      color:#2c3e50;
+      letter-spacing:-0.02em;
+    }
+    .title-block h1 span.icon { 
+      font-size:28px;
+      filter:drop-shadow(0 2px 4px rgba(126,87,194,0.3));
+    }
+    .title-block p {
+      font-size:13px;
+      color:#546e7a;
+      margin-top:6px;
+      font-weight:300;
+      line-height:1.5;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(126,87,194,0.3);
+      background:rgba(255,255,255,0.9);
+      color:#37474f;
+      font-size:12px;
+      font-weight:500;
+      text-decoration:none;
+      box-shadow:0 4px 12px rgba(100,100,150,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+      transition:all 0.2s ease;
+    }
+    .back-link a:hover { 
+      background:rgba(243,229,245,0.9);
+      border-color:rgba(126,87,194,0.5);
+      transform:translateY(-1px);
+      box-shadow:0 8px 20px rgba(126,87,194,0.2), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .intro {
+      font-size:13px;
+      color:#546e7a;
+      margin-bottom:8px;
+      font-weight:300;
+      line-height:1.6;
+    }
+
+    /* Streak UI */
+    #streakBox {
+      margin-bottom:14px;
+      font-size:13px;
+      color:#4a148c;
+    }
+    #badgeText {
+      margin-top:4px;
+      font-size:12px;
+      color:#6a1b9a;
+    }
+
+    .audio-control {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:20px;
+      padding:14px 18px;
+      background:linear-gradient(135deg, rgba(243,229,245,0.6), rgba(232,234,246,0.6));
+      border-radius:16px;
+      border:1px solid rgba(126,87,194,0.3);
+      box-shadow:0 4px 12px rgba(126,87,194,0.1);
+    }
+
+    .audio-control span {
+      font-size:13px;
+      color:#4a148c;
+      font-weight:500;
+    }
+
+    .audio-toggle {
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(126,87,194,0.4);
+      background:#ffffff;
+      color:#7e57c2;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+      transition:all 0.2s ease;
+      box-shadow:0 2px 8px rgba(126,87,194,0.15);
+    }
+
+    .audio-toggle:hover {
+      background:rgba(243,229,245,0.5);
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(126,87,194,0.2);
+    }
+
+    .audio-toggle.active {
+      background:linear-gradient(135deg, #7e57c2, #ab47bc);
+      color:#ffffff;
+      box-shadow:0 4px 16px rgba(126,87,194,0.4);
+    }
+
+    .volume-control {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:1;
+    }
+
+    .volume-slider {
+      flex:1;
+      height:6px;
+      -webkit-appearance:none;
+      appearance:none;
+      background:rgba(179,157,219,0.4);
+      border-radius:3px;
+      outline:none;
+      cursor:pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance:none;
+      appearance:none;
+      width:16px;
+      height:16px;
+      background:linear-gradient(135deg, #7e57c2, #ab47bc);
+      cursor:pointer;
+      border-radius:50%;
+      box-shadow:0 2px 8px rgba(126,87,194,0.4);
+      transition:all 0.2s ease;
+    }
+
+    .volume-slider::-webkit-slider-thumb:hover {
+      transform:scale(1.1);
+      box-shadow:0 4px 12px rgba(126,87,194,0.5);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width:16px;
+      height:16px;
+      background:linear-gradient(135deg, #7e57c2, #ab47bc);
+      cursor:pointer;
+      border-radius:50%;
+      border:none;
+      box-shadow:0 2px 8px rgba(126,87,194,0.4);
+      transition:all 0.2s ease;
+    }
+
+    .volume-slider::-moz-range-thumb:hover {
+      transform:scale(1.1);
+      box-shadow:0 4px 12px rgba(126,87,194,0.5);
+    }
+
+    .duration-picker {
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .duration-picker span {
+      font-size:13px;
+      color:#2c3e50;
+      font-weight:500;
+    }
+
+    .duration-btn {
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(126,87,194,0.3);
+      background:#ffffff;
+      color:#37474f;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:500;
+      transition:all 0.2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .duration-btn::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(126,87,194,0.1), rgba(171,71,188,0.1));
+      opacity:0;
+      transition:opacity 0.2s ease;
+    }
+    .duration-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(126,87,194,0.2);
+      border-color:rgba(126,87,194,0.5);
+    }
+    .duration-btn:hover::before { opacity:1; }
+    .duration-btn.active {
+      background:linear-gradient(135deg, #7e57c2, #ab47bc);
+      color:#ffffff;
+      border-color:#7e57c2;
+      box-shadow:0 8px 24px rgba(126,87,194,0.4);
+      font-weight:600;
+    }
+
+    .btn {
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      padding:12px 24px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:linear-gradient(135deg, #7e57c2 0%, #ab47bc 100%);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(126,87,194,0.4), 0 4px 12px rgba(171,71,188,0.2);
+      transition:all 0.2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity:0;
+      transition:opacity 0.2s ease;
+    }
+    .btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(126,87,194,0.5), 0 8px 20px rgba(171,71,188,0.3);
+    }
+    .btn:hover::before { opacity:1; }
+    .btn:active { transform:translateY(0); }
+    .btn[disabled] {
+      opacity:0.5;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .pose-display {
+      display:none;
+      border-radius:24px;
+      padding:24px 20px;
+      background:rgba(255,255,255,0.98);
+      border:1px solid rgba(200,200,220,0.5);
+      margin-top:20px;
+      box-shadow:0 20px 50px rgba(100,100,150,0.15);
+    }
+    .pose-display.active { display:block; }
+
+    .pose-header {
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .pose-image-container {
+      width:100%;
+      max-width:360px;
+      height:260px;
+      margin:0 auto 20px;
+      background:linear-gradient(135deg, rgba(243,229,245,0.5) 0%, rgba(225,245,254,0.5) 100%);
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid rgba(126,87,194,0.3);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 12px 32px rgba(126,87,194,0.2);
+    }
+
+    .pose-image {
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      padding:12px;
+    }
+
+    .pose-image-fallback {
+      font-size:90px;
+      opacity:0.8;
+      filter:drop-shadow(0 4px 8px rgba(126,87,194,0.3));
+    }
+
+    .pose-name {
+      font-size:20px;
+      font-weight:600;
+      color:#4a148c;
+      margin-bottom:6px;
+      letter-spacing:-0.01em;
+    }
+
+    .pose-sanskrit {
+      font-size:12px;
+      color:#7e57c2;
+      font-style:italic;
+      font-weight:400;
+    }
+
+    .timer-circle {
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #b39ddb, #7e57c2);
+      box-shadow:
+        0 0 32px rgba(126,87,194,0.5),
+        0 0 64px rgba(179,157,219,0.3),
+        inset 0 2px 8px rgba(255,255,255,0.3);
+      margin:0 auto 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      font-weight:700;
+      color:#ffffff;
+      transition:transform 0.3s;
+      position:relative;
+    }
+
+    .timer-circle::after {
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:50%;
+      background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.3), transparent 60%);
+      pointer-events:none;
+    }
+
+    .timer-circle.pulse {
+      animation:timerPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes timerPulse {
+      0%, 100% { transform:scale(1); }
+      50% { 
+        transform:scale(1.08);
+        box-shadow:
+          0 0 40px rgba(126,87,194,0.7),
+          0 0 80px rgba(179,157,219,0.4),
+          inset 0 2px 12px rgba(255,255,255,0.4);
+      }
+    }
+
+    .breathing-cue {
+      text-align:center;
+      font-size:14px;
+      color:#4a148c;
+      background:linear-gradient(135deg, rgba(243,229,245,0.6), rgba(232,234,246,0.6));
+      border-radius:16px;
+      padding:12px 16px;
+      margin-bottom:18px;
+      border:1px solid rgba(126,87,194,0.3);
+      box-shadow:0 4px 12px rgba(126,87,194,0.1);
+    }
+
+    .breathing-cue strong {
+      color:#6a1b9a;
+      font-weight:600;
+    }
+
+    .instructions {
+      font-size:13px;
+      color:#37474f;
+      line-height:1.8;
+      margin-bottom:16px;
+      background:rgba(250,250,250,0.8);
+      padding:16px 18px;
+      border-radius:16px;
+      border-left:4px solid #7e57c2;
+      box-shadow:0 4px 12px rgba(100,100,150,0.08);
+    }
+
+    .instructions ol {
+      margin-left:22px;
+      margin-top:8px;
+    }
+
+    .instructions li { margin-bottom:8px; }
+
+    .instructions strong {
+      color:#6a1b9a;
+      font-weight:600;
+    }
+
+    .benefits {
+      font-size:13px;
+      color:#2e7d32;
+      background:linear-gradient(135deg, rgba(232,245,233,0.8), rgba(224,242,241,0.8));
+      border-radius:16px;
+      padding:14px 16px;
+      margin-bottom:16px;
+      border-left:4px solid #4caf50;
+      box-shadow:0 4px 12px rgba(76,175,80,0.15);
+      line-height:1.7;
+    }
+
+    .benefits strong {
+      color:#1b5e20;
+      font-weight:600;
+    }
+
+    .pose-controls {
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .progress-bar {
+      margin-top:18px;
+      font-size:12px;
+      color:#546e7a;
+      text-align:center;
+      font-weight:500;
+    }
+
+    .progress-dots {
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      margin-top:10px;
+    }
+
+    .progress-dot {
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(200,200,220,0.5);
+      transition:all 0.3s ease;
+      box-shadow:0 2px 4px rgba(100,100,150,0.1);
+    }
+
+    .progress-dot.active {
+      background:linear-gradient(135deg, #7e57c2, #ab47bc);
+      transform:scale(1.4);
+      box-shadow:0 4px 12px rgba(126,87,194,0.4);
+    }
+
+    .progress-dot.done {
+      background:#4caf50;
+      box-shadow:0 2px 8px rgba(76,175,80,0.3);
+    }
+
+    .completion-card {
+      display:none;
+      text-align:center;
+      padding:32px 24px;
+      background:linear-gradient(135deg, rgba(243,229,245,0.8), rgba(225,245,254,0.8));
+      border-radius:24px;
+      border:2px solid rgba(126,87,194,0.4);
+      margin-top:20px;
+      box-shadow:0 20px 50px rgba(126,87,194,0.2);
+    }
+    .completion-card.show { display:block; }
+
+    .completion-emoji {
+      font-size:64px;
+      margin-bottom:12px;
+      filter:drop-shadow(0 4px 8px rgba(126,87,194,0.3));
+    }
+
+    .completion-card h2 {
+      font-size:22px;
+      color:#4a148c;
+      margin-bottom:8px;
+      font-weight:600;
+      letter-spacing:-0.01em;
+    }
+
+    .completion-card p {
+      font-size:14px;
+      color:#546e7a;
+      margin-bottom:18px;
+      line-height:1.7;
+    }
+
+    @media (max-width:768px){
+      .shell { 
+        padding:28px 20px 24px;
+        max-height:85vh;
+        border-radius:28px;
+      }
+      .title-block h1 {
+        font-size:22px;
+      }
+      .duration-picker { font-size:11px; }
+      .duration-btn { font-size:11px; padding:6px 12px; }
+      .pose-image-container { max-width:280px; height:210px; }
+      .audio-control { 
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+      .timer-circle {
+        width:100px;
+        height:100px;
+        font-size:28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hidden audio element -->
+  <audio id="yogaAudio" loop preload="auto">
+    <source src="yoga-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="shell">
+    <div class="inner">
+      <div class="top-row">
+        <div class="title-block">
+          <h1><span class="icon">🧘</span><span>Yoga & Movement</span></h1>
+          <p>Gentle stretches to release tension, improve focus, and calm your mind.</p>
+        </div>
+        <div class="back-link">
+          <a href="meditation.html">
+            <span>←</span>
+            <span>Back to Meditations</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Streak + badge -->
+      <div id="streakBox">
+        <div id="streakText">🔥 0-day meditation streak!</div>
+        <div id="badgeText" style="display:none;">🏆 7-day meditator unlocked!</div>
+      </div>
+
+      <p class="intro">
+        Choose a session and follow along. Each pose includes visual guidance, breathing cues, and a timer. No experience needed.
+      </p>
+
+      <!-- Audio Control -->
+      <div class="audio-control">
+        <span>🎵 Background Music:</span>
+        <button class="audio-toggle" id="audioToggle">🔇 Click to Enable</button>
+        <div class="volume-control">
+          <span style="font-size:11px;">🔉</span>
+          <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider">
+          <span style="font-size:11px;">🔊</span>
+        </div>
+      </div>
+
+      <div class="duration-picker">
+        <span>Session:</span>
+        <button class="duration-btn active" data-duration="beginner">🌟 Beginner Flow (8 min)</button>
+        <button class="duration-btn" data-duration="5">Quick (5 min)</button>
+        <button class="duration-btn" data-duration="8">Balanced (8 min)</button>
+        <button class="duration-btn" data-duration="12">Full (12 min)</button>
+      </div>
+
+      <button class="btn" id="startBtn">▶ Start yoga session</button>
+
+      <div class="pose-display" id="poseDisplay">
+        <div class="pose-header">
+          <div class="pose-image-container" id="poseImageContainer">
+            <img id="poseImage" class="pose-image" src="" alt="Yoga Pose" style="display:none;">
+            <div id="poseImageFallback" class="pose-image-fallback">🧘</div>
+          </div>
+          <div class="pose-name" id="poseName">Child's Pose</div>
+          <div class="pose-sanskrit" id="poseSanskrit">Balasana</div>
+        </div>
+
+        <div class="timer-circle" id="timerCircle">60</div>
+
+        <div class="breathing-cue" id="breathingCue">
+          <strong>🌬️ Breathing:</strong> Natural breath
+        </div>
+
+        <div class="instructions" id="poseInstructions">
+          Instructions will appear here.
+        </div>
+
+        <div class="benefits" id="poseBenefits">
+          <strong>Benefits:</strong> Loading...
+        </div>
+
+        <div class="pose-controls">
+          <button class="btn" id="pauseBtn">⏸ Pause</button>
+          <button class="btn" id="skipBtn">⏭ Skip pose</button>
+          <button class="btn" id="stopBtn" style="background:linear-gradient(135deg,#ef5350,#ec407a);">⏹ End session</button>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progressText">Pose 1 of 7</div>
+          <div class="progress-dots" id="progressDots"></div>
+        </div>
+      </div>
+
+      <div class="completion-card" id="completionCard">
+        <div class="completion-emoji">✨🙏</div>
+        <h2>Session Complete!</h2>
+        <p>You have stretched and breathed your way through the full sequence. Notice how your body and mind feel now.</p>
+        <button class="btn" id="restartBtn">↻ Do another session</button>
+        <button class="btn" id="backBtn" style="background:rgba(245,245,245,0.9);color:#37474f;box-shadow:0 4px 12px rgba(100,100,150,0.15);">← Back to meditations</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      const startBtn = document.getElementById("startBtn");
+      const poseDisplay = document.getElementById("poseDisplay");
+      const completionCard = document.getElementById("completionCard");
+      const timerCircle = document.getElementById("timerCircle");
+      const poseImage = document.getElementById("poseImage");
+      const poseImageFallback = document.getElementById("poseImageFallback");
+      const poseName = document.getElementById("poseName");
+      const poseSanskrit = document.getElementById("poseSanskrit");
+      const breathingCue = document.getElementById("breathingCue");
+      const poseInstructions = document.getElementById("poseInstructions");
+      const poseBenefits = document.getElementById("poseBenefits");
+      const progressText = document.getElementById("progressText");
+      const progressDots = document.getElementById("progressDots");
+      const pauseBtn = document.getElementById("pauseBtn");
+      const skipBtn = document.getElementById("skipBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const restartBtn = document.getElementById("restartBtn");
+      const backBtn = document.getElementById("backBtn");
+      const durationPicker = document.querySelector(".duration-picker");
+
+      // Audio
+      const yogaAudio = document.getElementById("yogaAudio");
+      const audioToggle = document.getElementById("audioToggle");
+      const volumeSlider = document.getElementById("volumeSlider");
+
+      let audioEnabled = false;
+      yogaAudio.volume = 0.5;
+
+      audioToggle.addEventListener("click", () => {
+        audioEnabled = !audioEnabled;
+        if (audioEnabled) {
+          yogaAudio.play().then(() => {
+            audioToggle.textContent = "🔊 Music On";
+            audioToggle.classList.add("active");
+          }).catch(error => {
+            console.log("Audio play failed:", error);
+            alert("Please check if yoga-music.mp3 file exists in the same folder as this HTML file.");
+            audioEnabled = false;
+          });
+        } else {
+          yogaAudio.pause();
+          audioToggle.textContent = "🔇 Click to Enable";
+          audioToggle.classList.remove("active");
+        }
+      });
+
+      volumeSlider.addEventListener("input", (e) => {
+        yogaAudio.volume = e.target.value / 100;
+      });
+
+      let selectedDuration = "beginner";
+      let currentPoseIndex = 0;
+      let timerInterval = null;
+      let timeLeft = 0;
+      let isPaused = false;
+
+      const yogaPoses = {
+        beginner: [
+          {
+            image: "yoga-sukhasana.jpg",
+            fallback: "🧘‍♀️",
+            name: "Easy Seated Pose + Breath Awareness",
+            sanskrit: "Sukhasana",
+            duration: 90,
+            instructions: "<ol><li>Sit cross-legged on the floor, spine tall but relaxed.</li><li>Place hands on knees, palms facing up or down.</li><li>Close your eyes gently.</li><li><strong>Breathing:</strong> Inhale for 4 counts, hold for 2, exhale for 6 counts.</li><li>Repeat this breath pattern 6-8 times.</li></ol>",
+            breathingCue: "4-2-6 breathing (inhale-hold-exhale)",
+            benefits: "Promotes calmness, grounds the mind, activates parasympathetic nervous system."
+          },
+          {
+            image: "yoga-catcow.jpg",
+            fallback: "🐱",
+            name: "Cat-Cow Flow",
+            sanskrit: "Marjaryasana-Bitilasana",
+            duration: 90,
+            instructions: "<ol><li>Come to hands and knees, wrists under shoulders, knees under hips.</li><li><strong>Inhale (5 sec):</strong> Drop belly, lift chest and gaze, arch back gently (Cow).</li><li><strong>Exhale (5 sec):</strong> Round spine, tuck chin to chest, draw belly in (Cat).</li><li>Continue flowing smoothly for 8-10 rounds.</li><li>Move slowly—breath leads the movement.</li></ol>",
+            breathingCue: "5-sec inhale (Cow) → 5-sec exhale (Cat)",
+            benefits: "Awakens the spine, connects breath to movement, releases tension in back and neck."
+          },
+          {
+            image: "yoga-balasana.jpg",
+            fallback: "🧘",
+            name: "Child's Pose",
+            sanskrit: "Balasana",
+            duration: 90,
+            instructions: "<ol><li>From hands and knees, sit hips back toward heels.</li><li>Extend arms forward, forehead rests on floor (use a pillow if needed).</li><li><strong>Breathing:</strong> Inhale deeply into your back body for 4 counts.</li><li>Exhale slowly for 6-8 counts, melting deeper into the pose.</li><li>Take 8-10 full breath cycles here.</li></ol>",
+            breathingCue: "Deep belly breathing: 4-count inhale, 6-8 count exhale",
+            benefits: "Deeply calming, releases lower back, slows heart rate, promotes introspection."
+          },
+          {
+            image: "yoga-uttanasana.jpg",
+            fallback: "🙇",
+            name: "Standing Forward Fold",
+            sanskrit: "Uttanasana",
+            duration: 75,
+            instructions: "<ol><li>Stand with feet hip-width apart, knees soft.</li><li><strong>Inhale (3 sec):</strong> Lengthen spine, arms overhead.</li><li><strong>Exhale (5 sec):</strong> Fold forward from hips, let head hang heavy.</li><li>Bend knees generously if hamstrings are tight.</li><li>Hold for 5-6 breaths: <strong>Inhale</strong> to lengthen slightly, <strong>Exhale</strong> to soften deeper.</li></ol>",
+            breathingCue: "3-sec inhale (lengthen), 5-sec exhale (fold deeper)",
+            benefits: "Calms anxiety, stretches hamstrings and spine, increases blood flow to brain."
+          },
+          {
+            image: "yoga-paschimottanasana.jpg",
+            fallback: "🌊",
+            name: "Seated Forward Bend",
+            sanskrit: "Paschimottanasana",
+            duration: 75,
+            instructions: "<ol><li>Sit with legs extended, back straight.</li><li><strong>Inhale (4 sec):</strong> Lengthen spine, arms reach overhead.</li><li><strong>Exhale (6 sec):</strong> Fold forward from hips, reaching toward feet.</li><li>Hold shins, ankles, or feet—don't force it.</li><li>Take 6-8 breaths: <strong>Inhale</strong> to create length, <strong>Exhale</strong> to release tension.</li></ol>",
+            breathingCue: "4-sec inhale (lengthen), 6-sec exhale (fold)",
+            benefits: "Calms the nervous system, stretches entire back body, reduces mental fatigue."
+          },
+          {
+            image: "yoga-viparita-karani.jpg",
+            fallback: "🛌",
+            name: "Legs Up the Wall",
+            sanskrit: "Viparita Karani",
+            duration: 120,
+            instructions: "<ol><li>Sit sideways against a wall, then swing legs up as you lie back.</li><li>Scoot hips close to wall, arms relaxed by sides, palms up.</li><li>Close eyes.</li><li><strong>Breathing:</strong> Natural breath, don't control it.</li><li>Or try: Inhale for 4, exhale for 8 (repeat 10-12 times).</li><li>Let gravity do the work.</li></ol>",
+            breathingCue: "Natural breathing or 4-8 pattern (inhale-exhale)",
+            benefits: "Profoundly relaxing, reduces cortisol, improves circulation, prepares for meditation."
+          },
+          {
+            image: "yoga-savasana.jpg",
+            fallback: "🕉️",
+            name: "Corpse Pose (Final Relaxation)",
+            sanskrit: "Savasana",
+            duration: 120,
+            instructions: "<ol><li>Lie flat on your back, legs slightly apart, arms by sides, palms up.</li><li>Close eyes, let body become heavy.</li><li><strong>Breathing:</strong> Begin with 5 deep breaths (4-count inhale, 8-count exhale).</li><li>Then let breath return to natural rhythm.</li><li>Mentally scan body from head to toes, releasing each part.</li><li>Stay for 10-15 breaths or longer.</li></ol>",
+            breathingCue: "Start with 4-8 breathing, then allow natural breath",
+            benefits: "Deep rest, integrates practice, calms nervous system, gateway to meditation."
+          }
+        ],
+        5: [
+          {
+            image: "yoga-balasana.jpg",
+            fallback: "🧘",
+            name: "Child's Pose",
+            sanskrit: "Balasana",
+            duration: 60,
+            instructions: "<ol><li>Kneel on the ground and sit back onto your heels.</li><li>Slowly bend forward, resting your forehead on the floor.</li><li>Extend your arms forward or rest them alongside your body.</li><li><strong>Breathe:</strong> Inhale 4 counts, exhale 6 counts.</li></ol>",
+            breathingCue: "4-6 breathing (inhale-exhale)",
+            benefits: "Calms the mind, relieves stress, gently stretches hips and thighs."
+          },
+          {
+            image: "yoga-catcow.jpg",
+            fallback: "🐱",
+            name: "Cat-Cow Stretch",
+            sanskrit: "Marjaryasana-Bitilasana",
+            duration: 90,
+            instructions: "<ol><li>Start on hands and knees, wrists under shoulders.</li><li><strong>Cow (Inhale 5 sec):</strong> Drop belly, lift head and tailbone.</li><li><strong>Cat (Exhale 5 sec):</strong> Arch spine upward, tuck chin.</li><li>Flow between these poses with your breath.</li></ol>",
+            breathingCue: "5-sec inhale (Cow), 5-sec exhale (Cat)",
+            benefits: "Warms the spine, relieves back tension, improves posture and breathing."
+          },
+          {
+            image: "yoga-uttanasana.jpg",
+            fallback: "🙇",
+            name: "Standing Forward Bend",
+            sanskrit: "Uttanasana",
+            duration: 60,
+            instructions: "<ol><li>Stand with feet hip-width apart.</li><li><strong>Inhale 3 sec:</strong> Arms overhead.</li><li><strong>Exhale 5 sec:</strong> Fold forward from hips.</li><li>Let head hang, bend knees if needed.</li></ol>",
+            breathingCue: "3-sec inhale, 5-sec exhale",
+            benefits: "Stretches hamstrings, calms the brain, reduces stress and anxiety."
+          }
+        ],
+        8: [
+          {
+            image: "yoga-balasana.jpg",
+            fallback: "🧘",
+            name: "Child's Pose",
+            sanskrit: "Balasana",
+            duration: 60,
+            instructions: "<ol><li>Kneel and sit back, forehead to floor.</li><li>Arms forward or by sides.</li><li><strong>Breathe:</strong> Inhale 4 counts into back, exhale 6 counts.</li></ol>",
+            breathingCue: "4-6 breathing (inhale-exhale)",
+            benefits: "Calms the mind, relieves stress, gently stretches hips and thighs."
+          },
+          {
+            image: "yoga-catcow.jpg",
+            fallback: "🐱",
+            name: "Cat-Cow Stretch",
+            sanskrit: "Marjaryasana-Bitilasana",
+            duration: 60,
+            instructions: "<ol><li>Hands and knees, wrists under shoulders.</li><li><strong>Inhale 5 sec:</strong> Cow (belly drops, chest lifts).</li><li><strong>Exhale 5 sec:</strong> Cat (spine rounds, chin tucks).</li></ol>",
+            breathingCue: "5-5 rhythm (inhale-exhale)",
+            benefits: "Warms spine, releases tension, connects breath to movement."
+          },
+          {
+            image: "yoga-uttanasana.jpg",
+            fallback: "🙇",
+            name: "Standing Forward Bend",
+            sanskrit: "Uttanasana",
+            duration: 60,
+            instructions: "<ol><li>Feet hip-width, knees soft.</li><li><strong>Inhale 3 sec:</strong> Lengthen spine up.</li><li><strong>Exhale 5 sec:</strong> Fold forward from hips.</li></ol>",
+            breathingCue: "3-sec inhale, 5-sec exhale",
+            benefits: "Stretches hamstrings, calms brain, reduces stress."
+          },
+          {
+            image: "yoga-bridge.jpg",
+            fallback: "🌉",
+            name: "Bridge Pose",
+            sanskrit: "Setu Bandhasana",
+            duration: 45,
+            instructions: "<ol><li>Lie back, knees bent, feet flat.</li><li>Press feet down, lift hips up.</li><li><strong>Breathe:</strong> Inhale 4, exhale 6.</li></ol>",
+            breathingCue: "4-6 breathing (inhale-exhale)",
+            benefits: "Strengthens back, opens chest, reduces anxiety."
+          },
+          {
+            image: "yoga-viparita-karani.jpg",
+            fallback: "🛌",
+            name: "Legs Up the Wall",
+            sanskrit: "Viparita Karani",
+            duration: 120,
+            instructions: "<ol><li>Sit sideways by wall, swing legs up.</li><li>Hips close to wall, arms relaxed.</li><li><strong>Breathe:</strong> Natural or 4-8 pattern.</li></ol>",
+            breathingCue: "Natural breath or 4-8 (inhale-exhale)",
+            benefits: "Deeply relaxing, reduces anxiety, improves circulation."
+          }
+        ],
+        12: [
+          {
+            image: "yoga-balasana.jpg",
+            fallback: "🧘",
+            name: "Child's Pose",
+            sanskrit: "Balasana",
+            duration: 60,
+            instructions: "<ol><li>Kneel, sit back on heels, forehead down.</li><li><strong>Breathe:</strong> Inhale 4 into back, exhale 6-8.</li></ol>",
+            breathingCue: "4-count inhale, 6-8 count exhale",
+            benefits: "Calms mind, releases lower back."
+          },
+          {
+            image: "yoga-catcow.jpg",
+            fallback: "🐱",
+            name: "Cat-Cow Stretch",
+            sanskrit: "Marjaryasana-Bitilasana",
+            duration: 90,
+            instructions: "<ol><li>Hands and knees position.</li><li><strong>Inhale 5 sec:</strong> Cow pose.</li><li><strong>Exhale 5 sec:</strong> Cat pose.</li><li>Flow 8-10 rounds.</li></ol>",
+            breathingCue: "5-5 breathing rhythm",
+            benefits: "Warms spine, releases tension."
+          },
+          {
+            image: "yoga-uttanasana.jpg",
+            fallback: "🙇",
+            name: "Standing Forward Bend",
+            sanskrit: "Uttanasana",
+            duration: 60,
+            instructions: "<ol><li>Stand, feet hip-width.</li><li><strong>Inhale 3 sec:</strong> Arms up.</li><li><strong>Exhale 5 sec:</strong> Fold forward.</li></ol>",
+            breathingCue: "3-sec inhale, 5-sec exhale",
+            benefits: "Calms anxiety, stretches hamstrings."
+          },
+          {
+            image: "yoga-twist.jpg",
+            fallback: "🦅",
+            name: "Seated Spinal Twist",
+            sanskrit: "Ardha Matsyendrasana",
+            duration: 60,
+            instructions: "<ol><li>Sit, legs extended.</li><li>Bend right knee, twist right.</li><li><strong>Breathe:</strong> Inhale 4 to lengthen, exhale 6 to twist deeper.</li><li>Repeat other side.</li></ol>",
+            breathingCue: "4-6 breathing per side",
+            benefits: "Improves digestion, releases spine tension."
+          },
+          {
+            image: "yoga-bridge.jpg",
+            fallback: "🌉",
+            name: "Bridge Pose",
+            sanskrit: "Setu Bandhasana",
+            duration: 60,
+            instructions: "<ol><li>Lie back, knees bent, feet flat.</li><li>Press feet, lift hips.</li><li><strong>Breathe:</strong> Inhale 4, exhale 6.</li></ol>",
+            breathingCue: "4-6 breathing",
+            benefits: "Strengthens back, opens chest."
+          },
+          {
+            image: "yoga-viparita-karani.jpg",
+            fallback: "🛌",
+            name: "Legs Up the Wall",
+            sanskrit: "Viparita Karani",
+            duration: 120,
+            instructions: "<ol><li>Sit by wall, swing legs up.</li><li>Hips close to wall.</li><li><strong>Breathe:</strong> Natural or 4-8 pattern.</li></ol>",
+            breathingCue: "Natural breath or 4-8",
+            benefits: "Deeply relaxing, reduces stress hormones."
+          }
+        ]
+      };
+
+      let currentSequence = [];
+
+      // STREAK + BADGE
+      const STREAK_KEY = "calmMeditationStreak";
+      const BADGES_KEY = "calmMeditationBadges";
+      const streakText = document.getElementById("streakText");
+      const badgeText  = document.getElementById("badgeText");
+
+      function getTodayISO() {
+        return new Date().toISOString().split("T")[0];
+      }
+
+      function loadStreakState() {
+        try {
+          return JSON.parse(localStorage.getItem(STREAK_KEY)) || {
+            lastDate: null,
+            streak: 0
+          };
+        } catch {
+          return { lastDate: null, streak: 0 };
+        }
+      }
+
+      function saveStreakState(state) {
+        localStorage.setItem(STREAK_KEY, JSON.stringify(state));
+      }
+
+      function loadBadges() {
+        try {
+          return JSON.parse(localStorage.getItem(BADGES_KEY)) || {};
+        } catch {
+          return {};
+        }
+      }
+
+      function saveBadges(badges) {
+        localStorage.setItem(BADGES_KEY, JSON.stringify(badges));
+      }
+
+      function updateStreakUI() {
+        const state  = loadStreakState();
+        const badges = loadBadges();
+
+        const days = state.streak || 0;
+        streakText.textContent = `🔥 ${days}-day meditation streak!`;
+
+        if (badges["7-day-meditator"]) {
+          badgeText.style.display = "block";
+          badgeText.textContent   = "🏆 7-day meditator unlocked!";
+        } else {
+          badgeText.style.display = "none";
+        }
+      }
+
+      function logMeditationCompletion() {
+        const todayISO = getTodayISO();
+        const state    = loadStreakState();
+
+        if (!state.lastDate) {
+          state.lastDate = todayISO;
+          state.streak   = 1;
+        } else if (state.lastDate === todayISO) {
+          // already counted today
+        } else {
+          const last = new Date(state.lastDate);
+          const now  = new Date(todayISO);
+          const diffDays = Math.round((now - last) / (1000 * 60 * 60 * 24));
+
+          if (diffDays === 1) {
+            state.streak += 1;
+            state.lastDate = todayISO;
+          } else {
+            state.streak = 1;
+            state.lastDate = todayISO;
+          }
+        }
+
+        saveStreakState(state);
+
+        const badges = loadBadges();
+        if (state.streak >= 7 && !badges["7-day-meditator"]) {
+          badges["7-day-meditator"] = true;
+          saveBadges(badges);
+          alert("🏆 New badge unlocked: 7-day meditator!");
+        }
+
+        updateStreakUI();
+      }
+
+      updateStreakUI();
+
+      durationPicker.addEventListener("click", (e) => {
+        const btn = e.target.closest(".duration-btn");
+        if (!btn) return;
+        document.querySelectorAll(".duration-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDuration = btn.dataset.duration;
+      });
+
+      startBtn.addEventListener("click", () => {
+        currentSequence = yogaPoses[selectedDuration];
+        currentPoseIndex = 0;
+        startBtn.style.display = "none";
+        durationPicker.style.display = "none";
+        poseDisplay.classList.add("active");
+        completionCard.classList.remove("show");
+        renderProgressDots();
+        loadPose();
+        startTimer();
+      });
+
+      function renderProgressDots() {
+        progressDots.innerHTML = "";
+        currentSequence.forEach((_, i) => {
+          const dot = document.createElement("div");
+          dot.className = "progress-dot";
+          if (i === currentPoseIndex) dot.classList.add("active");
+          if (i < currentPoseIndex) dot.classList.add("done");
+          progressDots.appendChild(dot);
+        });
+      }
+
+      function loadPose() {
+        const pose = currentSequence[currentPoseIndex];
+
+        poseImage.src = pose.image;
+        poseImage.style.display = "none";
+        poseImageFallback.textContent = pose.fallback;
+        poseImageFallback.style.display = "block";
+
+        poseImage.onload = function() {
+          poseImage.style.display = "block";
+          poseImageFallback.style.display = "none";
+        };
+
+        poseImage.onerror = function() {
+          poseImage.style.display = "none";
+          poseImageFallback.style.display = "block";
+        };
+
+        poseName.textContent = pose.name;
+        poseSanskrit.textContent = pose.sanskrit;
+        poseInstructions.innerHTML = pose.instructions;
+
+        breathingCue.innerHTML = "<strong>🌬️ Breathing:</strong> " + pose.breathingCue;
+        poseBenefits.innerHTML = "<strong>✨ Benefits:</strong> " + pose.benefits;
+
+        timeLeft = pose.duration;
+        timerCircle.textContent = timeLeft;
+        progressText.textContent = "Pose " + (currentPoseIndex + 1) + " of " + currentSequence.length;
+        renderProgressDots();
+        isPaused = false;
+        pauseBtn.textContent = "⏸ Pause";
+        timerCircle.classList.add("pulse");
+      }
+
+      function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          if (!isPaused) {
+            timeLeft--;
+            timerCircle.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+              clearInterval(timerInterval);
+              timerCircle.classList.remove("pulse");
+              nextPose();
+            }
+          }
+        }, 1000);
+      }
+
+      function nextPose() {
+        currentPoseIndex++;
+        if (currentPoseIndex >= currentSequence.length) {
+          endSession();
+        } else {
+          loadPose();
+          startTimer();
+        }
+      }
+
+      function endSession() {
+        clearInterval(timerInterval);
+        poseDisplay.classList.remove("active");
+        completionCard.classList.add("show");
+
+        // only count full sessions
+        logMeditationCompletion();
+      }
+
+      pauseBtn.addEventListener("click", () => {
+        isPaused = !isPaused;
+        pauseBtn.textContent = isPaused ? "▶ Resume" : "⏸ Pause";
+        if (isPaused) {
+          timerCircle.classList.remove("pulse");
+          if (audioEnabled) yogaAudio.pause();
+        } else {
+          timerCircle.classList.add("pulse");
+          if (audioEnabled) yogaAudio.play();
+        }
+      });
+
+      skipBtn.addEventListener("click", () => {
+        clearInterval(timerInterval);
+        timerCircle.classList.remove("pulse");
+        nextPose();
+      });
+
+      stopBtn.addEventListener("click", () => {
+        if (confirm("End this session early?")) {
+          clearInterval(timerInterval);
+          poseDisplay.classList.remove("active");
+          startBtn.style.display = "inline-flex";
+          durationPicker.style.display = "flex";
+          if (audioEnabled) {
+            yogaAudio.pause();
+            yogaAudio.currentTime = 0;
+          }
+        }
+      });
+
+      restartBtn.addEventListener("click", () => {
+        completionCard.classList.remove("show");
+        startBtn.style.display = "inline-flex";
+        durationPicker.style.display = "flex";
+        if (audioEnabled) {
+          yogaAudio.pause();
+          yogaAudio.currentTime = 0;
+        }
+      });
+
+      backBtn.addEventListener("click", () => {
+        window.location.href = "meditation.html";
+      });
+    };
+  </script>
+</body>
+</html>

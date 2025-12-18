@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Match – Calm Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(236, 72, 153, 0.15)),
+                  url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 20px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 32px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes floatUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-block h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-block h1 span.icon {
+      font-size: 26px;
+    }
+
+    .title-block p {
+      font-size: 15px;
+      color: #64748b;
+    }
+
+    .back-link a {
+      font-size: 14px;
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-link a span {
+      color: #6366f1;
+      font-weight: 700;
+    }
+
+    .back-link a:hover {
+      color: #334155;
+    }
+
+    .game-area {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f1f5f9;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-text {
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .tile {
+      height: 76px;
+      border-radius: 18px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
+      transition: transform 0.16s, box-shadow 0.16s, background 0.16s, opacity 0.16s;
+    }
+
+    .tile.revealed {
+      background: linear-gradient(135deg, #fee2e2, #fef9c3);
+      box-shadow: 0 10px 24px rgba(251, 191, 36, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .tile.matched {
+      background: linear-gradient(135deg, #bbf7d0, #22c55e);
+      color: #022c22;
+      box-shadow: none;
+      opacity: 0.98;
+      cursor: default;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #94a3b8;
+      max-width: 260px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 12px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #ffffff;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn.secondary {
+      background: #f8fafc;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      box-shadow: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn.secondary:hover {
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (max-width: 480px) {
+      .shell { padding: 24px 20px; }
+      .grid { gap: 10px; }
+      .tile { height: 68px; }
+      .controls { flex-direction: column; align-items: flex-start; }
+      .btn-row { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="top-row">
+      <div class="title-block">
+        <h1><span class="icon">🧩</span>Memory Match</h1>
+        <p>Flip calm icons and find their pairs. No timer, just focus.</p>
+      </div>
+      <div class="back-link">
+        <a href="games.html">← <span>Back to Games</span></a>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <div class="top-bar">
+        <div class="status-text" id="statusText">Pairs: 0 / 6</div>
+        <div class="pill">Calm · 4×3 board</div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="controls">
+        <p class="hint" id="hintText">Tip: Notice your breathing each time you reveal a new card.</p>
+        <div class="btn-row">
+          <button class="btn secondary" id="restartBtn">Restart board</button>
+          <button class="btn" id="moreGamesBtn">More games →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- tiny UI sound engine (same vibe as games page) ----
+    let uiAudioCtx;
+    function getUiAudioCtx() {
+      if (!uiAudioCtx) {
+        uiAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (uiAudioCtx.state === "suspended") {
+        uiAudioCtx.resume();
+      }
+      return uiAudioCtx;
+    }
+
+    function playUiHover() {
+      const ctx = getUiAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(420, ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(520, ctx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.02, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    }
+
+    function playUiClick() {
+      const ctx = getUiAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.09);
+      gain.gain.setValueAtTime(0.045, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.11);
+    }
+
+    // extra soft flip tick
+    function playFlipTick() {
+      const ctx = getUiAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(300, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.06);
+      gain.gain.setValueAtTime(0.035, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.08);
+    }
+
+    // ---- stats helper ----
+    function logGamePlay(gameName) {
+      const STATS_KEY = "calmGameStats";
+      function loadStats() {
+        try {
+          return JSON.parse(localStorage.getItem(STATS_KEY)) || {
+            totalPlays: 0,
+            plays: []
+          };
+        } catch {
+          return { totalPlays: 0, plays: [] };
+        }
+      }
+      const stats = loadStats();
+      const todayISO = new Date().toISOString().split("T")[0];
+      stats.totalPlays += 1;
+      stats.plays.push({ date: todayISO, game: gameName });
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    }
+
+    // ---- game logic ----
+    const gridEl = document.getElementById("grid");
+    const statusText = document.getElementById("statusText");
+    const hintText = document.getElementById("hintText");
+    const restartBtn = document.getElementById("restartBtn");
+    const moreGamesBtn = document.getElementById("moreGamesBtn");
+
+    const iconSet = ["🌙","⭐","☁","🌈","✨","💧"];
+    let firstTile = null;
+    let lockBoard = false;
+    let matches = 0;
+    let playLogged = false;
+
+    function buildBoard() {
+      gridEl.innerHTML = "";
+      firstTile = null;
+      lockBoard = false;
+      matches = 0;
+      statusText.textContent = "Pairs: 0 / 6";
+      hintText.textContent = "Tip: Notice your breathing each time you reveal a new card.";
+
+      const icons = [...iconSet, ...iconSet]; // 12 tiles
+      const shuffled = icons
+        .map(v => ({ v, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(x => x.v);
+
+      shuffled.forEach((icon, idx) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.dataset.icon = icon;
+        tile.dataset.index = idx;
+        tile.textContent = "✦";
+
+        tile.addEventListener("mouseenter", () => {
+          if (!tile.classList.contains("matched")) playUiHover();
+        });
+
+        tile.addEventListener("click", () => {
+          if (lockBoard) return;
+          if (tile.classList.contains("revealed") || tile.classList.contains("matched")) return;
+
+          if (!playLogged) {
+            logGamePlay("Memory Match");
+            playLogged = true;
+          }
+
+          tile.classList.add("revealed");
+          tile.textContent = icon;
+          playFlipTick();
+
+          if (!firstTile) {
+            firstTile = tile;
+          } else {
+            lockBoard = true;
+            const second = tile;
+
+            if (firstTile.dataset.icon === second.dataset.icon) {
+              setTimeout(() => {
+                firstTile.classList.add("matched");
+                second.classList.add("matched");
+                matches++;
+                statusText.textContent = "Pairs: " + matches + " / 6";
+                if (matches === 6) {
+                  hintText.textContent = "Done. Take a breath and try another game or reshuffle this board.";
+                }
+                firstTile = null;
+                lockBoard = false;
+              }, 260);
+            } else {
+              setTimeout(() => {
+                firstTile.classList.remove("revealed");
+                second.classList.remove("revealed");
+                firstTile.textContent = "✦";
+                second.textContent = "✦";
+                firstTile = null;
+                lockBoard = false;
+              }, 620);
+            }
+          }
+        });
+
+        gridEl.appendChild(tile);
+      });
+    }
+
+    restartBtn.addEventListener("mouseenter", playUiHover);
+    restartBtn.addEventListener("click", () => {
+      playUiClick();
+      buildBoard();
+    });
+
+    moreGamesBtn.addEventListener("mouseenter", playUiHover);
+    moreGamesBtn.addEventListener("click", () => {
+      playUiClick();
+      window.location.href = "games.html";
+    });
+
+    buildBoard();
+  </script>
+</body>
+</html>

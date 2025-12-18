@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desi Diet – Calm Hub 🥗</title>
+  <style>
+    :root {
+      /* Light Mode */
+      --bg-body: #f3f4f6;
+      --bg-shell: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f9fafb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 25px 50px rgba(15,23,42,0.25);
+      --header-bg: #4f46e5;
+      --success: #22c55e;
+      --warning: #facc15;
+      --bg-image: url('image.jpg');
+    }
+    [data-theme="dark"] {
+      /* Dark Mode */
+      --bg-body: #020617;
+      --bg-shell: #020617;
+      --bg-card: #0b1220;
+      --bg-card-alt: #020617;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --shadow: 0 25px 50px rgba(0,0,0,0.9);
+      --header-bg: #1d4ed8;
+      --success: #22c55e;
+      --warning: #eab308;
+      --bg-image: url('night.jpg');
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;}
+    body{
+      min-height:100vh;
+      padding:20px;
+      background-color:var(--bg-body);
+      background-image:var(--bg-image);
+      background-repeat:no-repeat;
+      background-size:cover;
+      background-position:center;
+      color:var(--text-main);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .shell{
+      width:100%;
+      max-width:1100px;
+      border-radius:28px;
+      background:var(--bg-shell);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    /* HEADER */
+    .header{
+      padding:20px 24px;
+      background:var(--header-bg);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .header-left{display:flex;flex-direction:column;gap:4px;}
+    .header-left h1{
+      font-size:24px;
+      font-weight:800;
+      color:#f9fafb;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .header-left p{font-size:13px;color:#e5e7eb;}
+    .header-right{display:flex;align-items:center;gap:12px;}
+    .theme-toggle{
+      width:42px;height:42px;border-radius:999px;border:1px solid rgba(255,255,255,0.4);
+      background:rgba(15,23,42,0.25);color:#f9fafb;font-size:18px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:all .2s;
+    }
+    .theme-toggle:hover{background:rgba(15,23,42,0.4);}
+    .back-btn{
+      padding:9px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.4);
+      background:rgba(15,23,42,0.25);color:#f9fafb;font-size:13px;font-weight:600;
+      text-decoration:none;
+    }
+
+    /* HYDRATION + PROTEIN WRAPPER */
+    .goal-row{
+      margin:16px 20px 4px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .goal-label{font-size:13px;color:var(--text-muted);font-weight:600;}
+    .goal-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .goal-chip{
+      padding:6px 12px;border-radius:999px;border:1px solid var(--border);
+      background:var(--bg-card-alt);font-size:12px;font-weight:600;
+      cursor:pointer;color:var(--text-muted);
+    }
+    .goal-chip.active{
+      border-color:var(--success);background:rgba(34,197,94,0.12);color:var(--success);
+    }
+
+    .metrics-row{
+      margin:20px 20px 0;
+      display:grid;
+      grid-template-columns:2fr 1.1fr;
+      gap:16px;
+    }
+    @media(max-width:900px){.metrics-row{grid-template-columns:1fr;}}
+
+    .hydration-bar,
+    .protein-card{
+      border-radius:22px;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      padding:18px 20px 20px;
+    }
+
+    .hydration-top{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;
+    }
+    .hydration-title{
+      font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;
+    }
+    .hydration-sub{font-size:12px;color:var(--text-muted);}
+    .hydration-progress{
+      width:100%;height:10px;border-radius:999px;background:var(--bg-card-alt);
+      border:1px solid var(--border);overflow:hidden;margin:10px 0;
+    }
+    .hydration-fill{
+      height:100%;width:0;background:var(--success);transition:width .35s ease;
+    }
+    .hydration-center{
+      display:flex;justify-content:center;align-items:center;gap:16px;margin-top:4px;
+    }
+    .hydration-count{
+      font-size:26px;font-weight:800;color:var(--success);min-width:70px;text-align:center;
+    }
+    .hydration-btns{display:flex;gap:8px;}
+    .hydration-btn{
+      width:34px;height:34px;border-radius:999px;border:none;
+      display:flex;align-items:center;justify-content:center;
+      font-size:18px;font-weight:700;cursor:pointer;
+      background:var(--bg-card-alt);color:var(--text-main);
+    }
+    .hydration-btn.plus{background:var(--success);color:#f9fafb;}
+    .hydration-btn:hover{transform:translateY(-1px);}
+
+    .protein-title{
+      font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:6px;
+    }
+    .protein-sub{font-size:12px;color:var(--text-muted);margin-bottom:8px;}
+    .protein-count{
+      font-size:22px;font-weight:800;color:var(--success);margin-bottom:4px;
+    }
+    .protein-bar{
+      width:100%;height:8px;border-radius:999px;background:var(--bg-card-alt);
+      border:1px solid var(--border);overflow:hidden;margin-bottom:8px;
+    }
+    .protein-fill{
+      height:100%;width:0;background:#22c55e;transition:width .35s ease;
+    }
+    .protein-note{font-size:11px;color:var(--text-muted);}
+
+    /* MAIN GRID */
+    .main-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:24px;
+      padding:20px;
+      margin:0 20px 20px;
+    }
+    @media(max-width:900px){.main-grid{grid-template-columns:1fr;}}
+
+    .meals-section{
+      background:var(--bg-card);
+      border-radius:24px;
+      padding:20px 20px 22px;
+      border:1px solid var(--border);
+    }
+    .section-header{
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
+    }
+    .section-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .section-badge{
+      padding:4px 10px;border-radius:999px;background:var(--success);color:#f9fafb;
+      font-size:11px;font-weight:600;
+    }
+    .meal-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;
+    }
+    .meal-card{
+      background:var(--bg-card-alt);
+      border-radius:18px;
+      padding:16px 16px 14px;
+      border:1px solid var(--border);
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .meal-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 14px 30px rgba(15,23,42,0.16);
+      border-color:var(--success);
+    }
+    .meal-emoji{font-size:28px;float:right;opacity:.85;}
+    .meal-benefit{
+      display:inline-block;margin-left:8px;
+      padding:2px 8px;border-radius:999px;background:rgba(34,197,94,0.12);
+      color:var(--success);font-size:11px;font-weight:600;
+    }
+    .meal-desc{font-size:13px;color:var(--text-muted);margin:8px 0 10px;line-height:1.45;}
+    .recipe-trigger{
+      width:100%;border:none;border-radius:999px;padding:7px 10px;
+      background:var(--header-bg);color:#f9fafb;font-size:12px;font-weight:600;cursor:pointer;
+    }
+
+    .sidebar{display:flex;flex-direction:column;gap:16px;}
+    .mood-food-card,.quick-recipes{
+      background:var(--bg-card);border-radius:24px;padding:18px 18px 20px;border:1px solid var(--border);
+    }
+    .mood-tip{
+      background:var(--warning);color:#713f12;padding:10px 12px;border-radius:14px;
+      font-size:13px;line-height:1.45;margin-bottom:8px;
+    }
+    .recipe-mini{
+      display:flex;gap:10px;padding:10px 12px;border-radius:14px;
+      background:var(--bg-card-alt);border:1px solid var(--border);
+      cursor:pointer;transition:all .15s;
+    }
+    .recipe-mini:hover{transform:translateX(3px);background:var(--bg-card);}
+    .recipe-icon{font-size:22px;}
+    .recipe-info h4{font-size:13px;font-weight:600;margin-bottom:2px;}
+    .recipe-time{font-size:11px;color:var(--text-muted);}
+
+    .modal{
+      position:fixed;inset:0;background:rgba(0,0,0,0.7);
+      display:none;align-items:center;justify-content:center;z-index:50;
+      padding:18px;
+    }
+    .modal.active{display:flex;}
+    .modal-content{
+      background:var(--bg-shell);border-radius:22px;border:1px solid var(--border);
+      max-width:480px;max-height:80vh;width:100%;overflow-y:auto;
+    }
+    .modal-header{
+      padding:16px 18px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .modal-close{
+      width:34px;height:34px;border-radius:999px;border:none;cursor:pointer;
+      background:var(--bg-card-alt);color:var(--text-muted);font-size:20px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .recipe-details{padding:16px 18px 20px;}
+    .ingredients h3,.steps h3{
+      font-size:15px;margin-bottom:8px;color:var(--success);
+    }
+    .ingredients ul{
+      list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:6px;margin-bottom:12px;
+    }
+    .ingredients li{
+      background:var(--bg-card-alt);border-radius:10px;padding:6px 9px;
+      border-left:3px solid var(--success);font-size:13px;
+    }
+    .steps ol{padding-left:18px;}
+    .steps li{font-size:13px;margin-bottom:8px;line-height:1.45;}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="header">
+      <div class="header-left">
+        <h1>🥗 Desi Diet</h1>
+        <p>Indian + global foods for focus, energy, calm & strength</p>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <a href="journey.html" class="back-btn">← Back</a>
+      </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goal-row">
+      <div class="goal-label">Goal today:</div>
+      <div class="goal-chips" id="goalChips">
+        <button class="goal-chip active" data-goal="general">💚 General Health</button>
+        <button class="goal-chip" data-goal="energy">⚡ Sustained Energy</button>
+        <button class="goal-chip" data-goal="calm">💜 Calm & Clarity</button>
+        <button class="goal-chip" data-goal="muscle">🏋️ Muscle Gain</button>
+      </div>
+    </div>
+
+    <!-- HYDRATION + PROTEIN -->
+    <div class="metrics-row">
+      <div class="hydration-bar">
+        <div class="hydration-top">
+          <div>
+            <div class="hydration-title">💧 Hydration Tracker</div>
+            <div class="hydration-sub">8 glasses = better mood & focus</div>
+          </div>
+        </div>
+        <div class="hydration-progress">
+          <div class="hydration-fill" id="hydrationFill"></div>
+        </div>
+        <div class="hydration-center">
+          <div class="hydration-count" id="hydrationCount">0/8</div>
+          <div class="hydration-btns">
+            <button class="hydration-btn" onclick="updateHydration(-1)">−</button>
+            <button class="hydration-btn plus" onclick="updateHydration(1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="protein-card">
+        <div class="protein-title">🍗 Protein Hits</div>
+        <div class="protein-sub">Target: 2–3 × 20g protein portions today.</div>
+        <div class="protein-count" id="proteinCount">0 / 3</div>
+        <div class="protein-bar">
+          <div class="protein-fill" id="proteinFill"></div>
+        </div>
+        <div class="protein-note" id="proteinNote">Tap “I ate this” on meals to count a hit.</div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-grid">
+      <div class="meals-section">
+        <div class="section-header">
+          <div class="section-title">🍛 Goal‑based recipes</div>
+          <div class="section-badge" id="mealBadge">General Health • 5 recipes</div>
+        </div>
+        <div class="meal-grid">
+          <!-- yeh cards sirf goals ke mapping ke liye, recipe data JS mein hai -->
+          <div class="meal-card">
+            <span class="meal-emoji">🥣</span>
+            <h3>Immunity Bowl<span class="meal-benefit">General</span></h3>
+            <p class="meal-desc">Turmeric‑ginger oats with seeds for gut + immunity.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'general',0,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🌈</span>
+            <h3>Rainbow Dal<span class="meal-benefit">General</span></h3>
+            <p class="meal-desc">Three‑dal curry with veggies for protein + antioxidants.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'general',1,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🥛</span>
+            <h3>Curd Rice<span class="meal-benefit">General</span></h3>
+            <p class="meal-desc">Probiotic rice bowl for gut‑brain health.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'general',2,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🌯</span>
+            <h3>Mediterranean Wrap<span class="meal-benefit">General</span></h3>
+            <p class="meal-desc">Whole‑wheat wrap with chicken or chickpeas + veggies.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'general',3,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🥬</span>
+            <h3>Tadka Soup<span class="meal-benefit">General</span></h3>
+            <p class="meal-desc">Light veggie soup with cumin‑garlic tadka for easy digestion.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'general',4,true)">🍳 View Recipe • I ate this</button>
+          </div>
+
+          <!-- Sustained Energy main highlights -->
+          <div class="meal-card">
+            <span class="meal-emoji">🥗</span>
+            <h3>Masala Peanut Chaat<span class="meal-benefit">Energy</span></h3>
+            <p class="meal-desc">Protein + fiber snack to prevent energy crash.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'energy',0,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🌾</span>
+            <h3>Millet Roti & Sabzi<span class="meal-benefit">Energy</span></h3>
+            <p class="meal-desc">Bajra / jowar rotis with green sabzi for long fuel.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'energy',1,true)">🍳 View Recipe • I ate this</button>
+          </div>
+
+          <!-- Calm -->
+          <div class="meal-card">
+            <span class="meal-emoji">🥛</span>
+            <h3>Haldi Doodh<span class="meal-benefit">Calm</span></h3>
+            <p class="meal-desc">Turmeric latte for night‑time wind‑down.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'calm',0,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🍚</span>
+            <h3>Ghee Khichdi<span class="meal-benefit">Calm</span></h3>
+            <p class="meal-desc">Soft dal‑rice bowl that’s easy on the gut.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'calm',1,true)">🍳 View Recipe • I ate this</button>
+          </div>
+
+          <!-- Muscle -->
+          <div class="meal-card">
+            <span class="meal-emoji">🥞</span>
+            <h3>High‑Protein Pancake<span class="meal-benefit">Muscle</span></h3>
+            <p class="meal-desc">Besan / whey pancake with oats for heavy protein hit.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'muscle',0,true)">🍳 View Recipe • I ate this</button>
+          </div>
+          <div class="meal-card">
+            <span class="meal-emoji">🍚</span>
+            <h3>Chicken / Paneer Pulao<span class="meal-benefit">Muscle</span></h3>
+            <p class="meal-desc">Brown‑rice pulao with lean protein for recovery.</p>
+            <button class="recipe-trigger" onclick="openRecipe(event,'muscle',1,true)">🍳 View Recipe • I ate this</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="mood-food-card">
+          <h3 style="margin-bottom:10px;font-size:16px;">🧠 Mood‑Food Facts</h3>
+          <div class="mood-tip"><strong>Omega‑3 & brain:</strong> Walnuts, seeds and fish help support brain structure and mood stability.</div>
+          <div class="mood-tip"><strong>Complex carbs:</strong> Oats, dal, millets and sweet potato give slow energy instead of sharp sugar spikes.</div>
+          <div class="mood-tip"><strong>Gut–brain link:</strong> Curd, yogurt and fermented foods support gut bacteria that talk to your brain.</div>
+        </div>
+
+        <div class="quick-recipes">
+          <h3 style="margin-bottom:10px;font-size:16px;">⚡ Quick snack presets</h3>
+          <div class="recipe-mini" onclick="showRecipe('energy',0)">
+            <span class="recipe-icon">🥗</span>
+            <div class="recipe-info">
+              <h4>Peanut / Chana Chaat</h4>
+              <div class="recipe-time">10 min • Travel‑friendly</div>
+            </div>
+          </div>
+          <div class="recipe-mini" onclick="showRecipe('calm',0)">
+            <span class="recipe-icon">🥛</span>
+            <div class="recipe-info">
+              <h4>Haldi Doodh</h4>
+              <div class="recipe-time">5 min • Night ritual</div>
+            </div>
+          </div>
+          <div class="recipe-mini" onclick="showRecipe('muscle',4)">
+            <span class="recipe-icon">🥤</span>
+            <div class="recipe-info">
+              <h4>Sattu Drink</h4>
+              <div class="recipe-time">5 min • Quick protein</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="recipeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <button class="modal-close" onclick="closeRecipe()">×</button>
+      </div>
+      <div class="recipe-details" id="recipeDetails"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentGoal = localStorage.getItem("dietGoal") || "general";
+    let currentLifestyle = localStorage.getItem("dietLifestyle") || "normal"; // if you set from other page
+
+    const recipes = {
+      // ---- GENERAL HEALTH ----
+      general: {
+        normal: [
+          {
+            title: "💚 Immunity Booster Bowl (Turmeric Ginger Oats)",
+            time: "10 min",
+            ingredients: [
+              "½ cup oats",
+              "1–1¼ cup water or plant milk",
+              "½–1 tsp grated ginger",
+              "½ tsp turmeric powder",
+              "1–2 tsp chia or mixed seeds",
+              "Honey or jaggery to taste",
+              "Pinch black pepper (optional)"
+            ],
+            steps: [
+              "Add oats, water or milk, grated ginger and turmeric to a pan.",
+              "Cook on medium heat, stirring, until the oats are soft and creamy.",
+              "Sweeten with honey or jaggery.",
+              "Top with chia or mixed seeds and a pinch of black pepper."
+            ]
+          },
+          {
+            title: "🌈 Rainbow Dal (Mixed Lentil Dal)",
+            time: "25–30 min",
+            ingredients: [
+              "⅓ cup moong dal",
+              "⅓ cup masoor dal",
+              "⅓ cup toor dal",
+              "3–4 cups water",
+              "1 cup mixed veggies (spinach, carrot, tomato)",
+              "½ tsp turmeric",
+              "Salt to taste",
+              "1–2 tsp ghee or oil",
+              "1 tsp cumin seeds",
+              "Pinch asafoetida (hing)"
+            ],
+            steps: [
+              "Rinse all dals and add to cooker with water, turmeric, salt and chopped veggies.",
+              "Pressure‑cook until the dals are soft.",
+              "In a small pan heat ghee or oil, add cumin and hing and let them splutter.",
+              "Pour the tadka into the dal, simmer briefly and serve hot."
+            ]
+          },
+          {
+            title: "🥛 Probiotic Curd Rice",
+            time: "10 min",
+            ingredients: [
+              "1 cup cooked rice (cooled slightly)",
+              "¾–1 cup fresh curd (yogurt)",
+              "Salt to taste",
+              "1 tsp oil or ghee",
+              "½ tsp mustard seeds",
+              "4–5 curry leaves",
+              "½ tsp finely chopped ginger"
+            ],
+            steps: [
+              "Mash cooked rice lightly and mix with curd and salt.",
+              "Heat oil or ghee, add mustard seeds, curry leaves and ginger and sauté briefly.",
+              "Pour the tempering over the curd rice, mix gently and serve."
+            ]
+          },
+          {
+            title: "🌯 Mediterranean Chicken / Chickpea Wrap",
+            time: "15–20 min",
+            ingredients: [
+              "1 whole‑wheat roti or tortilla",
+              "½ cup grilled chicken breast cubes or cooked chickpeas",
+              "½–1 cup mixed greens (lettuce, spinach, salad leaves)",
+              "¼ cup sliced cucumber and other salad veggies",
+              "1–2 tbsp hummus OR olive‑oil lemon dressing"
+            ],
+            steps: [
+              "Warm the roti or tortilla lightly.",
+              "Spread hummus or drizzle dressing in the centre.",
+              "Layer greens, cucumber and chicken or chickpeas on top.",
+              "Roll tightly into a wrap and slice if you like."
+            ]
+          },
+          {
+            title: "🥣 Tadka Vegetable Soup",
+            time: "20 min",
+            ingredients: [
+              "2 cups vegetable stock or water",
+              "1–1½ cups mixed veggies (lauki, zucchini, beans, carrot etc.)",
+              "Salt and pepper to taste",
+              "1 tsp oil or ghee",
+              "½ tsp cumin seeds",
+              "1–2 cloves garlic, finely chopped",
+              "Fresh coriander for garnish"
+            ],
+            steps: [
+              "Add chopped vegetables to stock or water, season with salt and pepper and simmer until tender.",
+              "In a small pan heat oil or ghee, add cumin and garlic and sauté till fragrant.",
+              "Pour the tadka into the soup, garnish with coriander and serve warm."
+            ]
+          }
+        ]
+      },
+
+      // ---- SUSTAINED ENERGY ----
+      energy: {
+        normal: [
+          {
+            title: "🥗 Masala Peanut / Chana Chaat",
+            time: "10 min",
+            ingredients: [
+              "½ cup boiled peanuts or black chana",
+              "2 tbsp finely chopped onion",
+              "2 tbsp chopped tomato",
+              "½ tsp chopped green chilli",
+              "½ lemon, juiced",
+              "½–1 tsp chaat masala",
+              "Salt to taste",
+              "Fresh coriander for garnish"
+            ],
+            steps: [
+              "Add boiled peanuts or chana to a bowl.",
+              "Mix in onion, tomato, green chilli and coriander.",
+              "Season with salt, chaat masala and lemon juice.",
+              "Toss well and eat immediately."
+            ]
+          },
+          {
+            title: "🌾 Bajra / Jowar Roti with Green Sabzi",
+            time: "30 min",
+            ingredients: [
+              "1 cup bajra or jowar flour",
+              "Hot water as needed for dough",
+              "Salt (optional) for dough",
+              "1–2 tsp ghee or oil for cooking",
+              "1–2 cups palak or methi sabzi (any simple green curry)"
+            ],
+            steps: [
+              "Mix millet flour with a pinch of salt and hot water to make a soft dough.",
+              "Rest 5–10 minutes, then roll or pat into rotis.",
+              "Cook on a hot tawa, using a little ghee or dry‑roast as preferred.",
+              "Serve warm with palak or methi sabzi."
+            ]
+          },
+          {
+            title: "🍢 Sprout & Paneer / Tofu Skewers",
+            time: "20–25 min",
+            ingredients: [
+              "½ cup moong sprouts (blanched lightly if you like)",
+              "½ cup paneer OR tofu OR chicken breast cubes",
+              "½ cup bell pepper pieces",
+              "¼ cup hung curd or thick yogurt",
+              "1 tsp ginger‑garlic paste",
+              "½ tsp chilli powder",
+              "½ tsp garam masala",
+              "Salt and pepper to taste",
+              "Skewers"
+            ],
+            steps: [
+              "Mix hung curd with ginger‑garlic paste, spices, salt and pepper to make a marinade.",
+              "Coat sprouts, paneer/tofu/chicken and bell pepper with the marinade; rest 10–15 minutes.",
+              "Thread pieces onto skewers.",
+              "Grill on a pan, tawa or oven until lightly charred and cooked through."
+            ]
+          },
+          {
+            title: "🌯 Egg Bhurji Wrap",
+            time: "15 min",
+            ingredients: [
+              "2 eggs",
+              "2 tbsp chopped onion",
+              "2 tbsp chopped tomato",
+              "½ tsp chopped green chilli",
+              "¼ tsp turmeric",
+              "¼ tsp red chilli powder",
+              "Salt to taste",
+              "1 tsp oil or ghee",
+              "1 whole‑wheat roti"
+            ],
+            steps: [
+              "Heat oil in a pan, sauté onion, chilli and tomato.",
+              "Add turmeric, red chilli and salt.",
+              "Beat eggs in a bowl and pour into the pan.",
+              "Scramble till cooked, then place bhurji in a warm roti, roll and serve."
+            ]
+          },
+          {
+            title: "🥬 Oatmeal Vegetable Idli",
+            time: "25–30 min",
+            ingredients: [
+              "½ cup quick oats (powdered lightly)",
+              "½ cup rawa (semolina)",
+              "½ cup curd or plant‑based yogurt",
+              "¼–½ cup water (for batter)",
+              "¼ cup grated carrot",
+              "Few curry leaves, chopped",
+              "Salt to taste",
+              "½ tsp Eno or baking soda"
+            ],
+            steps: [
+              "Mix powdered oats, rawa, curd and enough water to make a thick idli‑like batter.",
+              "Add grated carrot, curry leaves and salt and rest 10–15 minutes.",
+              "Just before steaming, stir in Eno/baking soda.",
+              "Pour into greased idli moulds and steam for about 10 minutes or until done."
+            ]
+          }
+        ]
+      },
+
+      // ---- CALM & CLARITY ----
+      calm: {
+        normal: [
+          {
+            title: "🥛 Haldi Doodh (Turmeric Latte)",
+            time: "5–7 min",
+            ingredients: [
+              "1 cup milk or plant milk",
+              "½ tsp turmeric powder",
+              "Pinch black pepper",
+              "Pinch cardamom powder",
+              "1–2 tsp honey or jaggery (to taste)"
+            ],
+            steps: [
+              "Add milk, turmeric, black pepper and cardamom to a small pan.",
+              "Simmer on low heat for around 5 minutes (do not vigorously boil).",
+              "Sweeten with honey or jaggery after taking off the heat.",
+              "Strain if desired and sip warm."
+            ]
+          },
+          {
+            title: "🍚 Ghee Khichdi",
+            time: "25–30 min",
+            ingredients: [
+              "½ cup rice",
+              "½ cup moong dal (split yellow)",
+              "3–4 cups water",
+              "Salt to taste",
+              "1–2 tbsp pure ghee"
+            ],
+            steps: [
+              "Rinse rice and moong dal together.",
+              "Pressure‑cook with water and salt until soft and mushy.",
+              "Whisk lightly for a porridge‑like texture.",
+              "Serve warm with generous ghee on top."
+            ]
+          },
+          {
+            title: "🥑 Avocado & Seed Toast",
+            time: "10 min",
+            ingredients: [
+              "1–2 slices whole‑grain bread",
+              "½–1 ripe avocado",
+              "½ tsp lemon juice",
+              "Salt and pepper to taste",
+              "1–2 tsp mixed seeds (sesame, flax, pumpkin etc.)"
+            ],
+            steps: [
+              "Toast the bread slices to your liking.",
+              "Mash avocado with lemon juice, salt and pepper.",
+              "Spread on toast and sprinkle with mixed seeds.",
+              "Serve immediately."
+            ]
+          },
+          {
+            title: "🌰 Walnut‑Based Chutney",
+            time: "10 min",
+            ingredients: [
+              "½ cup walnuts",
+              "½ cup coriander leaves",
+              "1 small green chilli",
+              "1 clove garlic",
+              "Small piece ginger",
+              "1–2 tsp lemon juice",
+              "Salt to taste",
+              "Water as needed"
+            ],
+            steps: [
+              "Add walnuts, coriander, chilli, garlic, ginger, lemon juice and salt to a blender.",
+              "Blend with a little water at a time to a smooth chutney.",
+              "Adjust seasoning and serve with meals or snacks."
+            ]
+          },
+          {
+            title: "🥚 Spinach & Egg / Paneer Bhurji",
+            time: "15–20 min",
+            ingredients: [
+              "2 eggs OR ½ cup grated paneer",
+              "1 cup chopped spinach",
+              "2 tbsp chopped onion",
+              "2 tbsp chopped tomato",
+              "½ tsp ginger‑garlic paste",
+              "¼ tsp turmeric",
+              "¼ tsp chilli powder",
+              "Salt to taste",
+              "1–2 tsp oil or ghee"
+            ],
+            steps: [
+              "Heat oil, sauté onion, ginger‑garlic and tomato until soft.",
+              "Add turmeric, chilli powder, salt and chopped spinach; cook till spinach wilts.",
+              "If using eggs, beat them and pour into the pan, scrambling till cooked.",
+              "If using paneer, stir it in and cook a minute or two.",
+              "Serve as a side with roti or toast."
+            ]
+          }
+        ]
+      },
+
+      // ---- MUSCLE GAIN ----
+      muscle: {
+        normal: [
+          {
+            title: "🥞 High‑Protein Besan / Whey Pancake",
+            time: "20 min",
+            ingredients: [
+              "¼ cup besan or oats powder",
+              "2–3 tbsp curd or egg white (for veg version)",
+              "OR 1 scoop whey + oats powder + egg whites (for NV version)",
+              "½ tsp baking powder",
+              "Water or milk as needed for batter",
+              "Oil or ghee for cooking",
+              "Peanut butter or chopped nuts for topping"
+            ],
+            steps: [
+              "Mix dry ingredients (besan/oats or whey + oats) with baking powder.",
+              "Add curd/egg white or egg whites + milk to make a thick pancake batter.",
+              "Heat a pan with a little oil or ghee.",
+              "Pour batter and cook pancakes on both sides till golden.",
+              "Serve warm with a little peanut butter or nuts."
+            ]
+          },
+          {
+            title: "🍚 Chicken / Paneer Pulao",
+            time: "30–35 min",
+            ingredients: [
+              "¾ cup brown rice (soaked)",
+              "¾–1 cup chicken breast cubes or paneer cubes",
+              "1 cup mixed veggies (peas, carrot, beans etc.)",
+              "1 tbsp oil or ghee",
+              "Whole spices (1 cardamom, small piece cinnamon, 2–3 cloves)",
+              "½ tsp garam masala",
+              "Salt to taste",
+              "Water as needed for pulao"
+            ],
+            steps: [
+              "Heat oil or ghee in a cooker or pan, add whole spices and sauté.",
+              "Add chicken or paneer and mixed veggies; sauté lightly.",
+              "Add soaked rice, salt and garam masala, then water (as per usual pulao ratio).",
+              "Cook till rice and protein are done and water absorbed.",
+              "Rest a few minutes, fluff and serve."
+            ]
+          },
+          {
+            title: "🥗 Three‑Bean Salad",
+            time: "15 min",
+            ingredients: [
+              "⅓ cup cooked rajma",
+              "⅓ cup cooked black beans",
+              "⅓ cup cooked chickpeas",
+              "2 tbsp finely chopped onion",
+              "2 tbsp chopped tomato",
+              "2 tbsp chopped coriander",
+              "1–2 tbsp olive oil",
+              "1–2 tsp lemon juice",
+              "Salt and pepper to taste"
+            ],
+            steps: [
+              "Combine rajma, black beans and chickpeas in a bowl.",
+              "Add onion, tomato and coriander.",
+              "Whisk olive oil, lemon juice, salt and pepper and pour over the salad.",
+              "Toss well and serve."
+            ]
+          },
+          {
+            title: "🥚 Hard‑Boiled Egg Salad",
+            time: "10 min",
+            ingredients: [
+              "2–3 hard‑boiled eggs",
+              "Salt and pepper to taste",
+              "½ tsp mustard paste or 1 tsp light mayo (optional)",
+              "Few salad leaves or cucumber slices"
+            ],
+            steps: [
+              "Peel and slice or chop the boiled eggs.",
+              "Season with salt, pepper and mustard/mayo if using.",
+              "Serve on a bed of salad leaves or with cucumber."
+            ]
+          },
+          {
+            title: "🥤 Savoury Sattu Drink",
+            time: "5 min",
+            ingredients: [
+              "2–3 tbsp sattu flour (roasted chana / barley)",
+              "1 cup cold water",
+              "¼ tsp black salt",
+              "½ tsp roasted cumin powder",
+              "½ lemon, juiced"
+            ],
+            steps: [
+              "Add sattu to a glass with a little water and mix to remove lumps.",
+              "Add remaining water, black salt, cumin powder and lemon juice.",
+              "Stir well and serve chilled."
+            ]
+          }
+        ]
+      }
+    };
+
+    // hydration
+    let hydrationCount = parseInt(localStorage.getItem("hydrationCount") || "0");
+    function updateHydration(change){
+      hydrationCount = Math.max(0,Math.min(8,hydrationCount+change));
+      localStorage.setItem("hydrationCount",hydrationCount);
+      document.getElementById("hydrationCount").textContent = `${hydrationCount}/8`;
+      document.getElementById("hydrationFill").style.width = `${(hydrationCount/8)*100}%`;
+    }
+    updateHydration(0);
+
+    // protein hits
+    let proteinHits = parseInt(localStorage.getItem("proteinHits") || "0");
+    const PROTEIN_TARGET = 3;
+    function updateProteinDisplay(){
+      proteinHits = Math.max(0,Math.min(PROTEIN_TARGET,proteinHits));
+      localStorage.setItem("proteinHits",proteinHits);
+      document.getElementById("proteinCount").textContent = `${proteinHits} / ${PROTEIN_TARGET}`;
+      document.getElementById("proteinFill").style.width = `${(proteinHits/PROTEIN_TARGET)*100}%`;
+      const note = proteinHits>=PROTEIN_TARGET
+        ? "Nice. You’ve hit your protein goal for today."
+        : "Tap “I ate this” on meals to count a hit.";
+      document.getElementById("proteinNote").textContent = note;
+    }
+    function addProteinHit(){
+      proteinHits += 1;
+      updateProteinDisplay();
+    }
+    updateProteinDisplay();
+
+    // theme toggle
+    const toggle = document.getElementById("themeToggle");
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme",savedTheme);
+    toggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+    toggle.onclick = () => {
+      const newTheme = document.documentElement.getAttribute("data-theme")==="dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme",newTheme);
+      localStorage.setItem("theme",newTheme);
+      toggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
+    };
+
+    // goal selector
+    const goalChips = document.querySelectorAll("#goalChips .goal-chip");
+    const mealBadge = document.getElementById("mealBadge");
+    function setGoal(goal){
+      currentGoal = goal;
+      goalChips.forEach(chip=>chip.classList.toggle("active",chip.dataset.goal===goal));
+      if(goal==="general") mealBadge.textContent = "General Health • 5 recipes";
+      else if(goal==="energy") mealBadge.textContent = "Sustained Energy • 5 recipes";
+      else if(goal==="calm") mealBadge.textContent = "Calm & Clarity • 5 recipes";
+      else mealBadge.textContent = "Muscle Gain • 5 recipes";
+      localStorage.setItem("dietGoal",goal);
+    }
+    goalChips.forEach(chip=>{
+      chip.addEventListener("click",()=>setGoal(chip.dataset.goal));
+    });
+    setGoal(currentGoal);
+
+    function getRecipe(goalKey,index){
+      const block = recipes[goalKey] || recipes["general"];
+      let list = block[currentLifestyle] || block.normal;
+      const safeIndex = Math.min(index, list.length-1);
+      return list[safeIndex];
+    }
+
+    function showRecipe(goalKey,index){
+      const r = getRecipe(goalKey,index);
+      if(!r) return;
+      document.getElementById("modalTitle").textContent = r.title;
+      document.getElementById("recipeDetails").innerHTML = `
+        <div class="ingredients">
+          <h3>🥘 Ingredients</h3>
+          <ul>${r.ingredients.map(i=>`<li>${i}</li>`).join("")}</ul>
+        </div>
+        <div class="steps">
+          <h3>🔥 Steps (${r.time})</h3>
+          <ol>${r.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+        </div>`;
+      document.getElementById("recipeModal").classList.add("active");
+    }
+
+    function openRecipe(evt,goalKey,index,countProtein){
+      evt.stopPropagation();
+      if(countProtein) addProteinHit();
+      showRecipe(goalKey,index);
+    }
+
+    function closeRecipe(){
+      document.getElementById("recipeModal").classList.remove("active");
+    }
+    document.getElementById("recipeModal").addEventListener("click",e=>{
+      if(e.target.id==="recipeModal") closeRecipe();
+    });
+  </script>
+</body>
+</html>

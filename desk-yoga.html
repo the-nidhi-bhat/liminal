@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desk Yoga – Calm Hub</title>
+  <style>
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+      font-family:'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      background-image: url("image.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .shell {
+      width:100%;
+      max-width:1000px;
+      border-radius:28px;
+      padding:48px 40px;
+      background:rgba(15,23,42,0.96);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow: 
+        0 32px 80px rgba(15,23,42,0.92),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter:blur(28px);
+      -webkit-backdrop-filter:blur(28px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .shell::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(16,185,129,0.8), rgba(5,150,105,0.8), transparent);
+    }
+
+    h1 {
+      font-size:36px;
+      font-weight:800;
+      background:linear-gradient(135deg, #6ee7b7 0%, #10b981 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:12px;
+    }
+
+    .subtitle {
+      font-size:16px;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:32px;
+      font-weight:500;
+    }
+
+    /* DURATION SELECTOR */
+    .duration-selector {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin:24px 0;
+      flex-wrap:wrap;
+    }
+
+    .duration-btn {
+      padding:12px 28px;
+      border-radius:20px;
+      border:2px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.8);
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+
+    .duration-btn:hover {
+      border-color:rgba(16,185,129,0.5);
+      background:rgba(16,185,129,0.15);
+    }
+
+    .duration-btn.active {
+      border-color:#10b981;
+      background:linear-gradient(135deg, rgba(16,185,129,0.3), rgba(5,150,105,0.2));
+      color:#6ee7b7;
+      box-shadow:0 8px 24px rgba(16,185,129,0.3);
+    }
+
+    /* POSE SECTION */
+    .pose-section {
+      background:linear-gradient(145deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+      border-radius:24px;
+      padding:48px 32px;
+      margin:32px 0;
+      border:1px solid rgba(16,185,129,0.3);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pose-section::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 50%, rgba(16,185,129,0.2), transparent 70%);
+      animation:pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity:0.5; }
+      50% { opacity:1; }
+    }
+
+    .pose-display {
+      position:relative;
+      z-index:1;
+    }
+
+    .status-badge {
+      display:inline-block;
+      padding:10px 24px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      background:linear-gradient(135deg, #10b981, #059669);
+      color:#ffffff;
+      box-shadow:0 8px 24px rgba(16,185,129,0.4);
+    }
+
+    .status-badge.prep {
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      color:#1e293b;
+    }
+
+    .pose-icon {
+      font-size:120px;
+      margin-bottom:20px;
+      animation:float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform:translateY(0px); }
+      50% { transform:translateY(-15px); }
+    }
+
+    .pose-name {
+      font-size:48px;
+      font-weight:800;
+      background:linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:16px;
+      line-height:1.2;
+    }
+
+    .pose-sanskrit {
+      font-size:16px;
+      color:rgba(255,255,255,0.7);
+      font-style:italic;
+      margin-bottom:24px;
+    }
+
+    .pose-instruction {
+      font-size:18px;
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      line-height:1.8;
+      margin-bottom:24px;
+      padding:20px 28px;
+      background:rgba(255,255,255,0.1);
+      border-radius:16px;
+      text-align:left;
+      max-width:700px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .pose-instruction li {
+      margin-bottom:8px;
+      padding-left:8px;
+    }
+
+    .pose-benefits {
+      display:inline-block;
+      padding:12px 24px;
+      background:rgba(59,130,246,0.15);
+      border:1px solid rgba(59,130,246,0.3);
+      border-radius:16px;
+      margin-bottom:24px;
+    }
+
+    .pose-benefits-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .pose-benefits-text {
+      font-size:14px;
+      font-weight:600;
+      color:#60a5fa;
+    }
+
+    .timer-display {
+      font-size:120px;
+      font-weight:800;
+      background:linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:32px 0;
+      font-variant-numeric:tabular-nums;
+      line-height:1;
+    }
+
+    .timer-display.ending {
+      animation:pulse-timer 0.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-timer {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.1); }
+    }
+
+    .breathing-cue {
+      font-size:20px;
+      font-weight:700;
+      color:#6ee7b7;
+      padding:12px 28px;
+      background:rgba(16,185,129,0.2);
+      border-radius:999px;
+      display:inline-block;
+      margin-top:16px;
+      animation:breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity:0.7; transform:scale(0.98); }
+      50% { opacity:1; transform:scale(1.02); }
+    }
+
+    .next-pose {
+      background:rgba(139,92,246,0.15);
+      border:1px solid rgba(139,92,246,0.3);
+      border-radius:16px;
+      padding:16px 24px;
+      margin-top:24px;
+      display:inline-block;
+    }
+
+    .next-pose-label {
+      font-size:12px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      margin-bottom:6px;
+    }
+
+    .next-pose-name {
+      font-size:18px;
+      font-weight:700;
+      color:#a78bfa;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:center;
+    }
+
+    /* POSE PROGRESS */
+    .pose-progress {
+      margin:32px 0;
+    }
+
+    .progress-header {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .progress-header span {
+      font-size:16px;
+      font-weight:700;
+      color:rgba(255,255,255,0.9);
+    }
+
+    .pose-num {
+      font-size:36px;
+      color:#10b981;
+      font-weight:800;
+    }
+
+    .pose-dots {
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .pose-dot {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      border:2px solid rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      color:rgba(255,255,255,0.5);
+      transition:all 0.3s;
+    }
+
+    .pose-dot.completed {
+      background:linear-gradient(135deg, #10b981, #059669);
+      border-color:#10b981;
+      color:#ffffff;
+      box-shadow:0 4px 12px rgba(16,185,129,0.4);
+    }
+
+    .pose-dot.active {
+      background:linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-color:#fbbf24;
+      color:#1e293b;
+      box-shadow:0 4px 12px rgba(251,191,36,0.4);
+      animation:pulse-dot 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform:scale(1); }
+      50% { transform:scale(1.15); }
+    }
+
+    .progress-bar {
+      width:100%;
+      height:10px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:20px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #10b981, #6ee7b7);
+      border-radius:999px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 20px rgba(16,185,129,0.6);
+    }
+
+    /* TENSION RELIEF */
+    .tension-tracker {
+      background:linear-gradient(145deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1));
+      border:1px solid rgba(239,68,68,0.3);
+      border-radius:20px;
+      padding:20px 28px;
+      display:inline-block;
+      margin-top:20px;
+    }
+
+    .tension-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:4px;
+    }
+
+    .tension-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding:16px 36px;
+      border-radius:28px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color:#ffffff;
+      box-shadow:0 12px 32px rgba(16,185,129,0.4);
+    }
+
+    .btn-primary::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition:left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left:100%;
+    }
+
+    .btn-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 20px 50px rgba(16,185,129,0.5);
+    }
+
+    .btn-secondary {
+      background:rgba(255,255,255,0.12);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.28);
+    }
+
+    .btn-secondary:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    /* STATS */
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      margin-top:40px;
+      padding-top:40px;
+      border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat-card {
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius:20px;
+      padding:24px 16px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(20px);
+      transition:all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(16,185,129,0.2);
+    }
+
+    .stat-value {
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .stat-label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+
+    /* BENEFITS */
+    .benefits-section {
+      margin-top:40px;
+    }
+
+    .benefits-section h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+    }
+
+    .benefits-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .benefit-card {
+      padding:24px 20px;
+      background:linear-gradient(145deg, rgba(59,130,246,0.15), rgba(37,99,235,0.1));
+      border-radius:20px;
+      border:1px solid rgba(59,130,246,0.25);
+      backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-align:center;
+    }
+
+    .benefit-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(59,130,246,0.3);
+      border-color:rgba(59,130,246,0.4);
+    }
+
+    .benefit-icon {
+      font-size:40px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .benefit-card h4 {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:6px;
+    }
+
+    .benefit-card p {
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+      line-height:1.5;
+    }
+
+    /* POSES PREVIEW */
+    .poses-preview {
+      background:linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.1));
+      border-radius:24px;
+      padding:32px;
+      margin-top:40px;
+      border:1px solid rgba(139,92,246,0.25);
+    }
+
+    .poses-preview h3 {
+      font-size:20px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .poses-list {
+      display:grid;
+      gap:12px;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    .pose-preview-item {
+      padding:16px 20px;
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      transition:all 0.3s;
+    }
+
+    .pose-preview-item:hover {
+      background:rgba(255,255,255,0.12);
+      transform:translateX(4px);
+    }
+
+    .pose-preview-icon {
+      font-size:32px;
+      flex-shrink:0;
+    }
+
+    .pose-preview-content {
+      flex:1;
+      text-align:left;
+    }
+
+    .pose-preview-name {
+      font-size:16px;
+      font-weight:700;
+      color:#ffffff;
+      margin-bottom:4px;
+    }
+
+    .pose-preview-detail {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .back-link {
+      margin-top:40px;
+    }
+
+    .back-link a {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.15);
+      color:#ffffff;
+      font-size:14px;
+      font-weight:600;
+      text-decoration:none;
+      backdrop-filter:blur(24px);
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .back-link a:hover {
+      background:rgba(255,255,255,0.28);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding:32px 24px; }
+      h1 { font-size:28px; }
+      .timer-display { font-size:90px; }
+      .pose-name { font-size:36px; }
+      .pose-icon { font-size:80px; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .duration-selector { flex-direction:column; }
+      .duration-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>🧘 Desk Yoga</h1>
+    <p class="subtitle">Quick stretches to relieve tension • Perfect for study breaks • Feel refreshed!</p>
+
+    <!-- DURATION SELECTOR -->
+    <div class="duration-selector">
+      <button class="duration-btn" onclick="selectDuration('quick')" data-duration="quick">
+        ⚡ Quick Break (5 mins • 6 poses)
+      </button>
+      <button class="duration-btn active" onclick="selectDuration('standard')" data-duration="standard">
+        🧘 Standard Session (8 mins • 10 poses)
+      </button>
+      <button class="duration-btn" onclick="selectDuration('extended')" data-duration="extended">
+        💆 Extended Relief (12 mins • 15 poses)
+      </button>
+    </div>
+
+    <!-- POSE SECTION -->
+    <div class="pose-section">
+      <div class="pose-display">
+        <div class="status-badge prep" id="statusBadge">Get Ready</div>
+        <div class="pose-icon" id="poseIcon">🧘</div>
+        <div class="pose-name" id="poseName">Desk Yoga Flow</div>
+        <div class="pose-sanskrit" id="poseSanskrit">Perfect for relieving work/study tension</div>
+        
+        <div class="pose-instruction" id="poseInstruction">
+          • Sit comfortably in your chair with feet flat<br>
+          • Keep your spine straight and shoulders relaxed<br>
+          • Take 3 deep breaths to center yourself<br>
+          • Ready to release all that tension!
+        </div>
+
+        <div class="pose-benefits" id="poseBenefits" style="display:none;">
+          <div class="pose-benefits-label">Relieves:</div>
+          <div class="pose-benefits-text" id="poseBenefitsText">Neck & Shoulder Tension</div>
+        </div>
+        
+        <div class="timer-display" id="timer">30</div>
+        <div class="breathing-cue" id="breathingCue">Breathe deeply & slowly</div>
+        
+        <div class="next-pose" id="nextPose" style="display:none;">
+          <div class="next-pose-label">Next Pose:</div>
+          <div class="next-pose-name">
+            <span id="nextPoseIcon">🔄</span>
+            <span id="nextPoseText">Neck Rolls</span>
+          </div>
+        </div>
+
+        <div class="tension-tracker">
+          <div class="tension-value" id="tensionRelief">0%</div>
+          <div class="tension-label">Tension Released 💆</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POSE PROGRESS -->
+    <div class="pose-progress">
+      <div class="progress-header">
+        <span>Pose</span>
+        <span class="pose-num" id="poseNum">0</span>
+        <span>of <span id="totalPoses">10</span></span>
+      </div>
+      
+      <div class="pose-dots" id="poseDots">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" onclick="startYoga()">▶ Start Session</button>
+      <button class="btn btn-secondary" id="pauseBtn" onclick="pauseYoga()" style="display:none;">⏸ Pause</button>
+      <button class="btn btn-secondary" onclick="stopYoga()">⏹ Stop</button>
+      <button class="btn btn-secondary" onclick="nextPose()">⏭ Next Pose</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="totalSessions">0</span>
+        <span class="stat-label">Sessions Done</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalMinutes">0</span>
+        <span class="stat-label">Total Minutes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="totalPosesCompleted">0</span>
+        <span class="stat-label">Poses Mastered</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="currentStreak">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+    </div>
+
+    <!-- POSES PREVIEW -->
+    <div class="poses-preview">
+      <h3>🧘 Today's Poses</h3>
+      <div class="poses-list" id="posesList">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="benefits-section">
+      <h3>✨ Desk Yoga Benefits</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">🧘</span>
+          <h4>Relieves Back Pain</h4>
+          <p>Gentle stretches release tension built up from sitting</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">💆</span>
+          <h4>Reduces Neck Tension</h4>
+          <p>Targeted movements ease stiffness from screen time</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">👀</span>
+          <h4>Relieves Eye Strain</h4>
+          <p>Eye exercises and relaxation reduce digital fatigue</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🧠</span>
+          <h4>Improves Focus</h4>
+          <p>Increased blood flow sharpens mental clarity</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⚡</span>
+          <h4>Boosts Energy</h4>
+          <p>Movement and breathing revitalize your entire system</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">😌</span>
+          <h4>Reduces Stress</h4>
+          <p>Mindful stretching calms your nervous system</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="meditation.html">← Back to Wellness Hub</a>
+    </div>
+  </div>
+
+  <script>
+    const poseSets = {
+      quick: {
+        poses: [
+          { 
+            name: 'Neck Rolls', 
+            icon: '🔄', 
+            sanskrit: 'Greeva Sanchalana',
+            instruction: '• Drop chin to chest slowly<br>• Roll head to right shoulder, hold 2 seconds<br>• Roll back, then to left shoulder<br>• Complete 5 full circles each direction',
+            duration: 45,
+            relieves: 'Neck Stiffness & Headaches'
+          },
+          { 
+            name: 'Shoulder Shrugs', 
+            icon: '💪', 
+            sanskrit: 'Skandha Chakra',
+            instruction: '• Inhale deeply, lift shoulders to ears<br>• Hold for 3 seconds, squeeze tight<br>• Exhale with "ahhh" sound, drop shoulders<br>• Repeat 10 times with intention',
+            duration: 45,
+            relieves: 'Upper Back & Shoulder Tension'
+          },
+          { 
+            name: 'Seated Twist', 
+            icon: '🌀', 
+            sanskrit: 'Ardha Matsyendrasana',
+            instruction: '• Sit tall, place right hand on left knee<br>• Left hand behind you on chair<br>• Inhale to lengthen spine<br>• Exhale and twist left, hold 15 seconds<br>• Switch sides',
+            duration: 50,
+            relieves: 'Spine Stiffness & Digestion'
+          },
+          { 
+            name: 'Wrist & Finger Stretches', 
+            icon: '👐', 
+            sanskrit: 'Manibandha Shakti Vikasaka',
+            instruction: '• Extend arms forward at shoulder height<br>• Make fists, then spread fingers wide<br>• Rotate wrists 10 circles each direction<br>• Shake hands vigorously',
+            duration: 45,
+            relieves: 'Typing Strain & Carpal Tunnel'
+          },
+          { 
+            name: 'Seated Cat-Cow', 
+            icon: '🐱', 
+            sanskrit: 'Marjaryasana-Bitilasana',
+            instruction: '• Hands on knees, sit tall<br>• Inhale: arch back, chest forward, look up<br>• Exhale: round spine, tuck chin<br>• Flow with breath for 10 rounds',
+            duration: 50,
+            relieves: 'Lower Back Pain & Posture'
+          },
+          { 
+            name: 'Eye Palming', 
+            icon: '👁️', 
+            sanskrit: 'Netra Dhyana',
+            instruction: '• Rub palms together vigorously to warm<br>• Close eyes, cup warm palms over them<br>• No pressure on eyeballs<br>• Breathe deeply, visualize darkness',
+            duration: 45,
+            relieves: 'Eye Strain & Screen Fatigue'
+          }
+        ],
+        totalTime: 5,
+        tensionReliefRate: 16.67
+      },
+      standard: {
+        poses: [
+          { 
+            name: 'Neck Rolls', 
+            icon: '🔄', 
+            sanskrit: 'Greeva Sanchalana',
+            instruction: '• Drop chin to chest gently<br>• Slowly roll head to right shoulder<br>• Roll to back, then left shoulder<br>• 5 circles clockwise, 5 counter-clockwise',
+            duration: 40,
+            relieves: 'Neck Tension & Headaches'
+          },
+          { 
+            name: 'Shoulder Shrugs', 
+            icon: '💪', 
+            sanskrit: 'Skandha Chakra',
+            instruction: '• Inhale: lift shoulders to ears<br>• Hold for 3 seconds, squeeze<br>• Exhale loudly: drop shoulders<br>• Repeat 10 times with awareness',
+            duration: 40,
+            relieves: 'Shoulder & Upper Back Tension'
+          },
+          { 
+            name: 'Seated Twist', 
+            icon: '🌀', 
+            sanskrit: 'Ardha Matsyendrasana',
+            instruction: '• Right hand on left knee<br>• Left hand on chair back<br>• Inhale: lengthen spine<br>• Exhale: twist left, gaze over shoulder<br>• Hold 20 seconds each side',
+            duration: 50,
+            relieves: 'Spine Stiffness'
+          },
+          { 
+            name: 'Wrist Circles', 
+            icon: '👐', 
+            sanskrit: 'Manibandha Chakra',
+            instruction: '• Extend arms forward<br>• Rotate wrists in large circles<br>• 10 times clockwise<br>• 10 times counter-clockwise<br>• Shake out hands',
+            duration: 40,
+            relieves: 'Typing Strain'
+          },
+          { 
+            name: 'Seated Forward Fold', 
+            icon: '🙇', 
+            sanskrit: 'Paschimottanasana',
+            instruction: '• Sit on edge of chair<br>• Hinge at hips, fold forward<br>• Let arms dangle or hold ankles<br>• Head hangs heavy, neck relaxed<br>• Breathe into back body',
+            duration: 50,
+            relieves: 'Lower Back & Hamstrings'
+          },
+          { 
+            name: 'Chair Pigeon Pose', 
+            icon: '🕊️', 
+            sanskrit: 'Eka Pada Rajakapotasana',
+            instruction: '• Cross right ankle over left knee<br>• Flex right foot to protect knee<br>• Gently press right knee down<br>• Fold forward for deeper stretch<br>• Hold 25 seconds, switch legs',
+            duration: 60,
+            relieves: 'Hip Tightness & Lower Back'
+          },
+          { 
+            name: 'Seated Cat-Cow', 
+            icon: '🐱', 
+            sanskrit: 'Marjaryasana-Bitilasana',
+            instruction: '• Hands on knees<br>• Inhale: arch back, chest forward<br>• Exhale: round spine, tuck chin<br>• Flow smoothly for 10 breaths',
+            duration: 45,
+            relieves: 'Spine Flexibility'
+          },
+          { 
+            name: 'Desk Push-Ups', 
+            icon: '💪', 
+            sanskrit: 'Modified Chaturanga',
+            instruction: '• Hands on desk edge<br>• Step back, body in straight line<br>• Lower chest to desk<br>• Push up with control<br>• Complete 12 reps',
+            duration: 50,
+            relieves: 'Builds Upper Body Strength'
+          },
+          { 
+            name: 'Ankle Circles', 
+            icon: '🦶', 
+            sanskrit: 'Pada Chakra',
+            instruction: '• Lift right foot off ground<br>• Rotate ankle 10 times each direction<br>• Point and flex foot<br>• Switch to left foot',
+            duration: 40,
+            relieves: 'Leg Circulation & Swelling'
+          },
+          { 
+            name: 'Eye Palming', 
+            icon: '👁️', 
+            sanskrit: 'Netra Dhyana',
+            instruction: '• Rub palms together to create heat<br>• Cup warm palms over closed eyes<br>• Fingers on forehead, no eye pressure<br>• Breathe deeply, see pure darkness',
+            duration: 45,
+            relieves: 'Eye Strain & Mental Fatigue'
+          }
+        ],
+        totalTime: 8,
+        tensionReliefRate: 10
+      },
+      extended: {
+        poses: [
+          { 
+            name: 'Centering Breath', 
+            icon: '🫁', 
+            sanskrit: 'Pranayama Dhyana',
+            instruction: '• Sit tall, feet grounded<br>• Close eyes, hands on heart<br>• Inhale 4 counts through nose<br>• Exhale 6 counts through mouth<br>• Take 5 deep centering breaths',
+            duration: 45,
+            relieves: 'Mental Stress & Anxiety'
+          },
+          { 
+            name: 'Neck Stretches', 
+            icon: '🔄', 
+            sanskrit: 'Greeva Sanchalana',
+            instruction: '• Drop right ear to right shoulder<br>• Hold 15 seconds, breathe<br>• Drop left ear to left shoulder<br>• Hold 15 seconds<br>• Gentle circles both directions',
+            duration: 50,
+            relieves: 'Neck Pain & Headaches'
+          },
+          { 
+            name: 'Shoulder Rolls', 
+            icon: '💪', 
+            sanskrit: 'Skandha Chakra',
+            instruction: '• Roll shoulders back 10 times slowly<br>• Roll shoulders forward 10 times<br>• Lift and drop with breath<br>• Squeeze shoulder blades together',
+            duration: 45,
+            relieves: 'Shoulder Tension'
+          },
+          { 
+            name: 'Eagle Arms', 
+            icon: '🦅', 
+            sanskrit: 'Garudasana Arms',
+            instruction: '• Cross right arm over left at elbows<br>• Bend elbows, bring palms together<br>• Lift elbows to shoulder height<br>• Hold 20 seconds, feel shoulder stretch<br>• Switch arms',
+            duration: 50,
+            relieves: 'Upper Back & Shoulders'
+          },
+          { 
+            name: 'Seated Twist', 
+            icon: '🌀', 
+            sanskrit: 'Ardha Matsyendrasana',
+            instruction: '• Sit sideways on chair<br>• Hold chair back with both hands<br>• Twist deeply toward back of chair<br>• Hold 25 seconds, breathe into twist<br>• Switch sides',
+            duration: 60,
+            relieves: 'Spine Mobility & Digestion'
+          },
+          { 
+            name: 'Wrist & Forearm Stretch', 
+            icon: '👐', 
+            sanskrit: 'Manibandha Shakti',
+            instruction: '• Extend right arm forward, palm up<br>• Gently pull fingers back with left hand<br>• Hold 15 seconds<br>• Flip palm down, pull fingers up<br>• Repeat both sides',
+            duration: 55,
+            relieves: 'Wrist Pain & Typing Strain'
+          },
+          { 
+            name: 'Seated Forward Fold', 
+            icon: '🙇', 
+            sanskrit: 'Paschimottanasana',
+            instruction: '• Scoot to chair edge, feet flat<br>• Hinge at hips, fold forward<br>• Grab ankles or shins<br>• Let head hang completely<br>• Breathe into back for 30 seconds',
+            duration: 60,
+            relieves: 'Lower Back & Hamstrings'
+          },
+          { 
+            name: 'Chair Pigeon Pose', 
+            icon: '🕊️', 
+            sanskrit: 'Eka Pada Rajakapotasana',
+            instruction: '• Right ankle on left knee (figure 4)<br>• Flex right foot strongly<br>• Press right knee gently down<br>• Lean forward to deepen<br>• Hold 30 seconds each side',
+            duration: 70,
+            relieves: 'Hip Flexors & Glutes'
+          },
+          { 
+            name: 'Seated Cat-Cow', 
+            icon: '🐱', 
+            sanskrit: 'Marjaryasana-Bitilasana',
+            instruction: '• Hands on knees, feet grounded<br>• Inhale: lift chest, arch back<br>• Exhale: round spine, drop head<br>• Flow with breath for 12 rounds',
+            duration: 55,
+            relieves: 'Spine Flexibility & Posture'
+          },
+          { 
+            name: 'Side Stretch', 
+            icon: '🌙', 
+            sanskrit: 'Parshva Sukhasana',
+            instruction: '• Sit tall, raise right arm overhead<br>• Lean left, stretching right side body<br>• Left hand on chair for support<br>• Hold 20 seconds, switch sides',
+            duration: 50,
+            relieves: 'Side Body & Intercostals'
+          },
+          { 
+            name: 'Chest Opener', 
+            icon: '🦋', 
+            sanskrit: 'Anahatasana',
+            instruction: '• Interlace fingers behind back<br>• Straighten arms, squeeze shoulders back<br>• Lift chest up and forward<br>• Hold 25 seconds, breathe into chest',
+            duration: 50,
+            relieves: 'Chest & Front Shoulders'
+          },
+          { 
+            name: 'Desk Push-Ups', 
+            icon: '💪', 
+            sanskrit: 'Modified Chaturanga',
+            instruction: '• Hands on stable desk edge<br>• Walk feet back, body diagonal<br>• Lower chest with control<br>• Push up powerfully<br>• Complete 15 quality reps',
+            duration: 60,
+            relieves: 'Builds Strength & Energy'
+          },
+          { 
+            name: 'Ankle & Calf Stretch', 
+            icon: '🦶', 
+            sanskrit: 'Pada Stretch',
+            instruction: '• Point and flex each foot 10 times<br>• Rotate ankles 10 circles each way<br>• Lift heels, hold 5 seconds<br>• Lift toes, heels down, hold 5 seconds',
+            duration: 50,
+            relieves: 'Leg Circulation & Cramps'
+          },
+          { 
+            name: 'Seated Meditation', 
+            icon: '🧘', 
+            sanskrit: 'Dhyana',
+            instruction: '• Sit tall, hands on knees<br>• Close eyes, relax face completely<br>• Focus on natural breath<br>• Let thoughts pass like clouds<br>• Just be present',
+            duration: 60,
+            relieves: 'Mental Clarity & Peace'
+          },
+          { 
+            name: 'Eye Palming', 
+            icon: '👁️', 
+            sanskrit: 'Netra Dhyana',
+            instruction: '• Vigorously rub palms to generate heat<br>• Cup warm hands over closed eyes<br>• Zero pressure on eyeballs<br>• Visualize total darkness<br>• Breathe deeply, relax completely',
+            duration: 50,
+            relieves: 'Eye Strain & Screen Fatigue'
+          }
+        ],
+        totalTime: 12,
+        tensionReliefRate: 6.67
+      }
+    };
+
+    let currentDuration = 'standard';
+    let currentPose = 0;
+    let timeLeft = 30;
+    let isRunning = false;
+    let interval;
+    let tensionRelieved = 0;
+    let totalSessions = parseInt(localStorage.getItem('yogaSessions') || '0');
+    let totalMins = parseInt(localStorage.getItem('yogaMinutes') || '0');
+    let totalPoses = parseInt(localStorage.getItem('yogaPosesCompleted') || '0');
+
+    document.getElementById('totalSessions').textContent = totalSessions;
+    document.getElementById('totalMinutes').textContent = totalMins;
+    document.getElementById('totalPosesCompleted').textContent = totalPoses;
+
+    const lastDate = localStorage.getItem('yogaLastDate');
+    const today = new Date().toDateString();
+    let streak = parseInt(localStorage.getItem('yogaStreak') || '0');
+    if (lastDate === today) {
+      document.getElementById('currentStreak').textContent = streak;
+    } else {
+      document.getElementById('currentStreak').textContent = 0;
+    }
+
+    // Initialize
+    updatePosesList();
+    updatePoseDots();
+
+    function selectDuration(duration) {
+      if (isRunning) {
+        alert('Stop the current session first!');
+        return;
+      }
+      
+      currentDuration = duration;
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-duration="${duration}"]`).classList.add('active');
+      
+      updatePosesList();
+      updatePoseDots();
+      document.getElementById('totalPoses').textContent = poseSets[currentDuration].poses.length;
+    }
+
+    function updatePosesList() {
+      const set = poseSets[currentDuration];
+      const html = set.poses.map((pose, i) => `
+        <div class="pose-preview-item">
+          <div class="pose-preview-icon">${pose.icon}</div>
+          <div class="pose-preview-content">
+            <div class="pose-preview-name">${i + 1}. ${pose.name}</div>
+            <div class="pose-preview-detail">${pose.duration}s • ${pose.relieves}</div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('posesList').innerHTML = html;
+    }
+
+    function updatePoseDots() {
+      const set = poseSets[currentDuration];
+      const html = set.poses.map((_, i) => {
+        const completed = i < currentPose;
+        const active = i === currentPose && currentPose > 0;
+        return `<div class="pose-dot ${completed ? 'completed' : ''} ${active ? 'active' : ''}">${i + 1}</div>`;
+      }).join('');
+      document.getElementById('poseDots').innerHTML = html;
+    }
+
+    function startYoga() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      
+      if (currentPose === 0) {
+        loadPose();
+      }
+      
+      interval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+
+        if (timeLeft <= 5 && timeLeft > 0) {
+          document.getElementById('timer').classList.add('ending');
+        } else {
+          document.getElementById('timer').classList.remove('ending');
+        }
+
+        // Update progress
+        const set = poseSets[currentDuration];
+        const totalTime = set.poses.reduce((sum, p) => sum + p.duration, 0);
+        const elapsedPoseTime = set.poses.slice(0, currentPose).reduce((sum, p) => sum + p.duration, 0);
+        const currentPoseElapsed = set.poses[currentPose].duration - timeLeft;
+        const overallProgress = ((elapsedPoseTime + currentPoseElapsed) / totalTime) * 100;
+        document.getElementById('progress').style.width = overallProgress + '%';
+
+        if (timeLeft <= 0) {
+          nextPose();
+        }
+      }, 1000);
+    }
+
+    function pauseYoga() {
+      isRunning = false;
+      clearInterval(interval);
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+    }
+
+    function stopYoga() {
+      isRunning = false;
+      clearInterval(interval);
+      currentPose = 0;
+      timeLeft = 30;
+      tensionRelieved = 0;
+      
+      document.getElementById('startBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('statusBadge').className = 'status-badge prep';
+      document.getElementById('statusBadge').textContent = 'Get Ready';
+      document.getElementById('poseIcon').textContent = '🧘';
+      document.getElementById('poseName').textContent = 'Desk Yoga Flow';
+      document.getElementById('poseSanskrit').textContent = 'Perfect for relieving work/study tension';
+      document.getElementById('poseInstruction').innerHTML = '• Sit comfortably in your chair with feet flat<br>• Keep your spine straight and shoulders relaxed<br>• Take 3 deep breaths to center yourself<br>• Ready to release all that tension!';
+      document.getElementById('poseBenefits').style.display = 'none';
+      document.getElementById('timer').className = 'timer-display';
+      document.getElementById('timer').textContent = '30';
+      document.getElementById('poseNum').textContent = '0';
+      document.getElementById('tensionRelief').textContent = '0%';
+      document.getElementById('progress').style.width = '0%';
+      document.getElementById('nextPose').style.display = 'none';
+      updatePoseDots();
+    }
+
+    function nextPose() {
+      const set = poseSets[currentDuration];
+      
+      // Update stats
+      totalPoses++;
+      tensionRelieved = Math.min(100, tensionRelieved + set.tensionReliefRate);
+      localStorage.setItem('yogaPosesCompleted', totalPoses);
+      document.getElementById('totalPosesCompleted').textContent = totalPoses;
+      document.getElementById('tensionRelief').textContent = Math.round(tensionRelieved) + '%';
+      
+      currentPose++;
+      
+      if (currentPose >= set.poses.length) {
+        completeSession();
+        return;
+      }
+      
+      loadPose();
+    }
+
+    function loadPose() {
+      const set = poseSets[currentDuration];
+      const pose = set.poses[currentPose];
+      timeLeft = pose.duration;
+      
+      document.getElementById('statusBadge').className = 'status-badge';
+      document.getElementById('statusBadge').textContent = `Pose ${currentPose + 1} of ${set.poses.length}`;
+      document.getElementById('poseIcon').textContent = pose.icon;
+      document.getElementById('poseName').textContent = pose.name;
+      document.getElementById('poseSanskrit').textContent = pose.sanskrit;
+      document.getElementById('poseInstruction').innerHTML = pose.instruction;
+      document.getElementById('poseBenefits').style.display = 'inline-block';
+      document.getElementById('poseBenefitsText').textContent = pose.relieves;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('poseNum').textContent = currentPose + 1;
+      
+      // Show next pose
+      if (currentPose + 1 < set.poses.length) {
+        const nextPose = set.poses[currentPose + 1];
+        document.getElementById('nextPose').style.display = 'inline-block';
+        document.getElementById('nextPoseIcon').textContent = nextPose.icon;
+        document.getElementById('nextPoseText').textContent = nextPose.name;
+      } else {
+        document.getElementById('nextPose').style.display = 'none';
+      }
+      
+      updatePoseDots();
+    }
+
+    function completeSession() {
+      isRunning = false;
+      clearInterval(interval);
+      
+      const set = poseSets[currentDuration];
+      
+      totalSessions++;
+      totalMins += set.totalTime;
+      
+      localStorage.setItem('yogaSessions', totalSessions);
+      localStorage.setItem('yogaMinutes', totalMins);
+      
+      const lastDate = localStorage.getItem('yogaLastDate');
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('yogaStreak') || '0');
+      
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        
+        localStorage.setItem('yogaStreak', streak);
+        localStorage.setItem('yogaLastDate', today);
+      }
+      
+      document.getElementById('totalSessions').textContent = totalSessions;
+      document.getElementById('totalMinutes').textContent = totalMins;
+      document.getElementById('currentStreak').textContent = streak;
+      
+      document.getElementById('statusBadge').className = 'status-badge';
+      document.getElementById('statusBadge').textContent = '🏆 Session Complete!';
+      document.getElementById('poseIcon').textContent = '🙏';
+      document.getElementById('poseName').textContent = 'Namaste';
+      document.getElementById('poseSanskrit').textContent = 'The light in me honors the light in you';
+      document.getElementById('poseInstruction').innerHTML = '• Amazing work! 🎉<br>• Your body feels so much better<br>• Mind clear, tension released<br>• Carry this peace with you';
+      document.getElementById('poseBenefits').style.display = 'none';
+      document.getElementById('timer').textContent = '✨';
+      document.getElementById('breathing Cue').textContent = 'Feel the relief flowing through you';
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('nextPose').style.display = 'none';
+      document.getElementById('tensionRelief').textContent = '100%';
+      
+      setTimeout(() => {
+        alert(`🧘 Desk Yoga Complete!\n\n✅ ${set.totalTime} minutes completed\n🧘 ${set.poses.length} poses mastered\n💆 100% tension released\n🔥 ${streak} day streak\n\nYour body and mind are refreshed! 💚\nNameste! 🙏`);
+        stopYoga();
+      }, 500);
+    }
+  </script>
+</body>
+</html>
